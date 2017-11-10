@@ -1,0 +1,280 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<title>马上理财-直连银行</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta content="telephone=no" name="format-detection" />
+    <meta content="email=no" name="format-detection" />
+    <link href="static/css/common.css" rel="stylesheet" type="text/css">
+    <link href="static/css/swiper.min.css" rel="stylesheet" type="text/css">
+    <script src="static/js/jquery-1.11.3.min.js"></script>
+    <script src="static/js/swiper.jquery.min.js"></script>
+</head>
+
+<body>
+
+<div class="loader-box flex">
+    <div class="content">
+        <div class="circular-bg"><img src="static/images/circular-colors.png">
+            <div class="circular-gray">
+                <span class="left"><img src="static/images/circular-gray_01.png" class="circularImg"></span>
+                <span class="right"><img src="static/images/circular-gray_02.png" class="circularImg"></span>
+                <span class="logo"><img src="static/images/logo.png"></span>
+            </div>
+        </div>
+        <div class="percent">
+            <span class="arrow"></span>
+            <p class="txt"><span class="value">0</span>%</p>
+        </div>
+    </div>
+    
+</div>
+
+<div class="swiper-container swiper-container-h">
+    <div class="swiper-wrapper">  
+        <div class="swiper-slide page1" id="page1">
+            <div class="box-wrap">
+                <p class="q q1"></p>
+                <p class="q q3">
+                    <span class="q sunlight"></span>
+                    <span class="q sun"></span>
+                </p>          
+                <p class="q q4"><span class="q pic"></span></p>
+                <p class="q q5"></p>
+                <p class="q q2 rain1"></p>
+                <p class="q q2 rain2"></p>
+                <p class="q q2 rain3"></p>
+                <p class="q q6"></p>
+                <p class="q q7"></p>
+                <p class="q q8"></p>
+                <p class="q q9"></p>
+                <p class="q q10"></p>
+                <div class="pop flex">
+                    <div class="pop-content"><img src="static/images/page1/pop.png"><span class="close"></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide page2" id="page2">
+            <p class="q q1"></p>
+            <p class="q q2 p2Q2"></p>
+            <p class="q q3"></p>
+        </div>
+        <div class="swiper-slide page3" id="page3">
+            <div class="swiper-container swiper-container-v1">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <p data-img="static/images/page3/p1.png"></p>
+                        <p data-img="static/images/page3/p2.png"></p>
+                        <p data-img="static/images/page3/p3.png"></p>
+                    </div>
+                </div>
+                <div class="swiper-scrollbar swiper-scrollbar-v1"></div>
+            </div>
+            <div class="arrow twinkle" data-img="static/images/arrow.png"></div>
+        </div>
+        <div class="swiper-slide page4" id="page4">
+            <div class="swiper-container swiper-container-v2">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <p data-img="static/images/page4/p1.png"></p>
+                        <p data-img="static/images/page4/p2.png"></p>
+                        <p data-img="static/images/page4/p3.png"></p>
+                    </div>
+                </div>
+                <div class="swiper-scrollbar swiper-scrollbar-v2"></div>
+            </div>
+            <div class="arrow twinkle" data-img="static/images/arrow.png"></div>
+        </div>
+    </div>
+    <!-- Add Pagination -->
+    <div class="swiper-pagination swiper-pagination-h"></div>
+    <!-- Add download -->
+    <div class="download clearfix">
+        <span class="d-logo"><img src="static/images/d-logo.png"></span>
+        <div class="txt">
+            <p class="p1">马上理财</p>
+            <p class="p2">直连银行，安全可靠</p>
+        </div>
+        <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.mashanglc.android.licaiclient" class="link">立即下载</a>
+    </div>
+</div>
+<script type="text/javascript">
+//download
+$(function(){
+    var url = location.href;
+    var urlArr = url.split(/\?|#/);
+    for(var i=0;i<urlArr.length;i++){
+        if(urlArr[i]=="weixin"){
+            $(".download").show();
+            break;
+        }
+    }
+})
+</script>
+<script type="text/javascript">
+    var demoImgArray = ['static/images/page1/q1.png', 'static/images/page1/q4.png','static/images/page1/q5.png','static/images/page1/q6.png', 'static/images/page1/q7.png','static/images/page1/q8.png','static/images/page1/q9.png', 'static/images/page1/q10.png','static/images/page1/sun.png','static/images/page1/sunlight.png', 'static/images/page1/rain1.png','static/images/page1/rain2.png','static/images/page1/rain3.png','static/images/page1/pop.png','static/images/page1/close.png','static/images/page2/q1.png','static/images/page2/q2.png','static/images/page2/q3.png'];
+
+    var stripesAnim;
+    var calcPercent;
+    var start = 0,yet=0;
+    var $content = $(".loader-box .content");
+    var $circularGray = $(".circular-gray");
+    var $percent = $('.percent .value');
+    var $left = $('.circular-gray .left');
+    var $right = $('.circular-gray .right');
+    var $circularImg = $('.circular-gray .circularImg');
+
+    $(".circular-bg img").each(function(){
+        loadImage($(this).attr("src"),function(){
+            start++;
+            if(start==3){
+                var width = $left.width();
+                var height = $left.height();
+
+                $circularImg.css({"width":width,"height":height});
+                $left.addClass('start');
+                $right.addClass('start');
+                $content.css("opacity",1);
+                winLoad();
+                preload(demoImgArray);
+            }
+        })
+    })
+    function winLoad(){
+        $(window).load(function() {
+            var time = 100;
+            var text = parseInt($percent.text());
+            if(text>=50){
+                time = 0;
+            }
+            $right.animate({
+                height: "0"
+            }, time, function() {
+                if(text<50){
+                    $percent.text('50');
+                }
+                $left.animate({
+                    height:"0"
+                },100,function(){
+                    clearInterval(calcPercent);
+                    $percent.text('100');
+                    delayFunc();//加载完成后执行
+                })
+            });
+
+        });
+    }
+    
+    function preload(imgArray) {
+        var increment = Math.floor(100 / imgArray.length);
+        $(imgArray).each(function() {
+            $('<img>').attr("src", this).load(function() {
+                yet++;
+                if(yet < imgArray.length/2){
+                    $right.animate({
+                        height: "-=" + increment*2 + "%"
+                    },30)
+                }else{
+                    $right.animate({
+                        height: 0
+                    },0,function(){
+                        $left.animate({
+                            height: "-=" + increment*2 + "%"
+                        },30)
+                    })  
+                }
+            });
+        });
+        calcPercent = setInterval(function() {
+            
+            //loop through the items
+            $percent.text(function(){
+                var value = parseInt((100-$right.height()/$circularGray.height()*100)/2)+parseInt((100-$left.height()/$circularGray.height()*100)/2);
+
+                return value;
+            });
+            
+        });
+    }
+
+    function loadImage(url, callback) { 
+        var img = new Image(); 
+        img.src = url; 
+        if(img.complete) {
+            callback(url); 
+            return; 
+        } 
+        img.onload = function () {
+            callback(url);
+        }; 
+    }
+
+    //初始化swiper滑动
+    function initialize(){
+        swiperH = new Swiper('.swiper-container-h', {
+            pagination: '.swiper-pagination-h'
+        });
+        var swiperV1 = new Swiper('.swiper-container-v1', {
+            scrollbar: '.swiper-scrollbar-v1',
+            direction : 'vertical',
+            slidesPerView: 'auto',
+            //scrollbarHide:false,
+            mousewheelControl: true,
+            freeMode: true
+        });
+        var swiperV2 = new Swiper('.swiper-container-v2', {
+            scrollbar: '.swiper-scrollbar-v2',
+            direction : 'vertical',
+            slidesPerView: 'auto',
+            //scrollbarHide:false,
+            mousewheelControl: true,
+            freeMode: true
+        });
+    }
+
+    //执行动画
+    function performAnimate(){
+        var $p1 = $("#page1");
+        var $p2 = $("#page2");
+        var p1Q4 = $p1.find(".q4 .pic");
+        var p1Q6 = $p1.find(".q6");
+        var p1Q7 = $p1.find(".q7");
+        var p1Q8 = $p1.find(".q8");
+        var p1Q9 = $p1.find(".q9");
+        var pop  = $p1.find(".pop");
+        swiperH.lockSwipes();
+        p1Q4.addClass('p1Q4');
+        p1Q6.addClass('p1Q6');
+        p1Q7.addClass('p1Q7');
+        p1Q8.addClass('p1Q8');
+        setTimeout(function(){
+            p1Q9.addClass('zoom');
+            setTimeout(function(){
+                pop.addClass("opacity");
+                pop.on("touchend",".close",function(){
+                    pop.css("opacity","0");
+                    pop.remove();
+                    swiperH.unlockSwipes();
+                })
+            },1500)
+        },600) 
+    }
+
+    function delayFunc(){
+        $("div[data-img],p[data-img]").each(function(index, el) {
+            var img = '<img src="'+$(this).data("img")+'" style="opacity:0;" >';
+            $(this).append(img);
+            $(this).css("background-image","url("+$(this).data("img")+")")
+        });
+
+        $(".loader-box").remove()
+        $(".swiper-container-h").show();
+        initialize();
+        performAnimate();
+    }
+</script>
+</body>
+</html>

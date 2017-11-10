@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<title>马上理财-分享我 赚收益</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta content="telephone=no" name="format-detection" />
+    <meta content="email=no" name="format-detection" />
+    <link href="static/css/common.css" rel="stylesheet" type="text/css">   
+</head>
+
+<body >
+<div class="des">
+	<p><img src="static/images/des.png"></p>
+</div>
+<!--券初始-->
+<div class="quan quan1">
+	<div class="bg"><img src="static/images/quan1.png"></div>
+	<div class="content flex">
+		<p><span class="large">?</span>返现券</p>
+	</div>
+	<div class="button flex">
+		<p>马上去领</p>
+	</div>
+</div>
+<!--抢到券-->
+<div class="quan quan2">
+	<div class="bg"><img src="static/images/quan2.png"></div>
+	<div class="content flex">
+		<p><span class="sign">￥</span><span class="value">105.0</span>返现券</p>
+	</div>
+	<div class="tip flex">今天你赚到100.5元返现券，已放入手机账户15201151375中，注意查收！</div>
+	<a href="#" class="button flex">
+		<p>打开马上理财查看</p>
+	</a>
+</div>
+<!--未抢到券-->
+<div class="quan quan3">
+	<div class="bg"><img src="static/images/quan3.png"></div>
+	<div class="content flex">
+		<p>已领完</p>
+	</div>
+	<div class="button flex">
+		<p><span class="t1">快去马上理财</span><span class="t2">抢 更 多</span></p>
+	</div>
+</div>
+
+<!--无抢券记录显示图片-->
+<div class="ren">
+	<p><img src="static/images/ren.png"></p>
+</div>
+<!--抢券列表-->
+<div class="list">
+	<ul>
+		<li class="clearfix">
+			<div class="pic"><img src="static/images/user.png"></div>
+			<div class="content">
+				<p class="p1"><span class="name">忆乱忆乱忆乱忆忆乱忆乱乱乱忆乱乱乱忆乱乱</span><span class="time">09-12 10:25</span></p>
+				<p class="p2">收益路上带我飞</p>
+			</div>
+			<div class="money"><span class="value">100.8</span>元</div>
+		</li>
+		<li class="clearfix">
+			<div class="pic"><img src="static/images/user.png"></div>
+			<div class="content">
+				<p class="p1"><span class="name">忆</span><span class="time">09-12 10:25</span></p>
+				<p class="p2">收益路上带我飞</p>
+			</div>
+			<div class="money"><span class="value">5.8</span>元</div>
+		</li>
+		<li class="clearfix">
+			<div class="pic"><img src="static/images/user.png"></div>
+			<div class="content">
+				<p class="p1"><span class="name">忆</span><span class="time">09-12 10:25</span></p>
+				<p class="p2">收益路上带我飞</p>
+			</div>
+			<div class="money"><span class="value">5.8</span>元</div>
+		</li>
+		<li class="clearfix">
+			<div class="pic"><img src="static/images/user.png"></div>
+			<div class="content">
+				<p class="p1"><span class="name">忆</span><span class="time">09-12 10:25</span></p>
+				<p class="p2">收益路上带我飞</p>
+			</div>
+			<div class="money"><span class="value">5.8</span>元</div>
+		</li>
+	</ul>
+</div>
+<div class="bottom">
+	<div class="content b-ask">
+		<p class="ask">什么是返现券</p>
+		<a href="#" class="strategy">返现券早赚起攻略</a>
+	</div>
+</div>
+
+<!--什么是返现券弹出层-->
+<div class="pop-ask" id="popAsk">
+	<p class="title">什么是返现券</p>
+	<dl>
+		<dt>1、</dt>
+		<dd>返现券用于兑换补贴收益金额</dd>
+	</dl>
+	<dl>
+		<dt>2、</dt>
+		<dd>返现券面额等同于相应的人民币金额</dd>
+	</dl>
+	<dl>
+		<dt>3、</dt>
+		<dd>返现券金额累计不封顶</dd>
+	</dl>
+	<dl>
+		<dt>4、</dt>
+		<dd>返现券只对通过马上理财平台成功购买的理财产品有效</dd>
+	</dl>
+	<dl>
+		<dt>5、</dt>
+		<dd>返现券不可用于直接购买理财产品</dd>
+	</dl>
+	<p class="close" id="btnCloseAsk"><img src="static/images/close.png"></p>
+</div>
+<!--输入手机号弹出层-->
+<div class="pop-phone" id="popPhone">
+	<div class="content">
+		<p class="txt dd-amount">抢到的返现券将放入您的手机账号中！</p>
+		
+			<p class="phone-bar clearfix">
+				<span class="phone1">+ 86</span>
+				<input type="tel" class="phone2" placeholder="请输入你的手机号码" id="phone" />
+			</p>
+			<p class="tip" id="phoneTip"></p>
+			<p class="btn-bar"><button type="button" class="submit" id="submit">我笑纳了</button></p>
+			<p class="default-tip"><span>请确保使用同一手机账号注册查看返现券</span></p>
+	</div>
+</div>
+
+<script>
+var popPhone = document.getElementById("popPhone");
+var quan1 = document.querySelector(".quan1");
+var quan2 = document.querySelector(".quan2");
+var quan3 = document.querySelector(".quan3");
+var btnShow = document.querySelector(".b-ask");
+var phone = document.getElementById("phone");
+var des = document.querySelector(".des");
+var quanContent = document.querySelector(".quanContent");
+var qiangguang = document.getElementById("qiangguang");
+
+
+//展现和关闭“什么是理财券”弹出框
+(function(){
+	var btnClose = document.getElementById("btnCloseAsk"); 
+	var popAsk = document.getElementById("popAsk"); 
+
+	btnShow.addEventListener("touchend",function(){
+		popAsk.style.display="block";
+	},false);
+
+	btnClose.addEventListener("touchend",function(){
+		popAsk.style.display="none";
+	},false);
+})();
+
+
+//展现和关闭输入手机号码弹出层
+(function(){
+	var submit = document.getElementById("submit")
+	var _amountSpan =  document.querySelector(".dd-amount");
+
+	quan1.addEventListener("touchend",function(e){
+		popPhone.style.display = "block";
+		if(_amountSpan) {
+            return false;
+        }
+        reqJoin("");
+	},false);
+
+	submit.addEventListener("touchend",function(e){	
+		var phoneTip = document.getElementById("phoneTip");
+		var reg = /^(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/;
+
+		if(phone.value==""){
+			phoneTip.innerText = "手机号不能为空";
+		}else if(!reg.test(phone.value)){
+			phoneTip.innerText = "请输入11位有效手机号码";	
+		}else{
+			popPhone.style.display = "none";
+			quan1.style.display = "none";
+			reqJoin(phone.value);
+		}
+		e.preventDefault();
+		return false;
+	},false)
+})()
+
+function reqJoin(phone){
+    var joinUrl = "/v2/bonus/join";
+    var postData = "phone="+phone;
+    ajaxRequest({
+    	method:"POST",
+    	url:joinUrl,
+    	data:{"phone":phone},
+    	successCallback:function(data){
+	    	if(data.status == 0){
+	            alert("参加的活动异常，请重新打开页面")
+	        }else if(data.status == 1){
+	            var succ = succHtml(data.amount,data.todayAmount,data.phone);
+	            quanContent.innerHTML = succ;
+	            des.style.display="none";
+	        } else if(data.status == 2){
+	            quanContent.innerHTML=qiangguang.value;
+	        }else if(data.status == 3){
+	            alert("参加的活动异常，请重新打开页面");
+	        }
+    	},
+    	errorCallback:function(){
+    		alert("网络异常");
+    	}
+    })
+}
+
+function succHtml(amount,todayAmount,phone){
+    var str = "<div class=\"quan quan2\">";
+    str += "<div class=\"bg\"><img src=\"/v2/resources/h5/img/wx/quan2.png\"></div>";
+    str += "    <div class=\"content flex\">";
+    str += "   <p><span class=\"sign\">￥</span><span class=\"value\">" + amount + "</span>返现券</p>";
+    str += "</div>";
+    str += "<div class=\"tip flex\">今天你赚到" + todayAmount + "元返现券，已放入手机账户" + phone + "中，注意查收！</div > ";
+    str += "<div class=\"button flex mslc-download-app\">";
+    str += "       <p>去马上理财App查看返现券</p>";
+    str += "       </div>";
+    str += "       </div>";
+    return str;
+}
+
+</script>
+<!--微信分享-->
+<!-- <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script> -->
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1.0"/>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+		<meta name="app-mobile-web-app-state-bar-style" content="black"/>
+		<meta name="format-detection" content="telephone=no"/>
+		<meta name="format-detection" content="email=no"/>
+		<title></title>
+		<link rel="stylesheet" href="css/open-in-browser.css" type="text/css"/>
+	</head>
+	<body>
+		<div class="content">
+			<header>
+				<div class="top">
+					<div class="logo"></div>
+					<div class="title">在“马上理财”应用中打开</div>
+					<div class="open-btn">打开</div>
+				</div>
+				<div class="banner"></div>
+			</header>
+			<section>
+				<div class="tip"></div>
+			</section>
+			<footer>
+				<div class="download-btn"></div>
+				<div class="bank-icon"></div>
+			</footer>
+		</div>
+		
+		<script type="text/javascript" src="js/zepto.min.js"></script>
+		<script type="text/javascript" src="js/common.js"></script>
+		
+		<script type="text/javascript">
+			
+			Zepto(function($){
+				
+				$("body").on("click",".download-btn",function(){
+					location.href = "http://a.app.qq.com/o/simple.jsp?pkgname=com.mashanglc.android.licaiclient";
+					return false;
+				})
+				$("body").on("click",".open-btn",function(){
+					location.href = "http://a.app.qq.com/o/simple.jsp?pkgname=com.mashanglc.android.licaiclient";
+					return false;
+				})
+			})
+			
+		</script>
+		
+	</body>
+</html>

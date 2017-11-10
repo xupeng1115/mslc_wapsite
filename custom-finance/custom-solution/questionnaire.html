@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<title>组合推荐问答</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta content="telephone=no" name="format-detection" />
+    <meta content="email=no" name="format-detection" />
+    <link rel="stylesheet" type="text/css?v=20160324" href="css/common.css" />
+    <link rel="stylesheet" type="text/css?v=20160324" href="css/questionnaire.css" />
+</head>
+
+<body>
+
+<div class="main">
+	<div class="description flex">
+		<div class="content">
+			<p class="t1">无论你想购买</p>
+			<p class="t2"><b>5</b><i>万、</i><b>30</b><i>万、</i><b>100</b><i>万</i></p>
+			<p class="t3">在这里总有适合您的定制理财方案</p>
+			<span class="line"></span>
+		</div>
+	</div>
+	<div class="question">
+		<ul>
+			<li class="q question1">
+				<span class="corner"><i>1</i></span>
+				<span class="corner-mask"></span>
+				<p class="title">您希望购买哪一家/几家银行的理财产品？</p>
+				<div class="content">
+					<div class="scroll">
+						<ul class="clearfix"></ul>
+					</div>
+				</div>
+			</li>
+			<li class="q question2">
+				<span class="corner"><i>2</i></span>
+				<span class="corner-mask"></span>
+				<p class="title">您想用多少钱购买银行理财产品？</p>
+				<div class="swipeContent">
+					<p class="unit">单位(万)</p>
+					<p class="currentValue">15</p>
+					<div class="scale">
+						<div class="swipe">
+							<ul class="s1"></ul>
+							<ul class="s2 clearfix"></ul>
+						</div>
+						<span class="center-line"></span>
+					</div>
+					<p class="tip">向右滑动刻度选择更多资金</p>
+				</div>
+			</li>
+			<li class="q question3">
+				<span class="corner"><i>3</i></span>
+				<span class="corner-mask"></span>
+				<p class="title">您希望用这笔钱投资银行理财多长时间？</p>
+				<div class="swipeContent">
+					<p class="unit">单位(天)</p>
+					<p class="currentValue">15</p>
+					<div class="scale">
+						<div class="swipe">
+							<ul class="s1"></ul>
+							<ul class="s2 clearfix"></ul>
+						</div>
+						<span class="center-line"></span>
+					</div>
+					<p class="tip">向右滑动刻度选择更长时间</p>
+				</div>
+			</li>
+			<li class="q question4">
+				<span class="corner"><i>4</i></span>
+				<span class="corner-mask"></span>
+				<p class="title">您对于亏损的承受范围在？</p>
+				<div class="swipeContent">
+					<p class="unit">单位(%)</p>
+					<p class="currentValue">15</p>
+					<div class="scale">
+						<div class="swipe">
+							<ul class="s1"></ul>
+							<ul class="s2 clearfix"></ul>
+						</div>
+						<span class="center-line"></span>
+					</div>
+					<p class="tip">向右滑动刻度选择更长范围</p>
+				</div>
+			</li>
+			<li class="q question5">
+				<span class="corner"><i>5</i></span>
+				<span class="corner-mask"></span>
+				<p class="title">您希望这笔资金中多少比例保持较高的流动性？<span>(较高流动性指15天以内可以由理财变为现金)</span></p>
+				<div class="swipeContent">
+					<p class="unit">单位(%)</p>
+					<p class="currentValue">15</p>
+					<div class="scale">
+						<div class="swipe">
+							<ul class="s1"></ul>
+							<ul class="s2 clearfix"></ul>
+						</div>
+						<span class="center-line"></span>
+					</div>
+					<p class="tip">向右滑动刻度选择更长范围</p>
+				</div>
+			</li>
+		</ul>
+		<span class="btn-ok" id="btnSubmit">完成</span>
+	</div>
+</div>
+<div class="default-tip-box">
+    <div class="default-tip">
+        <div class="tip-cont">
+            <p class="tip-txt"></p>
+        </div>
+        <div class="tip-btn">我知道了</div>
+    </div>
+</div>
+<iframe id="iframe" width="0" height="0" src=""></iframe>
+<script src="js/zepto.min.js" type="text/javascript"></script>
+<script src="js/common.js?v=20160324" type="text/javascript"></script>
+<script type="text/javascript">
+
+stopDefault();
+
+Zepto(function($){
+	var $question1 = $(".question1");
+	var $question2 = $(".question2");
+	var $question3 = $(".question3");
+	var $question4 = $(".question4");
+	var $question5 = $(".question5");
+	var $scroll = $question1.find(".scroll");
+	var $submit = $("#btnSubmit");
+
+	var questionAll = {
+		//创建scale
+		createScale :function(parent,scope){
+			var $scale = parent.find(".scale");
+			var $swipe = parent.find(".swipe");
+			var $s1 = $swipe.find(".s1");
+			var $s2 = $swipe.find(".s2");
+			var s1HTML="",s2HTML="",i,j;
+			var scopeData = {
+				max : scope.max || 100,
+				min : scope.min || 0,
+			}
+
+			$s2.width(scopeData.max*11+1);
+			for(i=0;i<=scopeData.max;i++){
+				s2HTML += "<li></li>";
+			}
+			for(j=0;j<=scopeData.max/5;j++){
+				s1HTML += '<li style="left:'+j*5*11+'px">'+j*5+'</li>';
+			}
+			$s2.append(s2HTML);
+			$s1.append(s1HTML);
+			this.swipeEvent($swipe,scopeData);
+		},
+		//swipe滑动
+		swipeEvent:function($element,scope){
+			var $centerLine = $element.next();
+			var $currentValue = $element.parent().prev();
+			var defaultValue = parseInt($currentValue.text());
+			var centerLineLeft = parseInt($element.parent().width()/2);
+			var defaultLeft = centerLineLeft-defaultValue*11;
+			var minLeft = centerLineLeft-scope.min*11;
+			var maxLeft = centerLineLeft-scope.max*11;
+			var touchData = {};
+			var $scale = $element.parent();
+
+			$centerLine.css("left",centerLineLeft)
+			$element[0].style.webkitTransform='translate3d('+defaultLeft+'px,0,0)';
+
+			$scale.on("touchstart",function(){
+				touchData.oldLeft = translate3dValue($element[0].style.webkitTransform);
+				touchData.oldPageX = event.targetTouches[0].pageX;
+				touchData.startTime = new Date();
+			})
+			$scale.on("touchmove",function(){
+				var endLeft,number;
+				touchData.newPageX = event.targetTouches[0].pageX;
+				touchData.distance = touchData.newPageX - touchData.oldPageX;
+
+				if(touchData.oldLeft+touchData.distance>=minLeft){
+					$element[0].style.webkitTransform='translate3d('+minLeft+'px,0,0)';
+					$currentValue.text(scope.min);
+				}else if(touchData.oldLeft+touchData.distance<=maxLeft){
+					$element[0].style.webkitTransform='translate3d('+maxLeft+'px,0,0)';
+					$currentValue.text(scope.max);
+				}else{
+					endLeft = touchData.oldLeft+touchData.distance;
+					$element[0].style.webkitTransform='translate3d('+endLeft+'px,0,0)';
+					number = -Math.ceil((touchData.oldLeft+touchData.distance-centerLineLeft)/11);
+					$currentValue.text(number);
+				}
+			})
+
+			$scale.on("touchend",function(e){
+				e.stopPropagation();
+				touchData.endTime = new Date();
+				var duration = touchData.endTime-touchData.startTime;
+				var distance = Math.abs(touchData.distance);
+				var rate =10,endLeft,number;
+
+				if(duration<200 && distance>10){						
+					endLeft = touchData.oldLeft+touchData.distance*rate;
+					number = -Math.ceil((endLeft-centerLineLeft)/11);
+					if(endLeft>=minLeft){
+						endLeft = minLeft;
+						number = scope.min;
+					}
+
+					if(endLeft<=maxLeft){
+						endLeft = maxLeft;
+						number = scope.max;
+					}
+
+					$element.animate({
+						"-webkit-transform":'translate3d('+endLeft+'px,0,0)',
+						"opacity":0.9
+					}, 300,"ease",function(){
+						$element.css("opacity","1");
+						$currentValue.text(number);
+					})	
+				}
+			})
+		},
+		//问题一交互
+		question1Event:function(){
+		
+			//选择银行
+			var chooseEvent = function(){
+				var $item  = $scroll.find("li");
+				var chooseState = true;
+
+				$item.on("touchstart",function(){
+					chooseState = true;
+				})
+
+				$item.on("touchmove",function(){
+					chooseState = false;
+				})
+
+				$item.on("touchend",function(){
+					var index = $(this).index();
+					var $item0 = $item.eq(0);
+					var $bankItem = $item.not(".all");
+					var all = false;
+
+					if(chooseState){
+						if(index==0){
+							$(this).addClass('choose');
+							$(this).siblings().removeClass('choose');
+						}else{
+							$(this).toggleClass('choose');
+							$bankItem.each(function(index){
+								if($(this).hasClass('choose')){
+									all = true;
+								}
+							})
+							if(!all){
+								$item0.addClass('choose');
+							}else{
+								$item0.removeClass('choose');
+							}
+							
+						}
+					}
+				})
+			}
+
+			//创建银行列表
+			var createBanks = function(banks){
+				var ulBox = $scroll.find("ul");
+				var bank,bankHtml="",banksHtml="<li class='choose all'>全部</li>";
+				for (var i=0;i<banks.length;i++){
+					bank = {
+						id : banks[i].id,
+						name: banks[i].name
+					}
+
+					bankHtml = '<li data-bankid="'+bank.id+'"">'+bank.name+'</li>';
+					banksHtml +=bankHtml;
+				}
+				ulBox.append(banksHtml);
+			}
+
+			//获取银行列表
+			$.ajax({
+	            url: publicObj.banksAllUrl,
+	            data :publicObj.parameter,
+	            dataType: 'json',
+	            success: function (response) {
+	                if(response.error>0){
+	                    alert(response.msg);
+	                }else{
+	                    createBanks(response.data.banks);
+	                    chooseEvent();
+	                }
+	            }
+	        });
+
+			$scroll.on("touchmove",function(e){
+			    e.stopPropagation();
+			})
+		},
+
+		//问题二交互
+		question2Event:function(){
+			this.createScale($question2,{
+				max:1000,
+				min:5,
+			});
+		},
+
+		//问题三交互
+		question3Event:function(){
+			this.createScale($question3,{
+				max:365,
+				min:1
+			});
+		},
+
+		//问题四交互
+		question4Event:function(){
+			this.createScale($question4,{
+				max:30
+			});
+		},
+
+		//问题五交互
+		question5Event:function(){
+			this.createScale($question5,{
+				max:80
+			});
+		},
+
+		//问题切换
+		questionChange:function(){
+			var $question = $(".question");
+			var current = 0;
+			var next = 2;
+			var prev = 0;
+			var $item = $(".question>ul").children();
+			var length = $item.length;
+			var self = this;
+
+			var touchData = {
+				start:0,
+				end:0
+			}
+
+			var toTop = function($element,index,$swipe){
+				var translate3d,scale,y,x;
+				for(var i=index;i>0;i--){
+					y = -6*(index+1-i)+"px";
+					x = 1-0.02*(index+1-i);
+					translate3d = 'translate3d(0,'+y+',0)';
+					scale = 'scale('+x+')';
+					$item.eq(i-1)[0].style.webkitTransform=translate3d+' '+scale;
+				}
+				$element.prev().addClass('disable');
+				$element.animate({"-webkit-transform":'translate3d(0,0,0)'}, 200,"ease",function(){
+					var answer;
+					current = index;
+					$(this).css("z-index",2);
+					$(this).next().removeClass('disable').css({
+						'opacity':1,
+						'z-index':9
+					})
+
+					if(index==length-1){
+						$submit.show();
+					}
+
+					if(current==1){
+						answer = self.getFirstResult();
+					}else{
+						answer = self.getOtherResult(current-1);
+					}
+					commonMethod.customizeTrack(current,answer);
+				})
+			}
+
+			toBottom = function($element,index,$swipe){
+				var translate3d,scale,y,x;
+				$element.next().addClass('disable').css({
+					'opacity':0,
+					'z-index':2
+				});
+
+				if(index==length-1){
+					$submit.hide();
+				}
+				
+				for(var i=index;i>0;i--){
+					y = -6*(index-i)+"px";
+					x = 1-0.02*(index-i);
+					translate3d = 'translate3d(0,'+y+',0)';
+					scale = 'scale('+x+')';
+					$item.eq(i-1)[0].style.webkitTransform=translate3d+' '+scale;
+				}
+
+				$element.animate({"-webkit-transform":'translate3d(0,103.75%,0)'}, 200,"ease",function(){
+					current = index-1;
+					$(this).css("z-index",9);
+					$(this).prev().removeClass('disable');
+				})
+			}
+
+			$item.each(function(index){
+				if(index==1){
+					$(this).css({
+						'opacity':1,
+						'z-index':9
+					})
+				}else{
+					$(this).addClass('disable');
+				}
+			})
+
+			$item.on("touchstart",function(){
+				touchData.end = touchData.start = event.targetTouches[0].pageY;
+			})
+
+			$item.on("touchmove",function(){
+				touchData.end = event.targetTouches[0].pageY;
+			})
+
+			$item.on("touchend",function(){
+				var index = $(this).index();
+				var $swipe = $(this).find(".swipe");
+				var distance = touchData.end-touchData.start;
+				var itemOffsetTop = $(this).offset().top;
+				var clickValid = $(this).find(".title").height()+20;
+
+				if(index==0 || $(this).hasClass('disable')){
+					return false;
+				}
+				
+				if(index==current){
+					if(distance>50 ||(distance==0 && touchData.end-itemOffsetTop<=clickValid)){
+						toBottom($(this),index,$swipe);
+					}
+					
+					return false;
+				}
+
+				if(index!=current){
+					toTop($(this),index,$swipe);
+				}
+			})
+		},
+
+		//获取第一题的结果
+		getFirstResult:function(){
+			var $item  = $scroll.find("li");
+			var $choose,bankIdArr=[],result="";
+			if(!$item.eq(0).hasClass('choose')){
+				$choose = $item.filter(".choose");
+				$choose.each(function(index){
+					var bankId = $(this).data("bankid");
+					bankIdArr.push(bankId);
+				})
+				result = bankIdArr.join(",");
+			}
+			return result;
+		},
+
+		//获取其它题的结果
+		getOtherResult:function(index){
+			var $item = $(".question").find("li.q");
+			return parseInt($item.eq(index).find(".currentValue").text());
+		},
+
+		//提交问题
+		submitAnswers:function(){
+			var $tipDefault = $(".default-tip-box");
+			var $tipTxt = $tipDefault.find(".tip-txt");
+			var $tipBtn = $tipDefault.find(".tip-btn");
+			var self = this;
+
+			$tipBtn.on("touchend",function(){
+				$tipDefault.hide();
+				location.reload();
+			})
+
+			$submit.on("touchend",function(){
+				var requestData = {
+					minimumPurchase:self.getOtherResult(1),
+					duration:self.getOtherResult(2),
+					riskRange:self.getOtherResult(3),
+					shortRange:self.getOtherResult(4)
+				};
+				var bankIds = self.getFirstResult();
+
+				if(bankIds){
+					requestData.bankIds = bankIds;
+				}
+
+				$.extend(requestData, publicObj.parameter);
+
+				commonMethod.customizeTrack(5,requestData.shortRange);
+
+				$.ajax({
+		            url: publicObj.combinationUrl,
+		            type:"POST",
+		            data :requestData,
+		            dataType: 'json',
+		            success: function (response) {
+		                if(response.error!=0){
+		                	$tipTxt.text(response.msg);
+		                	$tipDefault.show();
+		                }else{
+		                	commonMethod.customizeTrack(6);
+		                	iframeAction.appCustomSolution();
+		                }
+		            }
+		        });
+			})
+			
+		},
+
+		//初始化
+		initial:function(){
+			var target=0;
+            if(publicObj.parameter.reCustomize){
+                target=7;
+            }
+            commonMethod.customizeTrack(target);
+
+			this.question1Event();
+			this.question2Event();
+			this.question3Event();
+			this.question4Event();
+			this.question5Event();
+			this.questionChange();
+			this.submitAnswers();
+		}
+	}
+
+	questionAll.initial();
+
+})
+</script>
+</body>
+</html>

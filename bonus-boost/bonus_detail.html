@@ -1,0 +1,70 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>人气收益排行榜</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta content="telephone=no" name="format-detection" />
+    <meta content="email=no" name="format-detection" />
+    <link href="css/my_bonus.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<div class="content" style="display: block;">
+    <div class="user-list">
+        <ul id="userList"></ul>
+    </div>
+    <div class="null null-my-bonus" id="null">
+        <p class="ico"><img src="img/null.png"></p>
+        <p class="txt">人心齐 泰山移<br>伙伴帮我抢收益</p>
+    </div>
+</div>
+<script src="js/zepto.min.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript">
+
+Zepto(function($){
+    var $userList = $("#userList");
+    var nullDom = $("#null");
+    //创建列表
+    function createList(data){
+        var timeMs = data.productCountdown;
+        var timer = null;
+        var itemTxt="",productInfo={};
+        var $item,$countdown;
+        userInfo = {
+            nickname:data.name || "微信用户",
+            boostProfit : data.boostProfit || 0,
+            boostTime : data.createTime
+        }
+        
+        itemTxt = '<li><p class="nickname">'+userInfo.nickname+'</p><p class="boostTime">'+userInfo.boostTime+'</p><p class="boostProfit"><span class="plus-sign">+</span><span class="bonusValue">'+userInfo.boostProfit+'</span><span class="percent">%</span></p></li>';
+
+        $userList.append(itemTxt);
+    }
+
+    function getUserList(){
+        var matterId = getUrlParameter("matterId");
+        $.ajax({
+            url: publicObj.appMyMatterDetailUrl+matterId,
+            dataType: 'json',
+            success: function (response) {
+                var data = response.data.helpers;
+                if(data && data.length>0){
+                    for(var i=0;i<data.length;i++){
+                        createList(data[i]);
+                    }
+                }else{
+                    nullDom.css("display","block");
+                }
+            }
+        });
+    }
+
+    getUserList();
+})
+</script>
+</body>
+</html>

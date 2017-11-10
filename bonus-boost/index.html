@@ -1,0 +1,184 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>聚人气，加收益</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta content="telephone=no" name="format-detection" />
+    <meta content="email=no" name="format-detection" />
+    <link href="css/common.css?d=201603011027" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<div class="loader" id="loader">
+    <div class="loader-inner line-spin-fade-loader">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+</div>
+<div class="content" id="content">
+    <div class="activity-list">
+        <ul id="productList"></ul>
+    </div>
+    <div class="activity-description">
+        <dl>
+            <dt>活动细则</dt>
+            <dd>1.活动期间分享至微信朋友圈可邀请朋友帮忙加息，每位好友可帮助加息一次；</dd>
+            <dd>2.分享成功后，朋友在规定时间内帮你“抢”到的累积收益为你的人气帮抢收益；</dd>
+            <dd>3.加息限时结束后，可以通过个人中心的“集人气加收益”点击查看本次投资的加息情况；</dd>
+            <dd>4.加息部分的补贴收益由马上理财平台提供；</dd>
+            <dd>5.每位用户每月最高可累计享受20笔补贴收益；</dd>
+            <dd>6.活动最终解释权归马上理财平台所有。</dd>
+        </dl>
+    </div>
+    <div class="activity-statement">活动声明：该人气收益补贴返现活动仅限温州地区参与</div>
+</div>
+<div class="end-box">
+    <div class="end-tip">
+        <div class="tip-cont">
+            <p class="tip-ico"><img src="img/ico-cry.png" /></p>
+            <p class="tip-txt">抱歉，您来晚了，活动已经结束了。</p>
+        </div>
+        <div class="tip-btn" id="tipBtn">我知道了</div>
+    </div>
+</div>
+<iframe id="iframe" width="0" height="0" src=""></iframe>
+<script src="js/zepto.min.js"></script>
+<script src="js/common.js?d=201603011014"></script>
+<script type="text/javascript">
+/*end-tip*/
+$("#tipBtn").on("click",function(){
+    $(".end-tip").hide();
+})   
+</script>
+<script type="text/javascript">
+var iframe = document.getElementById("iframe");
+function appUserLogin(){
+    iframe.src = "mslcaction://requestUserLogin";
+}
+function appShowProductDetail(productId){
+    iframe.src = "mslcaction://showProductDetail?productId="+productId;
+}
+function appShareBoostToWechat(config){
+    var parameter = "";
+    var title = "title=" + config.title;
+    var description = "description=" + config.description;
+    var shareUrl = "url=" + encodeURIComponent(config.shareUrl);
+    var icon = "icon=" + encodeURIComponent(config.icon);
+    var topic = "topic=" + encodeURIComponent(config.topic);
+
+    parameter = title + "&" + description + "&" + shareUrl + "&" + icon + "&" + topic;
+    
+    iframe.src = "mslcaction://shareToWechat?"+parameter;
+}
+
+//微信分享
+function wxShare(matterId){
+    if(!publicObj.userId){
+        appUserLogin()
+        return;
+    }
+    $.ajax({
+        type:"GET",
+        url:publicObj.appShareUrl,
+        data:{matterId:matterId,userId:publicObj.userId},
+        dataType: 'json',
+        success:function(response){
+            var config = {
+                title : response.data.title,
+                description : response.data.description,
+                shareUrl  : response.data.shareUrl,
+                icon : response.data.icon,
+                topic : response.data.circleTitle
+            }
+            appShareBoostToWechat(config);
+        }
+    })
+}
+
+Zepto(function($){
+    //创建列表
+    function createList(data){
+        var itemTxt="",boostProfitTxt="",CtrlTxt="",timeTxt="";
+        var $productList = $("#productList");
+        var productInfo = {};
+        var timeMs,isShareValidTxt="",financialPeriodTxt;
+
+        for(var i=0;i<data.length;i++){
+            timeMs = data[i].countDown;
+            productInfo = {
+                id : data[i].id,
+                productId : data[i].productId,
+                baseProfit : data[i].estimatedYearRate || 0,
+                boostProfit : data[i].boostProfit || 0,
+                activityCountdown : countdownFn(timeMs),
+                purchaseAmount : data[i].purchaseAmount,
+                duration : data[i].duration,
+                isShared : data[i].isShared,
+                isShareValid : data[i].isShareValid
+            }
+            if(productInfo.isShared){
+                boostProfitTxt = productInfo.boostProfit;
+                CtrlTxt = '<div class="ctrl clearfix booking"><p class="profit-tip2">每笔按起购金额补贴人气收益，实际人气收益率以最终累计有效的人气帮抢收益为准</p><div class="btn-bar"><p class="profit-btn" onclick="appShowProductDetail(\''+productInfo.productId+'\')">联系客户经理购买</p><p class="profit-share" onclick="wxShare(\''+productInfo.id+'\')">分享到朋友圈</p></div></div>'
+                if(!productInfo.isShareValid){
+                    timeTxt = '<p class="valid-time"><span class="f12">已结束</span></p>';
+                }else{
+                    timeTxt = '<p class="valid-time">帮抢倒计时：<span class="f12">'+productInfo.activityCountdown+'</span></p>';
+                }
+                
+            }else{
+                boostProfitTxt = "?";
+                timeTxt = '<p class="valid-time">活动有效时间：<span class="f12">'+productInfo.activityCountdown+'</span></p>';
+                CtrlTxt = '<div class="ctrl clearfix"><p class="profit-tip2">每笔按起购金额补贴人气收益，实际人气收益率以最终累计有效的人气帮抢收益为准</p><div class="btn-bar"><p class="profit-btn" onclick="wxShare(\''+productInfo.id+'\')">分享到朋友圈</p></div><p class="profit-tip1">让小伙伴帮我抢收益</p></div>';
+            }
+
+            if(productInfo.duration){
+                financialPeriodTxt = '<p class="financial-period"><span class="f14">'+productInfo.duration+'天</span> 理财期限</p>';
+            }else{
+                financialPeriodTxt = '<p class="financial-period"><span class="f14">不固定</span> 理财期限</p>';
+            }
+
+            itemTxt += '<li><div class="data"><div class="item-left"><div class="profit-detail"><div class="profit-cont"><p class="profit-number"><span class="profit-value">'+productInfo.baseProfit+'</span><span class="plus-sign">+</span><span class="question-mark">'+boostProfitTxt+'</span></p><p class="profit-text">预期年化收益(%)</p></div></div></div><div class="item-right">'+timeTxt+'<div class="product-detail clearfix"><p class="purchase-amount"><span class="f14">'+productInfo.purchaseAmount+'万</span> 起购金额</p>'+financialPeriodTxt+'</div></div></div>'+CtrlTxt+'</li>';
+        }
+
+        $productList.html(itemTxt);
+    }
+
+    //获取产品列表
+    function getProductList(){
+        var request = {};
+        if(publicObj.userId){
+            request.userId = publicObj.userId;
+        }
+        if(publicObj.cityId){
+            request.cityId = publicObj.cityId;
+        }
+        $.ajax({
+            url: publicObj.appProductUrl,
+            data :request,
+            dataType: 'json',
+            success: function (response) {
+                var $content = $("#content");
+                var data = response.data.matters;
+                
+                $("#loader").hide();
+                $content.addClass('banner1');
+                createList(data);
+            }
+        });
+    }
+
+    getProductList();
+    setInterval(getProductList,10000);
+})
+</script>
+</body>
+</html>

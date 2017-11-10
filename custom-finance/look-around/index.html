@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<title>随便逛逛</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta content="telephone=no" name="format-detection" />
+    <meta content="email=no" name="format-detection" />
+    <link rel="stylesheet" type="text/css" href="css/common.css" />
+</head>
+
+<body>
+<div class="loading">
+    <div class="load-wrap">
+        <div class="logo-piece">
+            <p class="piece piece1"></p>
+            <p class="piece piece2"></p>
+            <p class="piece piece3"></p>
+            <p class="piece piece4"></p>
+            <p class="piece piece5"></p>
+            <p class="piece piece6"></p>
+            <p class="piece piece7"></p>
+            <p class="piece piece8"></p>
+            <p class="piece piece9"></p>
+            <p class="piece piece10"></p>
+            <p class="piece piece11"></p>
+            <p class="piece piece12"></p>
+            <p class="piece piece13"></p>
+            <p class="piece piece14"></p>
+            <p class="piece piece15"></p>
+            <p class="piece piece16"></p>
+            <p class="piece piece17"></p>
+            <p class="piece piece18"></p>
+        </div>
+        <!-- <div class="pic"><img src="img/loading.gif" /></div> -->
+        <div class="percent"></div>
+    </div>
+    <div class="progress"><img src="img/animate/people1.gif" /><img src="img/animate/people2.gif" /></div>
+</div>
+<div class="content">
+    <span class="btn-change pos flex">换一个看看&gt;</span>
+    <div class="title pos">
+        <span class="t-h2 titleh2"></span>
+        <span class="t-h3 titleh3"></span>
+    </div>
+    <div class="animate pos">
+        <div class="round-out pos">
+            <div class="round round-scene1">
+                <span class="object cloud cloud1"></span>
+                <span class="object cloud cloud2"></span>
+                <span class="object cloud cloud3"></span>
+                <span class="object cloud cloud4"></span>
+                <span class="object cloud cloud5"></span>
+                <span class="object cloud cloud6"></span>
+                <span class="object cloud cloud7"></span>
+                <span class="object cloud cloud8"></span>
+                <span class="object cloud cloud9"></span>
+                <span class="object cloud cloud10"></span>
+                <span class="object cloud cloud11"></span>
+                <span class="object cloud cloud12"></span>
+                <span class="object object1-1 show"></span>
+                <span class="object object1-2 show"></span>
+                <span class="object object1-3 show"></span>
+                <span class="object object1-4 show"></span>
+                <span class="object object1-5 show"></span>
+                <span class="object object1-6 show"></span>
+                <span class="object object1-7 show"></span>
+                <span class="object object1-8 show"></span>
+                <span class="object object1-9 show"></span>
+                <span class="object object1-10 show"></span>
+                <span class="object object1-11 show"></span>
+                <span class="object object1-12 show"></span>
+            </div>
+            <div class="round round-scene2">
+                <span class="object object2-1 show"></span>
+                <span class="object object2-2 show"></span>
+                <span class="object object2-3 show"></span>
+                <span class="object object2-4 show"></span>
+                <span class="object object2-5 show"></span>
+                <span class="object object2-6 show"></span>
+                <span class="object object2-7 show"></span>
+                <span class="object object2-8 show"></span>
+                <span class="object object2-9 show"></span>
+                <span class="object object2-10 show"></span>
+                <span class="object object2-11 show"></span>
+                <span class="object object2-12 show"></span>
+                <span class="object object2-13 show"></span>
+                <span class="object object2-14 show"></span>
+            </div>
+            <span class="round-in pos"></span>
+        </div>
+        <span class="object people"></span>
+        <span class="pos arrow"><i class="arrow-in show"></i></span>
+    </div>
+    <div class="product-mask"></div>
+    <div class="product pos no">
+        <span class="btn-look"><i></i><b class="module-title">旅游达人专享</b></span>
+        <span class="btn-look-really"></span>
+        <div class="list listDefault">
+            <ul id="productList" data-y="0"></ul>
+        </div>
+    </div>
+</div>
+<iframe id="iframe" width="0" height="0" src=""></iframe>
+<script src="js/zepto.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+/*获取url参数列表*/
+function getUrlParameter(){
+    var url = location.search.substr(1);
+    var result = {},arr1=[],arr2=[],name,value;
+
+    if(url){
+        arr1 = url.split("&");
+        for(var i=0;i<arr1.length;i++){
+            arr2=arr1[i].split("=");
+            name = arr2[0];
+            value = arr2[1];
+            if(value=="null" || value=="undefined"){
+                value = null;
+            }
+
+            result[name] = value;
+        }
+    }
+    return result;
+}
+
+/*根据hostname判断是生产环境还是测试环境*/
+var publicApiHost,subDirectory;
+
+if(location.hostname=="static.mashanglc.com"){
+    publicApiHost = "http://api.mashanglc.com";
+}else if(location.hostname=="127.0.0.1" || location.hostname=="localhost"){
+    publicApiHost = "http://api.sit.licai66.com";
+}else{
+    subDirectory = location.hostname.split(".")[1];
+    publicApiHost = "http://api."+subDirectory+".licai66.com";
+}
+
+var publicObj = {
+    productUrl:publicApiHost+'/v2/api/section/productsForSubject',
+    serverTime:publicApiHost+'/serverTimestamp',
+    parameter:getUrlParameter()
+}
+
+publicObj.parameter.osVer && (publicObj.parameter.osVer = decodeURIComponent(publicObj.parameter.osVer));
+
+
+//阻止页面滑动
+$(document).on("touchmove",function(e){
+    e.preventDefault();
+})
+
+var iframe = document.getElementById("iframe");
+function appShowProductDetail(productId){
+    iframe.src = "mslcaction://showProductDetail?productId="+productId;
+}
+</script>
+<script type="text/javascript">
+Zepto(function($){
+    
+    var content = $(".content");
+    var animateMain = $(".animate");
+    var title = $(".title");
+    var roundOut = $(".round-out");
+    var people = $(".people");
+    var btnChange = $(".btn-change");
+    var arrow = $(".arrow");
+    var object1to12 = $(".object1-12");
+    var object2to14 = $(".object2-14");
+    var product = $(".product");
+    var btnLook = $(".btn-look");
+    var btnLookReally = $(".btn-look-really");
+    var productList = $("#productList");
+    var productMask = $(".product-mask");
+    var productListBox = product.find(".list");
+    var moduleTitle = $(".module-title");
+    var currentScene = 1;//当前场景
+    var arrowTimer = null;
+    var documentHeight = $(document).height();
+    var top1 = Math.floor(documentHeight*0.4);
+    var top2 = Math.floor(documentHeight*0.95);
+    var moduleTitleHeight = moduleTitle.height();
+    var animateEnd = false;
+    var isManual = false;
+    var timerChange = null,timerEnd = null,timerMask=null;
+    var isLoaded = false;
+
+    var arrowTimerFn = function(){
+        clearTimeout(arrowTimer);
+        animateEnd = true;
+        clearTimeout(timerEnd);
+        timerEnd = setTimeout(function(){
+            if(!product.hasClass('show') && !product.hasClass('animate') && !product.hasClass('no') && !isManual){
+                productList.css("display","block");
+                product.addClass('show').animate({top:top1},200,"ease",function(){
+                    productMask.show();
+                    clearTimeout(timerMask);
+                    timerMask = setTimeout(function(){
+                        productMask.css("opacity",1);
+                    })
+                });
+            }
+            arrow.css("display","block");
+        },1000);
+    }
+
+    var scene = {
+        productType14:null,
+        productType13:null,
+        //初始化场景
+        sceneInitial:function(number){
+            currentScene = number;
+            content.addClass('scene'+currentScene);
+            animateMain.addClass('main');
+            title.addClass('main');
+            roundOut.addClass('scene'+currentScene+'round');
+            animateMain.one("webkitAnimationEnd",function(){
+                people.addClass('people'+currentScene);
+                product.css("opacity","1");
+            })
+        },
+        //切换场景
+        changeScene:function(callback){
+            var self = this;
+            var obj = {
+                fn:callback
+            }
+            animateEnd = false;
+            isManual = false;
+            clearTimeout(timerChange);
+            clearTimeout(timerEnd);
+            productMask.hide();
+            productMask.css("opacity",0);
+            content.attr('class','content');
+            animateMain.removeClass('main');
+            title.removeClass('main');
+            arrow.css("display","none");
+            roundOut.attr('class','round-out pos');
+            people.attr('class','object people');
+            product.removeClass('show animateState').attr("style","");
+            product.css("top",top2);
+            productListBox.css("display","block");
+            productListBox[0].scrollTop = 0;
+            productList.attr("style","");
+            productList.attr("data-y",0);
+            productListBox.attr("style","");
+            setTimeout(function(){
+                obj.fn.apply(self);
+            },10)
+        },
+        //场景一
+        animateScene1:function(){
+            this.sceneInitial(1);
+            object1to12.one("webkitAnimationEnd",function(){
+                arrowTimerFn();
+            });
+            moduleTitle.text("旅游达人专享");
+            updataProduct(14);
+        },
+        //场景二
+        animateScene2:function(){
+            this.sceneInitial(2);
+            object2to14.one("webkitAnimationEnd",function(){
+                arrowTimerFn();
+            });
+            moduleTitle.text("妈妈专享");
+            updataProduct(13);
+        }
+    }
+
+
+    //更新产品列表
+    function updataProduct(type){
+        var request = requestTime = publicObj.parameter;
+        
+        request.type = type;
+        
+        var createList = function(){
+            var listHtml = '',itemHtml = "",s1="",s2="",s3="";
+            var itemData,state,data;
+            if(request.type==13){
+                data = scene.productType13;
+            }else if(request.type==14){
+                data = scene.productType14;
+            }
+
+            productList.html("");
+
+            //获取服务器时间
+            $.ajax({
+                url: publicObj.serverTime,
+                data:requestTime,
+                dataType: 'json',
+                success: function (response) {
+                    if(response.error>0){
+                        alert(response.msg);
+                    }else{
+                        for(var i=0;i<data.length;i++){
+                            itemData = {
+                                type : data[i].type,
+                                bankLogo : data[i].bank.icon,
+                                productTitle : data[i].name,
+                                productId : data[i].id,
+                                estimatedYearRate : (parseInt(data[i].estimatedYearRate)/100).toFixed(2),
+                                minimumPurchase : data[i].minimumPurchase,
+                                duration : data[i].duration,
+                                specialLabel : "",
+                                specialLabelTxt:"",
+                                durationTXT:"理财期限",
+                                state:judgeState(response.data.timestamp,data[i])
+                            }
+
+                            if(itemData.type==4||itemData.type==5||itemData.type==8||itemData.type==9){
+                                itemData.duration = "<i>不固定</i>";
+                            }
+
+                            if(itemData.type==5||itemData.type==9){
+                                itemData.specialLabelTxt = "分级";
+                                itemData.specialLabel = "classify";
+                            }
+
+                            if(itemData.type==2||itemData.type==6){
+                                itemData.specialLabelTxt = "滚动";
+                                itemData.specialLabel = "scroll";
+                            }
+
+                            if(itemData.type==2||itemData.type==3||itemData.type==6||itemData.type==7){
+                                itemData.durationTXT = "投资周期";
+                            }
+
+                            s1 = '<div class="s1"><span class="bank-logo flex"><img src="'+itemData.bankLogo+'" /></span><p class="product-title '+itemData.specialLabel+'" data-des="'+itemData.specialLabelTxt+'"><span>'+itemData.productTitle+'</span></p></div>';
+
+                            s2 = '<div class="s2"><dl><dd>'+itemData.estimatedYearRate+'</dd><dt>预期年化收益(%)</dt></dl><dl><dd>'+itemData.minimumPurchase+'</dd><dt>起购金额(万)</dt></dl><dl><dd>'+itemData.duration+'</dd><dt>'+itemData.durationTXT+'(天)</dt></dl></div>';
+
+                            s3 = '<div class="s3 clearfix '+itemData.state.stateClass+'"><p class="product-state">'+itemData.state.stateTxt+'</p><p class="product-tip">'+itemData.state.stateTip+'</p></div>';
+
+                            itemHtml = '<li onclick="appShowProductDetail('+itemData.productId+')">' + s1 + s2 + s3 + '</li>';
+
+                            listHtml += itemHtml;
+                        }
+                        productList.html(listHtml);
+
+                    }
+                }
+            });  
+
+        }
+
+        var callbackFn = function(){
+            createList();
+            product.removeClass('no');
+            product.css("top",top2);
+        }
+
+        if((type==13 && !scene.productType13) || (type==14 && !scene.productType14)){
+            //获取产品列表
+            $.ajax({
+                url: publicObj.productUrl,
+                data :request,
+                dataType: 'json',
+                success: function (response) {
+                    if(response.error>0){
+                        alert(response.msg);
+                    }else{
+                        if(response.data.products.length>0){
+                            if(request.type==13){
+                                scene.productType13 = response.data.products;
+                            }else if(request.type==14){
+                                scene.productType14 = response.data.products;
+                            }
+                            callbackFn();
+                        }
+                    }
+                }
+            });
+        }else{
+            callbackFn();
+        }
+        
+    }
+
+    //判断产品销售状态
+    function judgeState(serverTime,item){
+        var result = {
+            stateClass : "",
+            stateTxt : "",
+            stateTip:""
+        };
+
+        var soldOutStatus = item.soldOutStatus;
+        var purchaseStartDate = item.purchaseStartDate || "1970-1-1 00:00:00";
+        var purchaseEndDate = item.purchaseEndDate || "2099-1-1 00:00:00";
+        var serverDate = new Date(serverTime*1000);
+        var stringToDate = function(stringDate){
+            var dateArr = stringDate.split(" ");
+            var dateArr0 = dateArr[0].split("-");
+            var dateArr1 = dateArr[1].split(":");
+            var d = new Date(dateArr0[0],dateArr0[1]-1,dateArr0[2],dateArr1[0],dateArr1[1],dateArr1[2]);
+
+            return {
+                d : d,
+                dateArr0 : dateArr0,
+                dateArr1 : dateArr1
+            };
+        }
+
+        var startDate = stringToDate(purchaseStartDate);
+        var endDate = stringToDate(purchaseEndDate);
+
+        if(startDate.d>serverDate){
+            result.stateClass = "state1";
+            result.stateTxt = "即将开售";
+            result.stateTip = startDate.dateArr0[0] + "年" + startDate.dateArr0[1] + "月" + startDate.dateArr0[2] + "日 " + startDate.dateArr1[0] + ":" + startDate.dateArr1[1] + "起售";
+            return result;
+        }
+
+        if(endDate.d<=serverDate){
+            result.stateClass = "state3";
+            result.stateTxt = "已过期";
+            result.stateTip = "明日请早";
+            return result;
+        }
+
+        if(startDate.d<=serverDate<endDate.d){
+            if(soldOutStatus!=0){
+                result.stateClass = "state4";
+                result.stateTxt = "已售罄";
+                result.stateTip = "抢光了，明日请早";
+            }else{
+                result.stateClass = "state2";
+                result.stateTxt = "开抢中";
+                result.stateTip = result.stateTip = endDate.dateArr0[0] + "年" + endDate.dateArr0[1] + "月" + endDate.dateArr0[2] + "日 " + endDate.dateArr1[0] + ":" + endDate.dateArr1[1] + "停售";
+
+            }
+
+            return result;
+        }
+        
+    }
+
+    //绑定事件
+    function eventHandle(){
+        var change = function(){
+            switch (currentScene){
+                case 1:
+                    scene.changeScene(scene.animateScene2);
+                    break;
+                case 2:
+                    scene.changeScene(scene.animateScene1);
+                    break;
+            }
+
+        };
+
+        //控制产品列表显示隐藏
+        var ctrlProductList = function(){
+            var productTop = product.offset().top;
+            var swipeDistance = 0;
+            
+            var touchData = {
+                start : 0,
+                end : 0,
+                distance : 0,
+                startDate : null,
+                endDate:null
+            }
+            var animateFn = function(show){
+                var parseIntTop = parseInt(product.css("top"));
+                var endCallback1 = function(){
+                    isManual = true;
+                    productMask.show();
+                    clearTimeout(timerMask);
+                    timerMask = setTimeout(function(){
+                        productMask.css("opacity",1);
+                    }) 
+                }
+                var endCallback2 = function(){
+                    productList.css("display","none");
+                    product.removeClass('animateState');
+                    productMask.hide();
+                    productMask.css("opacity",0);
+                    if(animateEnd && !isManual){
+                        clearTimeout(timerChange);
+                        timerChange = setTimeout(function(){
+                            change();
+
+                        },500)
+                    }
+                }
+
+                if(!show){
+                    if(parseIntTop<=top1){
+                        product.addClass('show');
+                        endCallback1();
+                    }else{
+                        product.addClass('show').animate({top:top1},200,'ease',function(){
+                            endCallback1();
+                        });
+                    }
+                }else{
+                    if(parseIntTop<top2){
+                        product.removeClass('show').animate({top:top2},200,'ease',function(){
+                            endCallback2();
+                        });
+                    }else{
+
+                        product.removeClass('show');
+                        endCallback2();
+                    }
+                    
+                }
+            }
+
+            btnLookReally.on("touchstart",function(){
+                touchData.start = touchData.end = event.targetTouches[0].pageY;
+                touchData.startDate = new Date();
+                
+                product.addClass('animateState');
+                productList.css("display","block");
+            });
+
+            btnLookReally.on("touchmove",function(){
+                touchData.end = event.targetTouches[0].pageY;
+                if(touchData.end<top1){
+                    product.css("top",top1);
+                }else if(touchData.end>top2){
+                    product.css("top",top2);
+                }else{
+                    product.css("top",touchData.end);
+                }
+            });
+
+            btnLookReally.on("touchend",function(e){
+                var durationTime;
+
+                touchData.distance = Math.abs(touchData.end - touchData.start);
+                touchData.endDate = new Date();
+                durationTime = touchData.endDate - touchData.startDate;          
+                e.preventDefault();
+                var defaultTouch = function(distance,show){
+                    if(durationTime<300 && touchData.distance>distance){
+                        animateFn(show); 
+                    }else if(durationTime<300 && touchData.distance<=distance){
+                        animateFn(show);
+                    }else if(durationTime>=300){
+                        if(touchData.end<=top1+20){
+                            animateFn(false);
+                        }else{
+                            animateFn(true);
+                        }
+                    }
+                }
+
+                if(!product.hasClass('show')){
+                    defaultTouch(30,false);
+                }else{
+                    defaultTouch(10,true);
+                }    
+            });
+        }
+
+        var swipeProductList = function(){
+            productList.on("touchmove",function(e){
+                e.stopPropagation();
+            })
+        }
+
+        btnChange.on("click",change);
+        arrow.on("touchend",change);
+        ctrlProductList();
+        swipeProductList();
+    }
+
+    //判断单个图片是否加载完成
+    function loadImage(url, callback) { 
+        var img = new Image(); 
+        img.src = url; 
+        if(img.complete) { 
+            callback(url); 
+            return; 
+        } 
+        img.onload = function () { 
+            callback(url);
+        }; 
+    }
+
+    function loading(){
+        var imgArr = [];
+        var $loading = $(".loading");
+        var $percent = $loading.find(".percent");
+        var $progress = $loading.find(".progress");
+        var $content = $(".content");
+        var calcPercent,endLoadTimer;
+        
+        var bWidth = parseInt($('body').width());
+
+        imgArr.push("img/animate/arrow.png");
+        imgArr.push("img/animate/people1.gif");
+        imgArr.push("img/animate/people2.gif");
+
+        imgArr.push("img/animate/scene1/1.png");
+        imgArr.push("img/animate/scene1/2.png");
+        imgArr.push("img/animate/scene1/3.png");
+        imgArr.push("img/animate/scene1/4.png");
+        imgArr.push("img/animate/scene1/5.png");
+        imgArr.push("img/animate/scene1/6.png");
+        imgArr.push("img/animate/scene1/7.png");
+        imgArr.push("img/animate/scene1/8.png");
+        imgArr.push("img/animate/scene1/9.png");
+        imgArr.push("img/animate/scene1/10.png");
+        imgArr.push("img/animate/scene1/11.png");
+        imgArr.push("img/animate/scene1/12.png");
+        imgArr.push("img/animate/scene1/cloud.png");
+        imgArr.push("img/animate/scene1/scene1-h2.png");
+        imgArr.push("img/animate/scene1/scene1-h3.png");
+
+        imgArr.push("img/animate/scene2/1.png");
+        imgArr.push("img/animate/scene2/2.png");
+        imgArr.push("img/animate/scene2/3.png");
+        imgArr.push("img/animate/scene2/4.png");
+        imgArr.push("img/animate/scene2/5.png");
+        imgArr.push("img/animate/scene2/6.png");
+        imgArr.push("img/animate/scene2/7.png");
+        imgArr.push("img/animate/scene2/8.png");
+        imgArr.push("img/animate/scene2/9.png");
+        imgArr.push("img/animate/scene2/10.png");
+        imgArr.push("img/animate/scene2/11.png");
+        imgArr.push("img/animate/scene2/12.png");
+        imgArr.push("img/animate/scene2/13.png");
+        imgArr.push("img/animate/scene2/14.png");
+        imgArr.push("img/animate/scene2/scene2-h2.png");
+        imgArr.push("img/animate/scene2/scene2-h3.png");
+
+        var loadEnd = function(){
+            if(!endLoadTimer){
+                endLoadTimer = setTimeout(function(){
+                    clearInterval(calcPercent);
+                    $percent.text('100%');
+                    setTimeout(function(){
+                        $loading.hide();
+                        $content.show();
+                    },1000)
+                },200);
+            } 
+        }
+
+        var preload = function(demoImgArray) {
+            var increment = Math.floor(100 / demoImgArray.length);
+            var endIncrement =0;
+            for(var i=0;i<demoImgArray.length;i++){
+                loadImage(demoImgArray[i],function(){
+                    endIncrement +=increment;
+                    $progress.animate({
+                        width: endIncrement + "%"
+                    }, 20,"ease",function(){
+
+                    });
+
+                })
+            }
+
+            calcPercent = setInterval(function() {
+                var pWidth = parseInt($progress.width());
+                var txt = Math.floor((pWidth / bWidth) * 100) + '%';
+                $percent.text(txt);
+            });
+        }
+
+        var pieceAnimate = function(){
+            var $piece = $(".logo-piece").find(".piece");
+            var pieceArr = [];
+            var pieceTimer;
+            $piece.each(function(index) {
+                pieceArr.push($(this));
+            });
+
+            pieceArr.sort(function(){ 
+                return 0.5 - Math.random();
+            })
+
+            var resetPiece = function(){
+                pieceArr.forEach(function(item,index,array){
+                    if(index<9){
+                        item.css({
+                            "-webkit-transform":"translate3d(-200px,0,0) rotate3d(1,1,1,180deg) skew(45deg)"
+                        })
+                    }else{
+                        item.css({
+                            "-webkit-transform":"translate3d(200px,0,0) rotate3d(1,1,1,-180deg) skew(45deg)"
+                        })
+                    }
+                    
+                })
+            }
+
+            resetPiece();
+
+            pieceTimer = setTimeout(function(){
+                var width = $("body").width();
+                clearTimeout(pieceTimer);
+                pieceArr.forEach(function(item,index,array){
+                    var result1 = {
+                        v1:0+"px",
+                        v2:0+"px",
+                        v3:0+"px",
+                        v4:0,
+                        v5:0,
+                        v6:0,
+                        v7:0+"deg",
+                        v8:0+"deg",
+                        opacity:1,
+                        time:(Math.random()/2)+0.1+"s"
+                    }
+                    var result2 = {
+                        v1:(Math.random()-0.5)*width*2+"px",
+                        v2:(Math.random()-0.5)*20+"px",
+                        v3:(Math.random()-0.5)*30+"px",
+                        v4:Math.round(Math.random()),
+                        v5:Math.round(Math.random()),
+                        v6:Math.round(Math.random()),
+                        v7:(Math.random()-0.5)*360+"deg",
+                        v8:(Math.random()-0.5)*90+"deg",
+                        opacity:(Math.random()/2)+0.4,
+                        time:(Math.random()/2+0.1)+"s"
+                    } 
+                    item.addClass('animatePiece');
+                    item.css({
+                        "-webkit-transform":"translate3d("+result1.v1+","+result1.v2+","+result1.v3+") rotate3d("+result1.v4+","+result1.v5+","+result1.v6+","+result1.v7+") skew("+result1.v8+")",
+                        "-webkit-transition-duration":result1.time,
+                        "opacity":result1.opacity
+                    })
+                    
+                    item.on("webkitTransitionEnd",function(){
+                        item.removeClass('animatePiece');
+                        if(!isLoaded){
+                            item.css({
+                                "-webkit-transform":"translate3d("+result2.v1+","+result2.v2+","+result2.v3+") rotate3d("+result2.v4+","+result2.v5+","+result2.v6+","+result2.v7+") skew("+result2.v8+")"
+                            })
+                        }
+                    }) 
+                })
+                if(isLoaded){
+                    clearTimeout(pieceTimer);
+                    loadEnd();
+                }else{
+                    pieceTimer = setTimeout(arguments.callee,600);
+                }
+            })
+            
+        }
+
+        preload(imgArr);
+        loadImage("img/piece.png",pieceAnimate);
+
+        $(window).on("load",function(){
+            isLoaded = true;
+        })
+
+    }
+
+    function start(){
+        loading();
+        eventHandle();
+        scene.animateScene1();
+    }
+
+    start();
+})
+</script>
+</body>
+</html>

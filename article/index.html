@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1.0"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+	<meta name="format-detection" content="telephone=no"/>
+	<meta name="format-detection" content="email=no"/>
+	<meta charset="UTF-8">
+	<title></title>
+	<link rel="stylesheet" href="css/article.css?ver=20161011" type="text/css"/>
+</head>
+<body>
+<div class="content">
+	
+	<!-- 微信内打开App -->
+	<div class="wx-top" style="display:none;">
+		<div class="wx-logo"></div>
+		<div class="logo-title">马上理财</div>
+		<div class="logo-dec">一站式银行理财平台</div>
+		<div class="top-open-btn">马上打开</div>
+	</div>
+	
+	<!-- 文章头部信息 -->
+	<header>
+		<div class="title"></div>
+		<div class="dec">
+			<span class="time"></span>
+			<span class="author"></span>
+		</div>
+	</header>
+	
+	
+	<!-- 文章内容部分 -->
+	<section>
+		<!--<div class="item"></div>
+		<img src="img/item_pic.png"/>-->
+	</section>
+	
+	<!-- 文章作者列表 -->
+	<footer>
+		<div class="share" style="display:none;">
+			<p class="like circle">0</p>
+			<p class="wxq circle"></p>
+			<p class="wx circle"></p>
+		</div>
+		<div class="node-box">
+			<!--<div class="node">
+				<span class="node-text">添加作者为好友，即可获得更多的理财宝典</span>
+			</div>-->
+		</div>
+		
+		<div class="author-list">
+			<!--<div class="list">
+				<img src="img/author_icon01.png"/>
+				<p class="author-name-foot black">乔苏尧</p>
+				<p class="author-bank">平安银行陆家嘴支行理财经理</p>
+				<p class="talk red">去聊聊</p>
+			</div>
+			<div class="list">
+				<img src="img/author_icon02.png"/>
+				<p class="author-name-foot black center">刘曜</p>
+				<p class="talk red">去聊聊</p>
+			</div>-->
+		</div>
+	</footer>
+	
+	<!-- 微信内打开App -->
+	<div class="bottom-open-btn" style="display:none;">更多理财资讯，尽在马上理财，马上打开</div>
+	
+</div>
+
+<iframe src="" frameborder="0" id="iframe"></iframe>
+
+<script type="text/javascript" src="js/zepto.min.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/md5.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="js/wx.js"></script>
+
+<script type="text/javascript">
+	var publicObj = {
+        isWeixin:isWeixin(),
+        phoneType:getOS(),
+        domainname:"http://" + location.hostname,
+        apiUrl:publicApiHost + "/v2/api/web/article/get",
+		likeUrl:publicApiHost + "/v2/api/web/article/like",
+        userType:1,
+        appVer:getUrlParameter("appVer")?getUrlParameter("appVer"):"1.0",
+        deviceType:"mobile_web",
+        timestamp:new Date().getTime(),
+        sessionKey:getUrlParameter("sessionKey"),
+		articleId:getUrlParameter("articleId"),
+		deviceId:getUrlParameter("deviceId")?getUrlParameter("deviceId"):"wap"
+    };
+    
+    var _r = publicObj.timestamp+"msfy_mslc_20160526_w"+publicObj.appVer+publicObj.deviceType+"web"+publicObj.appVer;
+	publicObj.signature=hex_md5(_r);
+    
+    
+    //拼接文章日期与时间
+    function formatTime(time) {
+		if (!time) return "";
+		
+		var year = time.getFullYear();
+		var month = time.getMonth()+1;
+		var day = time.getDate();
+		var hour = time.getHours();
+		var minute = time.getMinutes();
+		var second = time.getSeconds();
+
+		var str = year+"/";
+
+		str += (""+(month+100)).substr(1) + "/";
+		str += (""+(day+100)).substr(1) + " ";
+		str += (""+(hour+100)).substr(1) + ":";
+		str += (""+(minute+100)).substr(1) + ":";
+		str += (""+(second+100)).substr(1);
+		
+		return str;
+	}
+    
+    Zepto(function($){
+    	
+    	if (!publicObj.articleId) {
+			g_alert("缺少参数！");
+			return;
+		};
+    	
+    	var _params = {
+            userType:publicObj.userType,
+            appVer:publicObj.appVer,
+            deviceType:publicObj.deviceType,
+            timestamp:publicObj.timestamp,
+            signature:publicObj.signature,
+            deviceId:publicObj.deviceId,
+            osVer:getOS()
+        };
+    	
+    	//保存分享所需相关参数
+    	var shareParams = {};
+    	
+    	if(publicObj.sessionKey) _params.sessionKey = publicObj.sessionKey;
+    	
+    	var _article;
+    	
+		//获取文章相关信息
+    	g_loading();
+    	$.ajax({
+    		type:"GET",
+    		url:publicObj.apiUrl+"?articleId="+publicObj.articleId,		//"article.json"
+    		data:_params,
+    		dataType:"json",
+    		timeout:30000,
+    		success:function(data){
+    			remove_loading();
+    			
+    			var errorCode=data.error;
+    			
+    			
+    			if(errorCode != 0){
+                    g_alert("请求失败");
+                } else {
+					_article = data.data;
+					
+					//生成文章
+					appendData(_article);
+					
+					//获取分享相关参数；
+					setupShareParams(_article);
+				}
+    		},
+    		error:function(){
+    			remove_loading();
+    			g_alert("网络错误，请稍后再试!");
+    		}
+    	})
+    	
+    	//设置分享所需相关参数
+    	function setupShareParams(article){
+			shareParams.icon = article.cover;
+			shareParams.title = article.title;
+			shareParams.circleTitle = article.title;
+			shareParams.shareUrl = staticHost+"/html/article/index.html?articleId="+article.id;
+			
+			if (article.content.length>0) {
+				$.each(article.content,function(index,text){
+						
+					if (text.length<7 || text.substr(0,7) != "http://") {
+						
+						if (text.length > 30) {
+							shareParams.description = text.substr(0, 30);
+						} else {
+							shareParams.description = text;
+						}
+						return false;
+					}
+				});
+			}
+
+			wxCallback(shareParams);
+		}
+    	
+    	//将生成的文章追加到页面中
+    	function appendData(article) {
+    		
+    		//微信内添加标题
+    		if(publicObj.deviceId == 'wap'){
+    			document.title="马上理财 为你加息";
+    		}
+    		
+			$(".title").text(article.title);
+			var time = new Date(parseInt(article.timestamp)*1000);
+			$(".time").text(formatTime(time));
+			
+			var aurthors = article.authors;
+			if (aurthors && aurthors.length>0) {
+				var hasId = createAuthors(aurthors);
+				
+				if (hasId) {
+					if(publicObj.deviceId != 'wap'){
+						var strNote="<div class='node'><span class='node-text'>添加作者为好友，即可获得更多的理财宝典</span></div>";
+						$(".node-box").append(strNote);
+					}
+				}
+			}
+			
+			var content = article.content;
+			if (content && content.length>0) {
+				createContent(content);
+			}
+			
+			//微信内显示打开app内容
+			if(publicObj.deviceId == 'wap'){
+    			$(".wx-top").show();
+    		}
+			if(publicObj.deviceId == 'wap'){
+    			$(".bottom-open-btn").show();
+    		}
+			
+			if (publicObj.deviceId != 'wap') {
+				$(".share").show();
+				$(".like").text(article.likeCount);
+				if(article.liked) {
+					$(".like").css({
+						"background":"url(img/icon_liked.png)no-repeat center center",
+						"background-size":"100% 100%",
+						"color":"#ff6060"
+					});
+				}
+			}
+		}
+    	
+    	//创建文章
+		function createContent(content){
+			$.each(content,function(index,text){
+				
+				if (text.length>7 && text.substr(0,7) == "http://") {
+					var str = "<img src='"+text+"' />";
+					$("section").append(str);
+				} else {
+					var items = text.split("\n");
+					if (items && items.length > 0) {
+						$.each(items, function (index, itm) {
+							if (itm.length > 0 && itm != '\r') {
+								var str = "<div class='item'>" + itm + "</div>";
+								$("section").append(str);
+							}
+						})
+					}
+				}
+			});
+		}
+    	
+    	//创建作者
+		function createAuthors(authors){
+			
+			$(".author").append("<span>作者：</span>");
+			
+			var hasId = false;
+			
+			$.each(authors, function (index, author) {
+				
+				if (author.userId && author.userId>0) hasId = true;
+				
+				var str1 = "";
+				var str2 = "<div class='list'>";
+				
+				if(author.userId&&author.userId>0){
+					if (author.profileURL&&author.profileURL.length>0) {
+						str2 += "<img src='"+author.profileURL+"'/>";
+					}else{
+						str2 += "<img src='img/author_icon.png'/>";
+					}
+				}else{
+					str2="";
+				}
+				
+				if (author.userId && author.userId>0) {
+					if(author.userType==2){
+						str1 += "<span class='author-name-top blue' userId="+author.userId+" userType="+author.userType+">"+author.name+"</span>";
+						str2 += "<span class='author-name-foot black' userId="+author.userId+" userType="+author.userType+">"+author.name+"</span>";
+					}else{
+						str1 += "<span class='author-name-top blue' userId="+author.userId+" userType="+author.userType+">"+author.name+"</span>";
+						str2 += "<span class='author-name-foot black center' userId="+author.userId+" userType="+author.userType+">"+author.name+"</span>";
+					}
+				} else {
+					str1 += "<span class='author-name-top blue'>"+author.name+"</span>";
+				}
+				
+				if(author.userId&&author.userId>0){
+					if (author.userType == 2) {
+						if (author.bank && author.bank.length>0) {
+							str2 += "<span class='author-bank'>"+author.bank+"理财经理</span>";
+							str2 += "<p class='talk red'>去聊聊</p>";
+						}
+					}else{
+						str2 += "<p class='talk red'>去聊聊</p>";
+					}
+				}
+				
+				str2 += "</div>";
+				
+				if (index != authors.length-1) {
+					str1 += "<span class='blue'> | </span>";
+				}
+				
+				$(".author").append(str1);
+				
+				//微信内不显示“去聊聊”功能
+				if(publicObj.deviceId != 'wap'){
+					$(".author-list").append(str2);
+				}
+				
+			});
+			
+			return hasId;
+		}
+    	
+    	//分享
+		$("body").on("click",".wxq",function() {
+            share(1);//微信朋友圈
+        });
+		
+        $("body").on("click",".wx",function() {
+            share(0); //微信好友
+        });
+		
+		//分享到其它社交平台
+        function share(type){
+            if (shareParams && shareParams.shareUrl) {
+                var iFrame = document.getElementById("iframe");
+                iFrame.src = "mslcaction://shareToApp?" +
+                "type="+type+
+                "&url="+ encodeURIComponent(shareParams.shareUrl)+
+                "&icon="+encodeURIComponent(shareParams.icon)+
+                "&title="+encodeURI(shareParams.title)+
+                "&description="+encodeURI(shareParams.description)+
+                "&circleTitle="+encodeURI(shareParams.circleTitle);
+            }
+        }
+    	
+    	//点赞
+		$(".content").on("click",".like",function(){
+			if (_article.liked) return;
+			
+			if (!publicObj.sessionKey) {
+				var iFrame = document.getElementById("iframe");
+				iFrame.src = "mslcaction://requestUserLogin";
+				return;
+			}
+			
+			//点赞
+			g_loading();
+			$.ajax({
+				url:publicObj.likeUrl+"?articleId="+_article.id,	//"like.json"
+				type:"GET",
+				dataType:"json",
+				timeout:30000,
+				data:_params,
+				success:function(data){
+					remove_loading();
+					
+					var errorCode = data.error;
+					if(errorCode != 0){
+						g_alert("请求失败");
+					} else {
+						$(".like").css({
+							"background":"url(img/icon_liked.png)no-repeat center center",
+							"background-size":"100% 100%",
+							"color":"#ff6060"
+						});
+						$(".like").text(data.data.likeCount);
+						_article.liked = true;
+					}
+				},
+				error:function(){
+					remove_loading();
+					g_alert("网络错误，请稍后再试");
+				}
+			});
+		});	
+		
+		//点击"去聊聊"
+		$(".content").on("click",".list",function(){
+			if (!publicObj.sessionKey) {
+				var iFrame = document.getElementById("iframe");
+				iFrame.src = "mslcaction://requestUserLogin";
+				return;
+			}
+			
+			var userId = $(this).children(".author-name-foot").attr("userid");
+			
+			if (userId) {
+				var name = $(this).children(".author-name-foot").text();
+				var userType = $(this).children(".author-name-foot").attr("usertype");
+				
+				var iFrame = document.getElementById("iframe");
+				if (userType == 2) {
+					iFrame.src = "mslcaction://addManager?" +
+					"userId="+userId+
+					"&name="+ name;
+				} else {
+					iFrame.src = "mslcaction://addFriend?" +
+					"userId="+userId+
+					"&name="+name;
+				}
+			}
+		})
+		
+		
+		//点击微信内“马上打开”打开app
+		$(".content").on("click",".top-open-btn",function(){
+			location.href = "http://a.app.qq.com/o/simple.jsp?pkgname=com.mashanglc.android.licaiclient";
+			return false;
+		})
+		$(".content").on("click",".bottom-open-btn",function(){
+			location.href = "http://a.app.qq.com/o/simple.jsp?pkgname=com.mashanglc.android.licaiclient";
+			return false;
+		})
+    })
+    
+    
+</script>
+</body>
+</html>

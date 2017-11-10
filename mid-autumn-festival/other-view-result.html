@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<title>马上飞扬</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta content="telephone=no" name="format-detection" />
+    <meta content="email=no" name="format-detection" />
+    <link href="static/css/common.css" rel="stylesheet" type="text/css">
+    
+</head>
+
+<body>
+<!--横屏-->
+<div class="page1" id="page1">
+	<div class="music rotate360" id="music"><img src="static/images/music.png"></div>
+	<div class="cover" id="cover">
+		<div class="cover-cont">
+			<div class="logo"><img src="static/images/logo.png" alt="logo">
+				<span class="logo-mask" id="logoMask"></span>
+			</div>
+			<p class="txt"><span id="progress">0</span>%</p>
+		</div>
+	</div>
+	<div class="main-content" id="mainContent">
+		<!--data-result召唤结果，data-repeat是否重复-->
+		<div class="scene scene3 scene3-other" id="scene3" data-result="6" data-repeat="false">
+			<div class="scene3-left scene-trans"></div>
+			<div class="scene3-right scene-trans"></div>
+			<div class="scene3-result-txt scene-trans"></div>
+			<div class="scene3-result-img scene-trans"></div>
+			<div class="scene3-2 scene-trans"><a href="index.html"><img src="static/images/btn2.png"></a></div>
+		</div>
+		<!--/end 场景三-->
+	</div>
+</div>
+<!--竖屏-->
+<div class="page2">
+	<div class="vertical-module flex flex-align-center flex-justify-center">
+		<div class="vertical-cont">
+			<p class="vertical-img rotate90"><img src="static/images/index.png" alt=""></p>
+			<p class="vertical-txt">为了获得更好的体验，请使用竖屏浏览</p>
+		</div>
+	</div>
+</div>
+<audio src="static/images/music.mp3" autoplay="autoplay" loop="loop" id="audio"></audio>
+<script src="static/js/jquery-1.11.3.min.js"></script>
+<script src="static/js/common.js"></script>
+<script>
+$(function(){
+
+	var $scene3 = $("#scene3");
+
+	function imgArrLoad(){
+
+		var imagesArr0 = ["static/images/index.png","static/images/btn2.png","static/images/scene3-other-t-false-1.png","static/images/scene3-other-t-false-2.png","static/images/scene3-other-t-false-3.png","static/images/scene3-other-t-false-4.png","static/images/scene3-other-t-false-5.png","static/images/scene3-other-t-false-6.png","static/images/scene3-other-t-true-1.png","static/images/scene3-other-t-true-2.png","static/images/scene3-other-t-true-3.png","static/images/scene3-other-t-true-4.png","static/images/scene3-other-t-true-5.png","static/images/scene3-other-t-true-6.png"];
+
+			loadProcess(50,imagesArr0,scene3Animate);
+		
+	}
+
+
+	//场景三入场动画
+	function scene3Animate(){
+		var $scene3Left = $scene3.find(".scene3-left");
+		var $scene3Right = $scene3.find(".scene3-right");
+		var $scene3to2 = $scene3.find(".scene3-2");
+		var $scene3ResultImg = $scene3.find(".scene3-result-img");
+		var $scene3ResultTxt = $scene3.find(".scene3-result-txt");
+		var value = $scene3.data("result");
+		var repeat = $scene3.data("repeat");
+		var resultImgSrc,resultTxtSrc;
+		
+		resultImgSrc=locationStr+"static/images/other-result-"+value+".png";
+
+		if(repeat){
+			resultTxtSrc=locationStr+"static/images/scene3-other-t-true-"+value+".png";
+		}else{
+			resultTxtSrc=locationStr+"static/images/scene3-other-t-false-"+value+".png";
+		}
+		$scene3ResultTxt.append('<img src="'+resultTxtSrc+'" >')
+		
+		
+		$scene3ResultImg.append('<img src="'+resultImgSrc+'" >')
+		$scene3.addClass('scene3-result-'+value).css({"z-index":"8","opacity":"1"})
+		if(repeat){
+			$scene3.addClass('scene3-result-repeat');
+		}
+		$scene3Left.addClass('show');
+		$scene3Right.addClass('show');
+		$scene3Right.one("webkitAnimationEnd",function(){
+			//召唤结果图片加载成功后执行动画
+			loadImage(resultImgSrc,function(){
+				$scene3to2.addClass('show');
+				$scene3ResultTxt.addClass('show');
+				$scene3ResultImg.addClass('show');
+			})		
+		})
+	}
+
+	//logo背景图加载成功后执行加载动画
+	loadImage(locationStr+"static/images/logo.png",imgArrLoad);
+
+})
+</script>
+</body>
+</html>

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<title>马上理财-分享我 赚收益</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta content="telephone=no" name="format-detection" />
+    <meta content="email=no" name="format-detection" />
+    <link href="css/common.css?d=201603011122" rel="stylesheet" type="text/css">   
+</head>
+
+<body >
+<div class="html-content">
+	<div class="des">
+		<p><img src="img/des.png"></p>
+	</div>
+	<!--券初始-->
+	<div class="quan quan1">
+		<div class="bg"><img src="img/quan1.png"></div>
+		<div class="content flex">
+			<p><span class="large">?</span>返现券</p>
+		</div>
+		<div class="button flex">
+			<p>马上去领</p>
+		</div>
+	</div>
+	<!--抢到券-->
+	<div class="quan quan2">
+		<div class="bg"><img src="img/quan2.png"></div>
+		<div class="content flex">
+			<p><span class="sign">￥<span class="user-money-current"></span></span>返现券</p>
+		</div>
+		<div class="tip flex">
+			<p>今天你赚到<span class="user-money-all"></span>元返现券，已放入手机账户<span class="user-phone"></span>中，注意查收！</p>
+		</div>
+		<div class="button flex mslc-download">
+			<p>去马上理财App查看返现券</p>
+		</div>
+	</div>
+	<!--未抢到券-->
+	<div class="quan quan3">
+		<div class="bg"><img src="img/quan3.png"></div>
+		<div class="content flex">
+			<p>已领完</p>
+		</div>
+		<div class="button flex mslc-download">
+			<p><span class="t1">快去马上理财</span><span class="t2">抢 更 多</span></p>
+		</div>
+	</div>
+
+	<!--无抢券记录显示图片-->
+	<div class="ren" id="ren"></div>
+
+	<!--抢券列表-->
+	<div class="list" id="listWrap">
+
+	</div>
+	
+	<div class="bottom">
+		<div class="content b-ask">
+			<p class="ask">什么是返现券</p>
+			<!-- <a href="#" class="strategy">返现券早赚起攻略</a> -->
+		</div>
+	</div>
+
+	<!--什么是返现券弹出层-->
+	<div class="pop-ask" id="popAsk">
+		<p class="title">什么是返现券</p>
+		<dl>
+			<dt>1、</dt>
+			<dd>返现券用于兑换补贴收益金额</dd>
+		</dl>
+		<dl>
+			<dt>2、</dt>
+			<dd>返现券面额等同于相应的人民币金额</dd>
+		</dl>
+		<dl>
+			<dt>3、</dt>
+			<dd>返现券金额累计不封顶</dd>
+		</dl>
+		<dl>
+			<dt>4、</dt>
+			<dd>返现券只对通过马上理财平台成功购买的理财产品有效</dd>
+		</dl>
+		<dl>
+			<dt>5、</dt>
+			<dd>返现券不可用于直接购买理财产品</dd>
+		</dl>
+		<!-- <dl>
+			<dt>6、</dt>
+			<dd>用户每月前10笔交易可享受补贴收益</dd>
+		</dl> -->
+		<p class="close" id="btnCloseAsk"><img src="img/close.png"></p>
+	</div>
+	<!--输入手机号弹出层-->
+	<div class="pop-phone" id="popPhone">
+		<div class="content">
+			<p class="txt dd-amount">抢到的返现券将放入您的手机账号中！</p>
+			<p class="phone-bar clearfix">
+				<span class="phone1">+ 86</span>
+				<input type="tel" class="phone2" placeholder="请输入你的手机号码" id="phone" />
+			</p>
+			<p class="tip" id="phoneTip"></p>
+			<p class="btn-bar"><button type="button" class="submit" id="submit">我笑纳了</button></p>
+			<p class="default-tip"><span>请确保使用同一手机账号注册查看返现券</span></p>
+		</div>
+	</div>
+</div>
+<div class="end-box">
+    <div class="end-tip">
+        <div class="tip-cont">
+            <p class="tip-ico"><img src="img/ico-cry.png" /></p>
+            <p class="tip-txt">抱歉，您来晚了，活动已经结束了。</p>
+        </div>
+        <div class="tip-btn" id="tipBtn">我知道了</div>
+    </div>
+</div>
+<script src="js/zepto.min.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript">
+/*end-tip*/
+$("#tipBtn").on("click",function(){
+    $(".end-tip").hide();
+})   
+</script>
+<script>
+/*根据hostname判断是生产环境还是测试环境*/
+var publicApiHost;
+
+if(location.hostname=="static.mashanglc.com" || location.hostname=="share.licai66.com"){
+    publicApiHost = "http://share.licai66.com";
+}else{
+    publicApiHost = "http://pss.sit.licai66.com";
+}
+
+var publicObj = {
+	code : getUrlParameter("code"),
+	sid  : getUrlParameter("sid"),
+	url  : publicApiHost +"/v2/promotion/"
+}
+
+
+var popPhone = document.getElementById("popPhone");
+var quan1 = document.querySelector(".quan1");
+var quan2 = document.querySelector(".quan2");
+var quan3 = document.querySelector(".quan3");
+var btnShow = document.querySelector(".b-ask");
+var phone = document.getElementById("phone");
+var des = document.querySelector(".des");
+
+//展现和关闭“什么是理财券”弹出层
+function popUpAsk(){
+	var btnClose = document.getElementById("btnCloseAsk"); 
+	var popAsk = document.getElementById("popAsk"); 
+
+	btnShow.addEventListener("click",function(){
+		popAsk.style.display="block";
+	},false);
+
+	btnClose.addEventListener("click",function(){
+		popAsk.style.display="none";
+	},false);
+}
+
+//输入手机号码弹出层
+function popUpPhone(registered,sid){
+	var submit = document.getElementById("submit")
+	var touchQiang = function(){
+		quan1.removeEventListener("click",touchQiang,false);
+		if(registered){
+			reqJoin("",sid);
+		}else{
+			popPhone.style.display = "block";
+			submit.addEventListener("click",touchPhone,false)
+		}
+	}
+	var touchPhone = function(e){
+		var phoneTip = document.getElementById("phoneTip");
+		var reg = /^(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/;
+		submit.removeEventListener("click",touchPhone,false);
+		e.preventDefault();
+		if(phone.value==""){
+			phoneTip.innerText = "手机号不能为空";
+		}else if(!reg.test(phone.value)){
+			phoneTip.innerText = "请输入11位有效手机号码";	
+		}else{
+			reqJoin(phone.value,sid);
+		}
+		
+		return false;
+	}
+
+	quan1.addEventListener("click",touchQiang,false);
+}
+
+//提交表单phone
+function reqJoin(phone,sid){
+
+    $.ajax({
+    	type:"POST",
+    	url:publicObj.url + "join",
+    	data:{'phone':phone,sid:sid},
+    	dataType: 'json',
+    	success:function(response){
+    		var data = response.data;
+	    	if(data.status == 0){
+	            quan1.style.display = "none";
+	        	popPhone.style.display = "none";
+	        	des.style.display = "none";
+	        	
+	        	userQuan(data.amount,data.todayAmount,data.phone);
+	        }else if(data.status == 1003){
+	            quan1.style.display = "none";
+	        	popPhone.style.display = "none";
+	            quan3.style.display = "block";
+	        } else{
+	        	alert(data.msg);
+	        }
+    	},
+    	error:function(){
+    		alert("网络异常");
+    	}
+    })
+}
+
+//设置当前用户抢券信息
+function userQuan(amount,todayAmount,phone){
+	var userMoneyCurrent = quan2.querySelector(".user-money-current"); 
+	var userMoneyAll = quan2.querySelector(".user-money-all");
+	var userPhone = quan2.querySelector(".user-phone");
+	des.style.display = "none";
+	userMoneyCurrent.innerText = amount;
+	userMoneyAll.innerText = todayAmount;
+	userPhone.innerText = phone;
+	quan2.style.display = "block";
+}
+
+//判断返现券是否已抢完
+function isEnd(end,registered,sid){
+	if(end){
+		quan3.style.display = "block";
+	}else{
+		quan1.style.display = "block";
+		popUpPhone(registered,sid);
+	}
+}
+
+//获取已抢券用户列表
+function getList(promotionDetails){
+	
+	var ren = document.getElementById("ren");
+	var listWrap = document.getElementById("listWrap");
+    var list = promotionDetails;
+	var item,itemAll,itemHtml;
+	var ulDom = listWrap.querySelector("ul");
+	var userInfo = {};
+
+	if(ulDom){
+		listWrap.removeChild(ulDom);
+	}
+	
+	if(list.length>0){
+		listWrap.style.display = "block";
+		itemAll = document.createElement("ul");
+
+		for(var i=0;i<list.length;i++){
+			userInfo = {
+				faceUrl  : list[i].faceUrl || "img/default.png",
+				nickname : list[i].nickname || "微信用户",
+				created  : list[i].created,
+				amount   : list[i].amount
+			}
+			item = document.createElement("li");
+			itemHtml = '<div class="pic"><img src="'
+			     + userInfo.faceUrl
+			     + '"></div><div class="content"><p class="p1"><span class="name">'
+				 + userInfo.nickname
+				 + '</span><span class="time">'
+				 + userInfo.created
+				 + '</span></p><p class="p2">收益路上带我飞</p></div><div class="money"><span class="value">'
+				 + userInfo.amount
+				 + '</span>元</div>';
+			item.innerHTML = itemHtml;
+			itemAll.appendChild(item);
+		}
+		listWrap.appendChild(itemAll);
+	}else{
+		ren.innerHTML = '<p><img src="img/ren.png"></p>'; 
+	}
+	
+}
+popUpAsk();
+//判断微信授权状态
+function authorization(){
+	var htmlContent = document.querySelector(".html-content");
+	var mslcDownload = document.querySelectorAll(".mslc-download");
+	var endBox = document.querySelector(".end-box");
+
+	if(!publicObj.code || !publicObj.sid){
+		alert("出错了,请返回重新进入");
+		return false;
+	}
+	$.ajax({
+		type:"GET",
+    	url:publicObj.url+publicObj.code,
+    	data:{sid:publicObj.sid},
+    	dataType: 'json',
+    	success:function(response){
+    		var data = response.data;
+    		
+			if(data.status==1001){
+				setTimeout(function(){
+					window.location.replace(data.authUrl);
+				},10)
+			}else if(data.status==0){
+				htmlContent.style.display = "block";
+				endBox.style.display = "block";
+				if(data.join){
+					userQuan(data.amount,data.todayAmount,data.phone);
+				}else{
+					isEnd(data.end,data.registered,publicObj.sid);
+				}
+				getList(data.promotionDetails);
+				popUpAsk();
+				for(var i=0;i<mslcDownload.length;i++){
+					mslcDownload[i].addEventListener("touchend",function(){
+						location.href = "http://a.app.qq.com/o/simple.jsp?pkgname=com.mashanglc.android.licaiclient";
+					},false)
+				}
+			}else{
+				alert(data.msg);
+			}
+    	},
+    	erroe:function(){
+    		alert("网络异常");
+    	}
+	})
+}
+
+Zepto(function($){
+	authorization();
+})
+
+</script>
+<!--微信分享-->
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="js/wx.js"></script>
+<script>
+Zepto(function($){
+	$.ajax({
+		type:"GET",
+    	url:publicObj.url + "wx/share" + "?code=" + publicObj.code,
+    	dataType: 'json',
+    	success:function(response){
+    		var wxShare = {
+    			title : response.data.title,
+    			description : response.data.description,
+    			shareUrl  : response.data.shareUrl,
+    			icon : response.data.icon
+    		}
+    		wxCallback(wxShare);
+    	}
+	})
+})  
+</script>
+</body>
+</html>

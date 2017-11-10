@@ -1,0 +1,273 @@
+*{
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	box-sizing:border-box;
+	-webkit-tap-highlight-color:transparent;
+	margin:0;
+	padding:0;
+}
+html{
+	font-family:"Helvetica Neue",Helvetica,"San Francisco",  Arial, sans-serif; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; font-size: 16px;
+}
+body { margin: 0; font-size: 1rem; line-height: 1.5; color: #333; background-color: #f8f8f8;  overflow-x: hidden; -webkit-overflow-scrolling: touch; }
+.clearfix{
+	visibility:hidden;
+	display:block;
+	font-size:0;
+	content:" ";
+	clear:both;
+	height:0;
+	*zoom:1;
+}
+.flex{
+	display:-webkit-box;
+	display:-webkit-flex;
+	display:flex;
+	-webkit-box-align:center;
+	-webkit-align-items:center;
+	align-items:center;
+	-webkit-justify-content:center;
+	justify-content:center;
+	-webkit-box-pack:center;
+}
+.flex-end{-webkit-justify-content:flex-end;justify-content:flex-end;-webkit-box-pack: flex-end;}
+iframe{
+	display:none;
+}
+html,body{
+	text-align:center;
+	background-color:#f8f8f8;
+	font-weight: 300;
+}
+img{max-width: 100%; max-height: 100%;}
+
+.red{
+	color:#ff6060;
+}
+.g_loading{
+	position:fixed;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	z-index:999;
+	background:url("../img/ajax-loader.gif")no-repeat center center rgba(255,255,255,.5);
+	background-size: 25px 25px;
+}
+.g_alert{
+	max-width:260px;
+	text-align:center;
+	padding:10px;
+	color:#fff;
+	border-radius:5px;
+	background:rgba(0,0,0,0.8);
+	display:block;
+	position:fixed;
+	z-index:200;
+	bottom:40px;
+	left:50%;
+	font-size:0.8rem;
+}
+/***********************************************Common-style  End*****************************************/
+
+/**********************************************************Main Begin**************************************************/
+.content{
+	height:100%;
+	width:100%;
+	position:relative;
+	background:#f8f8f8;
+}
+
+.list{
+	margin:20px 10px;
+}
+.list .item{
+	width:100%;
+	background:#fff;
+	border-radius:7px;
+	border:1px solid #f0f0f0;
+	margin:10px 0;
+	font-size:12px;
+	padding:0 20px;
+	position:relative;
+}
+.list .item .bank-title{
+	height:22px;
+	width:100%;
+	font-size:16px;
+	margin-top:20px;
+	line-height:22px;
+	position:relative;
+}
+.list .item .bank-title .bank{
+	width:35px;
+	height:22px;
+	display: table-cell;
+	vertical-align:middle;
+	text-align:center;
+	float:left;
+}
+.list .item .bank-title .product-code{
+	text-align:left;
+	margin-left:10px;
+	float:left;
+}
+.list .item .bank-title .bank .bank-logo{
+	vertical-align:middle;
+	max-width:35px;
+	max-height:22px;
+}
+
+
+.list .item .bank-data{
+	height:80px;
+	width:100%;
+	position:relative;
+}
+.list .item .bank-data .rate{
+	font-size:22px;
+	text-align:center;
+	color:#ff6060;
+	position:absolute;
+	top:10px;
+	left:0;	
+}
+.list .item .bank-data .rate .rate-text{
+	font-size:12px;
+	line-height:7px;
+	color:#000;
+}
+.list .item .bank-data .rate .rate-data .forward-rate .rate-icon{
+	display:block;
+	width:25px;
+	height:25px;
+	background:url(../img/icon_rates_help.png)no-repeat center center;
+	background-size:100% 100%;
+	position:absolute;
+	top:-5px;
+	right:-5px;
+	z-index:100;
+}
+.list .item .bank-data .money{
+	font-size:22px;
+	text-align:center;
+	position:absolute;
+	top:10px;
+	left:48%;	
+}
+.list .item .bank-data .money .money-text{
+	font-size:12px;
+	line-height:7px;
+}
+.list .item .bank-data .period{
+	font-size:22px;
+	text-align:center;
+	position:absolute;
+	top:10px;
+	right:0;	
+}
+.list .item .bank-data .period .period-text{
+	font-size:12px;
+	line-height:7px;
+}
+.list .item .foot{
+	width:100%;
+	height:40px;
+	border-top:1px solid #f0f0f0;
+	font-size:12px;
+	text-align:center;
+	position:relative;
+}
+.list .item .foot .status-icon{
+	height:20px;
+	width:75px;
+	position:absolute;
+	top:10px;
+	left:0;
+}
+.list .item .foot .status-icon img{
+	height:20px;
+	width:72px;
+}
+.list .item .foot .description{
+	height:20px;
+	width:75px;
+	background:#fef2d0;
+	font-size:10px;
+	color:#ffb400;
+	line-height:20px;
+	border-radius:10px;
+	position:absolute;
+	top:10px;
+	left:90px;
+}
+.list .item .foot .description-icon img{
+	height:20px;
+	width:75px;
+}
+.list .item .foot .time{
+	position:absolute;
+	top:10px;
+	right:0;
+}
+
+/**********************************************************Main End*******************************************************/
+
+/**************************************Media_query Begin *********************************/
+@media screen and (max-width:375px){
+	.list .item .bank-data .rate .rate-data .forward-rate .rate-icon {
+	    right: -15px;
+	}
+	.list .item .bank-data .rate .rate-text{
+		font-size:10px;
+	}
+	.list .item .bank-data .money .money-text{
+		font-size:10px;
+	}
+	.list .item .bank-data .period .period-text{
+		font-size:10px;
+	}
+}
+
+@media screen and (max-width:320px){
+	.list .item .bank-data .rate .rate-data .forward-rate .rate-icon {
+	    right: -20px;
+	}
+	.list .item .bank-title {
+	    font-size: 14px;
+	}
+	.list .item .bank-data .rate .rate-text{
+		font-size:9px;
+	}
+	.list .item .bank-data .money .money-text{
+		font-size:9px;
+	}
+	.list .item .bank-data .period .period-text{
+		font-size:9px;
+	}
+	.list .item .bank-data .period{
+		font-size:20px;
+	}
+	.list .item .bank-data .money{
+		font-size:20px;
+	}
+	.list .item .bank-data .rate{
+		font-size:20px;
+	}
+	.list .item .foot .time .time-date{
+	    font-size: 10px;
+	}
+}
+
+@media screen and (max-width:315px) {
+	
+	
+}
+
+@media screen and (max-width:250px) {
+	
+	
+}
+/**************************************Media_query End *********************************/
+
+

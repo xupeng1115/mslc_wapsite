@@ -1,0 +1,390 @@
+@charset "utf-8";
+html { font-family:"Helvetica Neue",Helvetica,"San Francisco",  Arial, sans-serif; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; font-size: 16px; }
+body { margin: 0; font-size: 1rem; line-height: 1.5; color: #333; background-color: #fff;  overflow-x: hidden; -webkit-overflow-scrolling: touch; }
+article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, section, summary { display: block; }
+audio, canvas, progress, video { display: inline-block; vertical-align: baseline; }
+audio:not([controls]) { display: none; height: 0; }
+[hidden], template { display: none; }
+svg:not(:root) { overflow: hidden; }
+a { background: transparent; text-decoration: none; -webkit-tap-highlight-color: transparent; color: #0088cc; }
+a:active { outline: 0; }
+a:active { color: #006699; }
+abbr[title] { border-bottom: 1px dotted; }
+b, strong { font-weight: bold; }
+dfn { font-style: italic; }
+mark { background: #ff0; color: #000; }
+small { font-size: 80%; }
+sub, sup { font-size: 75%; line-height: 0; position: relative; vertical-align: baseline; }
+sup { top: -0.5em; }
+sub { bottom: -0.25em; }
+img { border: 0; vertical-align: middle;}
+hr { -moz-box-sizing: content-box; box-sizing: content-box; height: 0; }
+pre { overflow: auto; white-space: pre; white-space: pre-wrap; word-wrap: break-word; }
+code, kbd, pre, samp { font-family: monospace, monospace; font-size: 1em; }
+button, input, optgroup, select, textarea { color: inherit; font: inherit; margin: 0; }
+button { overflow: visible; }
+button, select { text-transform: none; }
+button, html input[type="button"], input[type="reset"], input[type="submit"] { -webkit-appearance: button; cursor: pointer; }
+button[disabled], html input[disabled] { cursor: default; }
+button::-moz-focus-inner, input::-moz-focus-inner { border: 0; padding: 0; }
+input { line-height: normal; }
+input[type="checkbox"], input[type="radio"] { box-sizing: border-box; padding: 0; }
+input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { height: auto; }
+input[type="search"] { -webkit-appearance: textfield; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+input[type="search"]::-webkit-search-cancel-button, input[type="search"]::-webkit-search-decoration { -webkit-appearance: none; }
+fieldset { border: 1px solid #c0c0c0; margin: 0 2px; padding: 0.35em 0.625em 0.75em; }
+legend { border: 0; padding: 0; }
+textarea { overflow: auto; resize: vertical;}
+optgroup { font-weight: bold; }
+table { border-collapse: collapse; border-spacing: 0; }
+td, th { padding: 0; }
+html, button, input, select, textarea { font-family:"San Francisco", "Helvetica Neue", Helvetica, STHeiTi, Arial, sans-serif; }
+h1, h2, h3, h4, h5, h6, p, figure, form, blockquote { margin: 0; padding:0;}
+ul, ol, li, dl, dd { margin: 0; padding: 0; }
+ul, ol { list-style: none outside none; }
+h1, h2, h3 { line-height: 2; font-weight: normal; }
+input::-moz-placeholder, textarea::-moz-placeholder { color: #cccccc; }
+input:-ms-input-placeholder, textarea:-ms-input-placeholder { color: #cccccc; }
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { color: #cccccc; }
+
+* { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; -webkit-tap-highlight-color: transparent;margin:0;padding:0;}
+.clearfix:after{visibility: hidden;display: block;font-size: 0;content: " ";clear: both;height: 0;}
+.clearfix{*zoom:1;}
+.flex{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;-webkit-justify-content:center;justify-content:center;-webkit-box-pack: center;}
+.red{color:#ff6060;}
+
+html,body{text-align: center;background:#ee4747;width:100%;height:100%;}
+img{max-width: 100%;}
+iframe{display:none;}
+
+.g_loading{position: fixed;top:0;left:0;width:100%;height: 100%;z-index: 999;background:url("../img/ajax-loader.gif") no-repeat center center rgba(255,255,255,.5);background-size: 25px 25px;}
+.g_alert{max-width:160px;text-align:center;padding:10px;color:#fff;border-radius:5px;background: rgba(0,0,0,0.8);display:block;position: fixed;z-index: 200;bottom:40px;left:50%;font-size:0.75rem;}
+
+/***********************************************Common-style  End**************************************************/
+
+/***********************************************Main Begin***********************************************/
+.content{
+	width:100%;
+	height:100%;
+	position:relative;
+}
+.content-box{
+	width:100%;
+	height:100%;
+	position:relative;
+	background:url(../img/invite_bg.png)no-repeat center center;
+	background-size:100% 100%;
+}
+.content-box .title-pic{
+	width:360px;
+	height:100px;
+	background:url(../img/title_pic.png)no-repeat center center;
+	background-size:100% 100%;
+	position:absolute;
+	top:30px;
+	left:50%;
+	margin-left:-178px;
+}
+.content-box .money-pic{
+	width:300px;
+	height:110px;
+	background:url(../img/money_pic.png)no-repeat center center;
+	background-size:100% 100%;
+	position:absolute;
+	top:145px;
+	left:50%;
+	margin-left:-153px;
+	z-index:10;
+}
+.content-box .invite{
+	width:394px;
+	background:url(../img/page_pic.png)no-repeat center center;
+	background-size:100% 100%;
+	position:absolute;
+	top:225px;
+	left:50%;
+	margin-left:-197px;
+	margin-bottom:50px;
+}
+.invite .invite-text{
+	margin-top:135px;
+	font-size:0.8125rem;
+	color:#666666;
+}
+
+.invite .register{
+	width:80%;
+	margin:0 auto;
+	margin-top:16px;
+	margin-bottom:24px;
+	font-size:0.9375rem;
+	position:relative;
+	background:transparent;
+}
+.invite .register .inp{
+	width:100%;
+	height:44px;
+	border-bottom:1px solid #ccc;
+	position:relative;
+}
+.invite .register .form-group{
+	height:20px;
+	display:block;
+	border:none;
+	line-height:20px;
+	text-align:left;
+	color:#191919;
+	outline:none;
+	background:transparent;
+	position:absolute;
+	top:12px;
+	left:0;
+}
+.invite .register .inp .get-yz{
+	width:100px;
+	height:22px;
+	color:#ff6060;
+	border-left:1px solid #dcdcdc;
+	padding-left:10px;
+	position:absolute;
+	top:11px;
+	right:0;
+}
+
+.invite .invite-code{
+	font-size:0.9375rem;
+	color:#bcbcbc;
+}
+.invite .invite-code .code-number{
+	padding-left:5px;
+}
+.invite .register-btn{
+	width:230px;
+	height:60px;
+	background:url(../img/download_btn.png)no-repeat center center;
+	background-size:100% 100%;
+	margin:0 auto;
+	margin-top:4px;
+}
+.invite .register-text{
+	margin:0 auto;
+	margin-top:7px;
+	font-size:0.75rem;
+	color:#999999;
+}
+.invite .register-text .agreement{
+	color:#ff6060;
+}
+.invite .bank-logo{
+	width:200px;
+	height:30px;
+	background:url(../img/bank_logo.png)no-repeat center center;
+	background-size:100% 100%;
+	margin:0 auto;
+	margin-top:23px;
+	margin-bottom:12px;
+}
+
+
+
+/***********************************************manager Begin***********************************************/
+.invite .invite-manager{
+	width:315px;
+	margin:0 auto;
+	margin-top:130px;
+	position:relative;
+}
+.invite .invite-manager .manager-icon{
+	margin-top:5px;
+	width:45px;
+	height:45px;
+	float:left;
+}
+.invite .invite-manager .manager-icon .manager-image{
+	width:100%;
+	height:100%;
+	border-radius:50%;
+	display:block;
+}
+.invite .invite-manager .vip{
+	width:16px;
+	height:16px;
+	background:url(../img/vip.png)no-repeat center center;
+	background-size:100% 100%;
+	border-radius:5px;
+	position:absolute;
+	top: 35px;
+    left: 31px;
+	z-index:20;
+}
+.invite .invite-manager .manager-dec{
+	margin-left:60px;
+    background: #fcefeb;
+    border-radius: 8px;
+}
+.invite .invite-manager .arrow{
+	width:0;
+	height:0;
+	border:10px solid #fcefeb;
+	border-top:8px solid transparent;
+	border-left:10px solid transparent;
+	border-bottom:8px solid transparent;
+	position:absolute;
+	top: 20px;
+    left: 41px;
+	z-index:40;
+}
+.invite .invite-manager .manager-dec .dec-text{
+	padding:10px 12px;
+	font-size:0.75rem;
+	color:#ff6060;
+	text-align:left;
+	line-height:20px;
+}
+
+/***********************************************manager End***********************************************/
+
+/***********************************************Success Begin**********************************************/
+.mask{
+	width:100%;
+	height:100%;
+	position:fixed;
+	top:0;
+	left:0;
+	background:rgba(0,0,0,0.5);
+	z-index:100;
+}
+.mask .success{
+	width:300px;
+	height:370px;
+	background:#ffffff;
+	border-radius:8px;
+	position:absolute;
+	left:50%;
+	top:16%;
+	margin-left:-150px;
+}
+.mask .success .suc-icon{
+	width:220px;
+	height:130px;
+	background:url(../img/success.png)no-repeat center center;
+	background-size:100% 100%;
+	position:absolute;
+	top:20%;
+	left:50%;
+	margin-left:-110px;
+}
+.mask .success .cancle{
+	width:40px;
+	height:40px;
+	background:url(../img/cancle.png)no-repeat center center;
+	background-size:100% 100%;
+	position:absolute;
+	top:-20px;
+	right:15px;;
+	z-index:200;
+}
+.mask .success .suc-text{
+	font-size:1.375rem;
+	color:#ff6060;
+	padding-top:230px;
+}
+.mask .success .download-btn{
+	width:100%;
+	height:44px;
+	background:#ff6060;
+	font-size:1.0rem;
+	color:#ffffff;
+	text-align:center;
+	border-radius:0 0 8px 8px;
+	line-height:45px;
+	position:absolute;
+	bottom:0;
+	left:0;
+}
+
+.flo{
+	width:100%;
+	height:50px;
+	position:absolute;
+	bottom:-50px;
+	left:0;
+	background:transparent;
+}
+
+/**********************************************Success End******************************************/
+
+/***********************************************Main Begin***********************************************/
+
+/***********************************************Media Query Begin***********************************************/
+@media screen and (max-width:384px){
+	.content-box .title-pic {width: 330px;height:90px;top:25px;margin-left: -165px;}
+	.content-box .money-pic {width: 270px;height: 105px;margin-left: -140px;top: 127px;}
+	.content-box .invite {width: 364px;top: 200px;margin-left: -182px;}
+	.invite .register .form-group {width: 180px;}
+	.invite .register .inp .get-yz {width: 95px;}
+    .invite .invite-manager {width: 285px;}
+	.invite .invite-manager .vip {left: 33px;}
+	
+	.mask .success .cancle {width: 36px;height: 36px;top: -18px;}
+}
+@media screen and (max-width:375px){
+	.content-box .title-pic {width: 320px;margin-left: -160px;}
+	.content-box .money-pic {width: 270px;height: 95px;margin-left: -140px;}
+	.content-box .invite {width: 354px;top: 190px;margin-left: -177px;}
+	.invite .register .form-group {width: 170px;}
+	.invite .invite-manager {width: 278px;}
+	.invite .invite-manager .manager-dec {margin-left:53px;}
+    .invite .invite-manager .manager-dec .dec-text {padding: 10px;}
+	.invite .invite-manager .arrow {left:34px;}
+	.invite .invite-manager .manager-icon {width: 40px;height: 40px;margin-top:7px;}
+	.invite .invite-manager .vip {width:14px;height:14px;left: 27px;top: 37px;}
+	
+	.mask .success {width: 280px;height: 350px;margin-left: -140px;}
+	.mask .success .suc-icon {width: 210px;height: 125px;margin-left: -105px;}
+	.mask .success .suc-text {padding-top: 220px;}
+}
+@media screen and (max-width:360px){
+	.content-box .title-pic {width: 310px;margin-left: -155px;}
+	.content-box .money-pic {width: 260px;margin-left: -137px;}
+	.content-box .invite {width: 340px;margin-left: -170px;}
+	.invite .register {width: 82%;}
+	.invite .invite-manager .arrow {left: 35px;}
+	.invite .invite-manager {width: 270px;}
+	.invite .invite-manager .manager-dec .dec-text {padding: 7px;}
+	
+	.mask .success .suc-icon {width: 200px;height: 120px;margin-left: -100px;}
+}
+@media screen and (max-width:320px){
+	.content-box .title-pic {width: 270px;margin-left: -135px;height: 75px;top: 20px;}
+	.content-box .money-pic {width: 230px;height: 85px;margin-left: -120px;top: 110px;}
+	.content-box .invite {width: 300px;margin-left: -150px;top: 170px;}
+	.invite .register .form-group {width: 160px;}
+	.invite .invite-text {font-size: 0.6875rem;}
+	.invite .register {width: 84%;font-size:0.8125rem;margin-top: 20px;}
+	.invite .register .inp .get-yz {width: 82px;padding-left: 3px;}
+	.invite .invite-code {font-size: 0.8125rem;}
+	.invite .register-btn {width: 200px;height: 50px;}
+	.invite .register-text {font-size: 0.6875rem;}
+    .invite .bank-logo {width: 180px;height: 25px;margin-top: 20px;}
+	.invite .invite-manager .manager-icon {width: 33px;height: 33px;top: 150px;left: 20px;}
+	.invite .invite-manager .vip {width: 12px;height: 12px;left: 24px;top: 30px;}
+	.invite .invite-manager .manager-dec {margin-left: 45px;}
+	.invite .invite-manager {width: 240px;}
+	.invite .invite-manager .manager-dec .dec-text {padding: 8px;font-size:0.6875rem;}
+	.invite .invite-manager .arrow {left: 26px;top: 15px;}
+	
+	.mask .success {width: 240px;height: 290px;margin-left: -120px;}
+	.mask .success .suc-icon {width: 180px;height: 105px;margin-left: -90px;top:16%;}
+	.mask .success .suc-text {padding-top: 170px;font-size: 1.2rem;}
+	.mask .success .cancle {width: 32px;height: 32px;top: -16px;}
+}
+
+
+/********channel.html*******/
+.channel-b{ padding: 35px 0 10px; }
+.channel-b .download{ display: inline-block; width: 35%; height: 37px; line-height: 37px; border-radius: 17px; border:1px solid #666; color: #ff6b6b;}
+.channel-b .tip{ color: #666; padding-top: 25px; width: 100%;}
+.channel-b .tip.fix{ position: fixed; bottom: 10px; }
+.channel-b .website{ color: #ff6b6b; }
+

@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1.0"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+	<meta name="app-mobile-web-app-state-bar-style" content="black"/>
+	<meta name="format-detection" content="telephone=no"/>
+	<meta name="format-detection" content="email=no"/>
+	<title>马上理财</title>
+	<link rel="stylesheet" href="css/common.css?ver=20161018" type="text/css"/>
+</head>
+<body>
+<div class="content">
+	
+	<header>
+		
+		<!-- 头像信息 -->
+		<div class="head">
+			<div class="top">
+				<div class="manager-icon">
+					<img class="user-image" src="" onerror='this.src="img/head.png"' />
+				</div>
+				<div class="vip" style="display:none;"></div>
+				<div class="manager-dec">
+					<div class="dec-text">马上理财是平安银行官方合作的理财神器，还可以加息，快来试试哦!</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- 产品信息 -->
+		<div class="product">
+			<div class="product-bg-top">
+				<p class="product-dec"></p>
+				<p class="yield">
+					<span class="yield-rate">0.00</span>
+					<span class="add" style="display:none;">+</span>
+					<span class="interest-rate"></span>
+					<span class="precent">%</span>
+				</p>
+				<p class="product-im">
+					<span class="date-line">0天期限</span>
+					<span class="initial-money">0万元起购</span>
+					<span class="disk">超低风险</span>
+				</p>
+				<div class="pay">
+					<div class="pay-btn">马上购买</div>
+				</div>
+			</div>
+			<div class="product-bg-bottom"></div>
+		</div>
+		
+		<div class="foot"></div>
+		
+	</header>
+
+	<section>
+		
+		<!-- 清除浮动 -->
+		<!--<div class="clearfix"></div>-->
+		
+		<!-- 用户注册 -->
+		<div class="register">
+			<div class="inp">
+				<input type="text" placeholder="请输入您的手机号" class="form-group" id="phone-number"/>
+				<div class="get-yz">获取验证码</div>
+			</div>
+			<div class="inp">
+				<input type="text" placeholder="请输入验证码" class="form-group" id="user-yz"/>
+			</div>
+			<div class="inp">
+				<input type="password" placeholder="请输入密码" class="form-group" id="password"/>
+			</div>
+		</div>
+		
+		<!-- 邀请码 -->
+		<div class="invite" style="display:none;">邀请码<span class="invite-number"></span></div>
+	</section>
+	
+	<footer>
+		<div class="register-btn btn">注册并购买</div>
+		<p class="info">点击“注册并购买”即表示同意<span class="agreement">《马上理财用户协议》</span></p>
+	</footer>
+	
+	<!-- 注册成功页面 -->
+	<div class="mask" style="display:none;">
+		<div class="success">
+			<div class="suc-icon"></div>
+			<p class="suc-text">恭喜您注册成功!</p>
+			<div class="download-btn">立刻下载马上理财APP</div>
+			<div class="cancle"></div>
+		</div>
+	</div>
+	
+	
+</div>
+
+<script type="text/javascript" src="js/zepto.min.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/md5.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="js/wx.js"></script>
+
+<script type="text/javascript">
+	
+	var staticHost,registerHost;
+	
+	if(location.hostname=="static.mashanglc.com"){
+		staticHost = "http://static.mashanglc.com";
+		registerHost = "http://static.mashanglc.com";
+	}else if(location.hostname=="127.0.0.1" || location.hostname=="localhost" || location.hostname=="192.168.18.46"){
+		staticHost = "http://static.sit.licai66.com";
+		registerHost = "http://static.sit.licai66.com";
+	}else{
+		subDirectory = location.hostname.split(".")[1];
+		staticHost = "http://static."+subDirectory+".licai66.com";
+		registerHost = "http://static."+subDirectory+".licai66.com";
+	}
+	
+	var publicObj = {
+		isWeixin:isWeixin(),
+		phoneType:getOS(),
+		userType:1,
+		domainname:"http://" + location.hostname,
+		userUrl:publicApiHost + "/v2/open/api/user/invitation/get/",
+		productUrl:publicApiHost + "/v2/api/web/product/get",
+		shareInfoUrl:publicApiHost+ "/v2/open/api/share/product",
+		postUrl:publicApiHost + "/v2/api/web/register",
+		verUrl:publicApiHost + "/v2/api/web/code",
+		agreementUrl:publicApiHost + "/html/agreement.html",
+		appVer:"1.0",
+		userId:getUrlParameter("userId"),
+		productId:getUrlParameter("productId"),
+		timestamp:new Date().getTime(),
+		deviceType:"mobile_web"
+	};
+	
+	var _r = publicObj.timestamp+"msfy_mslc_20160526_w"+publicObj.appVer+publicObj.deviceType+"web"+publicObj.appVer;
+	publicObj.signature=hex_md5(_r);
+
+	var _params = {
+		userType:publicObj.userType,
+		appVer: publicObj.appVer,
+		deviceType: publicObj.deviceType,
+		timestamp: publicObj.timestamp,
+		signature: publicObj.signature,
+		deviceId: "wap",
+		osVer: getOS(),
+		productId:publicObj.productId
+	};
+	
+	
+	Zepto(function($){
+	
+		//验证手机号码
+    	function checkPhone(phone){
+			var myreg = /^(((13[0-9]{1})|(14[0-9]{1})|(15[0-9]{1})|(17[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+			if(!myreg.test(phone)) {
+				return false;
+			}
+			return true;
+		}
+
+    	//加密手机密码
+		function pwd(password){
+			return hex_md5(password+"120141101");
+		}
+		
+		
+		if (publicObj.userId > 0) {
+			//获取用户信息
+			$.ajax({
+				type: "GET",
+				url:publicObj.userUrl+publicObj.userId,		
+				dataType: 'json',
+				timeout: 30000,
+				success: function (data) {
+					
+					var userInfo = data.data;
+					$(".user-image").attr("src",userInfo.profileURL);
+					
+					//获取用户邀请码
+					if(userInfo.invitationCode&&userInfo.invitationCode!=''){
+						_params.invitationCode=userInfo.invitationCode;
+						$(".invite").show();
+						$(".invite-number").text(userInfo.invitationCode);
+					}
+
+					//信息
+					if (userInfo.userType == 2) {
+						$(".dec-text").text('我是'+userInfo.bank.name+'理财经理'+userInfo.name+'，我行携手马上理财，向您推荐本周理财加息爆款。');
+
+						$(".vip").show();
+					}
+					
+					
+				},
+				error: function () {
+					
+				}
+			});
+		}
+		
+		
+		if (publicObj.productId > 0) {
+			
+			//获取理财产品信息
+			$.ajax({
+				type: "GET",
+				url: publicObj.productUrl,		
+				data:_params,
+				dataType: 'json',
+				timeout: 30000,
+				success: function (data) {
+					var productInfo = data.data.product;
+
+					if(productInfo.code&&productInfo.code!=''){
+						$(".product-dec").text(productInfo.bank.name+"理财产品"+productInfo.code);
+						$(".register").css("marginTop","110px");
+					}else{
+						$(".product-dec").text(productInfo.bank.name+"理财产品");
+						$(".register").css("marginTop","110px");
+					}
+					
+					
+					var redeemRate = 0;
+					var rate=0;
+					if(productInfo.estimatedYearRate&&productInfo.estimatedYearRate>0){
+						rate = parseFloat(productInfo.estimatedYearRate/100.0).toFixed(2);
+						$(".yield-rate").text(rate);
+					}
+					
+					//有加息时
+					if(productInfo.redeemRate && productInfo.redeemRate>0) {
+						console.log(productInfo.redeemRate);
+						$(".add").show();
+						redeemRate = parseFloat(productInfo.redeemRate).toFixed(2);
+						$(".interest-rate").text(redeemRate);
+						
+					}
+					
+					//起步金额
+					if(productInfo.minimumPurchase && productInfo.minimumPurchase > 0) {
+						$(".initial-money").text(productInfo.minimumPurchase+'万元起购');
+					}
+					
+					//理财期限
+					if(productInfo.duration&&productInfo.duration>0) {
+						$(".date-line").text(productInfo.duration+'天期限');
+					}else{
+						$(".date-line").text('不固定');
+					}
+					
+				},
+				error: function () {
+				}
+			});
+		}
+		
+		
+		//分享
+		if (publicObj.productId > 0) {
+			$.ajax({
+				type: "GET",
+				url: publicObj.shareInfoUrl+"?productId="+publicObj.productId+(publicObj.userId?("&userId="+publicObj.userId):""),
+				dataType: 'json',
+				timeout: 30000,
+				success: function (data) {
+					var shareInfo = data.data;
+
+					var wxShare = {
+						title : shareInfo.title,
+						description : shareInfo.description,
+						shareUrl : shareInfo.url,
+						icon : shareInfo.icon,
+						circleTitle : shareInfo.circleTitle
+					};
+
+					wxCallback(wxShare);
+
+				},
+				error: function () {
+				}
+			});
+		}
+		
+		//点击“获取验证码”
+		$(".content").on("click",".get-yz",function(){
+			var _phone = $("#phone-number").val();
+			if(!_phone || $.trim(_phone) == ''){
+                g_alert("手机号没有输入");
+				return;
+			}
+			if(!checkPhone(_phone)){
+                g_alert("手机号码的格式不正确");
+				return;
+			}
+			_params.phone = _phone;
+			_params.reasonType = 1;
+
+
+            g_loading();
+			$.ajax({
+				type:"POST",
+				url:publicObj.verUrl,
+				data:_params,
+				dataType:'json',
+				timeout:30000,
+				success:function(data){
+					remove_loading();
+					
+					
+					var status = data.data.status;
+					if(status == 0){
+						g_alert("验证码已经发送");
+					}else if(status == 100){
+						g_alert("电话已经被注册");
+					}else if(status == 110){
+						g_alert("电话号码不存在");
+					}else if(status == 200){
+						g_alert("1分钟以内只能生成一次");
+					}else {
+						g_alert("获取验证码异常，请稍后尝试");
+					}
+				},
+				error:function(){
+					remove_loading();
+					g_alert("网络错误，请稍后再试");
+				}
+			});
+        });
+        
+        
+        //点击马上注册并购买
+        $(".content").on("click",".register-btn",function(){
+        	
+			var _phone = $("#phone-number").val();
+		    var _user_yanzheng = $("#user-yz").val();
+			var _password = $("#password").val();
+			if(!_phone || $.trim(_phone) == ''){
+				g_alert("手机号没有输入");
+				return;
+			}
+			if(!checkPhone(_phone)){
+				g_alert("手机号码的格式不正确");
+				return;
+			}
+			if(!_user_yanzheng || $.trim(_user_yanzheng) == ''){
+				g_alert("验证码不能为空");
+				return;
+			}
+			if(!_password || $.trim(_password) == ''){
+				g_alert("密码不能为空");
+				return;
+			}
+            if(_password.length < 6 || _password.length > 15) {
+                g_alert("密码长度应为6-15位");
+                return;
+            }
+			
+			_params.phone = _phone;
+			_params.password = pwd(_password);
+			_params.code = _user_yanzheng;
+			
+            g_loading();
+			$.ajax({
+				type:"POST",
+				url:publicObj.postUrl,
+				data:_params,
+				dataType:'json',
+				timeout:30000,
+				success:function(data){
+					remove_loading();
+					
+					var _status = data.data.status;
+					if(_status == 0){
+						$(".mask").show();
+						$(".mask").on("touchmove",function(e){
+							e.preventDefault();
+						})
+					}else {
+						g_alert(data.data.msg);
+					}
+				},
+				error:function(){
+					remove_loading();
+					g_alert("网络错误，请稍后再试");
+				}
+			});
+        });
+		
+		
+		//点击取消按钮
+		$(".content").on("click",".cancle",function(){
+			$(".mask").css("display","none");
+		})
+		
+		//点击马上理财协议
+		$(".content").on("click",".agreement",function(){
+			location.href=publicObj.agreementUrl; 
+			return false;
+		})
+		
+		//点击下载APP
+		$(".content").on("click",".download-btn",function(){
+			location.href = "http://a.app.qq.com/o/simple.jsp?pkgname=com.mashanglc.android.licaiclient";
+			return false;
+		})
+
+
+		var deepshareUrl = "http://a.app.qq.com/o/simple.jsp?pkgname=com.mashanglc.android.licaiclient";
+		var params =
+		{
+			inapp_data: {action: 'mslcaction://showProductDetail?productId=' + publicObj.productId},
+			download_title : "马上理财-银行官方合作的理财产品神器",
+			download_msg : "下载马上理财APP",
+		};
+
+		$.ajax({
+			url: 'https://fds.so/v2/url/bdc8dc38688e526c',
+			type: 'POST',
+			data: JSON.stringify(params),
+			xhrFields: {withCredentials: true,},
+			success: function(result) {
+				deepshareUrl = result.url;
+			},
+			error: function() {
+			},
+		});
+
+		//点击马上购买
+		$(".content").on("click",".pay-btn",function(){
+			location.href = deepshareUrl;
+			return false;
+		})
+	})
+	
+</script>
+<script>
+	var _hmt = _hmt || [];
+	(function() {
+		var hm = document.createElement("script");
+		hm.src = "//hm.baidu.com/hm.js?ca700516fc774085fe43ad4eced89f3b";
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(hm, s);
+	})();
+</script>
+</body>
+</html>
+
+
+
+

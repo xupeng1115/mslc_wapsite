@@ -1,0 +1,195 @@
+@charset "utf-8";
+html { font-family:"Helvetica Neue",Helvetica,"San Francisco",  Arial, sans-serif; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; font-size: 16px; }
+body { margin: 0; font-size: 1rem; line-height: 1.5; color: #333; background-color: #fafafa;  overflow-x: hidden; -webkit-overflow-scrolling: touch; }
+article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, section, summary { display: block; }
+audio, canvas, progress, video { display: inline-block; vertical-align: baseline; }
+audio:not([controls]) { display: none; height: 0; }
+[hidden], template { display: none; }
+svg:not(:root) { overflow: hidden; }
+a { background: transparent; text-decoration: none; -webkit-tap-highlight-color: transparent; color: #0088cc; }
+a:active { outline: 0; }
+a:active { color: #006699; }
+abbr[title] { border-bottom: 1px dotted; }
+b, strong { font-weight: bold; }
+dfn { font-style: italic; }
+mark { background: #ff0; color: #000; }
+small { font-size: 80%; }
+sub, sup { font-size: 75%; line-height: 0; position: relative; vertical-align: baseline; }
+sup { top: -0.5em; }
+sub { bottom: -0.25em; }
+img { border: 0; vertical-align: middle;}
+hr { -moz-box-sizing: content-box; box-sizing: content-box; height: 0; }
+pre { overflow: auto; white-space: pre; white-space: pre-wrap; word-wrap: break-word; }
+code, kbd, pre, samp { font-family: monospace, monospace; font-size: 1em; }
+button, input, optgroup, select, textarea { color: inherit; font: inherit; margin: 0; }
+button { overflow: visible; }
+button, select { text-transform: none; }
+button, html input[type="button"], input[type="reset"], input[type="submit"] { -webkit-appearance: button; cursor: pointer; }
+button[disabled], html input[disabled] { cursor: default; }
+button::-moz-focus-inner, input::-moz-focus-inner { border: 0; padding: 0; }
+input { line-height: normal; }
+input[type="checkbox"], input[type="radio"] { box-sizing: border-box; padding: 0; }
+input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { height: auto; }
+input[type="search"] { -webkit-appearance: textfield; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+input[type="search"]::-webkit-search-cancel-button, input[type="search"]::-webkit-search-decoration { -webkit-appearance: none; }
+fieldset { border: 1px solid #c0c0c0; margin: 0 2px; padding: 0.35em 0.625em 0.75em; }
+legend { border: 0; padding: 0; }
+textarea { overflow: auto; resize: vertical;}
+optgroup { font-weight: bold; }
+table { border-collapse: collapse; border-spacing: 0; }
+td, th { padding: 0; }
+html, button, input, select, textarea { font-family:"San Francisco", "Helvetica Neue", Helvetica, STHeiTi, Arial, sans-serif; }
+h1, h2, h3, h4, h5, h6, p, figure, form, blockquote { margin: 0; padding:0;}
+ul, ol, li, dl, dd { margin: 0; padding: 0; }
+ul, ol { list-style: none outside none; }
+h1, h2, h3 { line-height: 2; font-weight: normal; }
+input::-moz-placeholder, textarea::-moz-placeholder { color: #cccccc; }
+input:-ms-input-placeholder, textarea:-ms-input-placeholder { color: #cccccc; }
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { color: #cccccc; } 
+
+* { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; -webkit-tap-highlight-color: transparent;}
+.clearfix:after{visibility: hidden;display: block;font-size: 0;content: " ";clear: both;height: 0;}
+.clearfix{*zoom:1;}
+.flex{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;-webkit-justify-content:center;justify-content:center;-webkit-box-pack: center;}
+
+/***********************************************************Common-style  End***************************************************************/
+
+/***********************************************************************Main Begin***********************************************************************/
+
+html,body{text-align: center;}
+body[data-contact=contact]{ padding-bottom: 100px; color: #323232;}
+body[content-bottom=foot]{width:100%;height:100%;background-color:#ffffff;}
+img{max-width: 100%;}
+.red{ color: #ff6060!important;}
+.yellow{ color: #fec32e!important;}
+.gray{ color: #8c8c8c!important;}
+.blue{ color: #0076fe!important;}
+.clear-box{height:15px;background-color:#fafafa;border-bottom:1px solid #e6e6e6;}
+
+.content{ background-color:#ffffff;border-top: 1px solid #e6e6e6;border-bottom:1px solid #e6e6e6;text-align: left;margin-top: 15px;}
+.content[content-bottom=foot]{margin-top:0;border:none;}
+
+.list{ padding-left: 15px;}
+.list > dt{ font-size: 0.875rem; border-bottom: 1px solid #f2f2f2; color: #8c8c8c; line-height: 32px; background: url(../img/point.png) no-repeat 0 center; background-size: 0.375rem; padding-left: 15px;padding-top: 1px;}
+.list > dd,
+.list > li{ font-size: 1rem; border-bottom: 1px solid #f2f2f2; position: relative;}
+.list > dd:last-child,
+.list > li:last-child{ border-bottom: 0;}
+.list > dd > a,
+.list > li > a{ display: block; line-height: 44px; color: #323232;}
+.list > dd > a > i,
+.list > li > a > i{ position: absolute; right: 15px; width: 0.75rem; height: 100%; background: url(../img/next.png) no-repeat right center; background-size: 0.375rem;}
+
+
+.detail{ padding-left: 15px;background-color:#ffffff;}
+.detail > dt{ font-size: 1rem; line-height: 44px; border-bottom: 1px solid #f2f2f2; font-weight:600;}
+.detail > dd{ font-size: 0.875rem; padding-right: 15px;} 
+.detail ul{ padding-top: 20px; line-height: 1.625;}
+
+/**********带黑圆点文字**************/
+.detail .txt-list{ margin-left: 28px;}
+.detail .txt-list > li{ position: relative;}
+.detail .txt-list > li::before{ position: absolute; left: -13px; top: 8px; background-color: #323232; width: 4px; height: 4px; border-radius: 50%; overflow: hidden; content: "";}
+
+.detail .txt-list-top{padding-top:0;}
+.detail .txt-list-bottom{padding-bottom:50px;}
+.detail .txt-bottom{padding-bottom:30px;}
+
+/*****************页面标题**************/
+.detail .title{ position: relative; padding-left: 28px;}
+.detail .title::before{ position: absolute; left: 0; top: 1px; width:19px; height: 19px; line-height: 20px; border-radius: 50%; background-color: #5f9ff3; color: #fff; text-align: center; content: attr(data-value);}
+
+/******************页面图片***************/
+.detail .pic{ width: 66%; margin: 0 auto; padding: 30px 0 30px; position: relative;}
+.detail .pic-top{padding-top:0px;}
+
+/*******不一致图片大小处理**************/
+.detail .pusrchase-product02{width:84%;padding-right:25px;}
+.detail .pusrchase-product03{width:75%;padding-right:10px;}
+.detail .pusrchase-product04{width:88%;padding-right:30px;}
+.detail .pic-online-buy{width:78%;}
+.detail .pic-accept-order{width:78%;}
+.detail .pic-recommend-product{width:78%;}
+.detail .pic-about-jimaoxin{width: 80%;}
+
+/***********客服咨询************/
+.contact { position: fixed; width: 100%; bottom: 0;}
+.contact .tip{ text-align: left; background-color: #f0f0f0; font-size: 0.875rem; color: #8c8c8c; padding-left: 15px; line-height: 35px;}
+.contact .btn{ text-align: center; background-color: #4cbed4; height: 50px; }
+.contact .btn .txt{ color: #fff; font-size: 1.125rem; background: url(../img/consult.png) no-repeat 0 center; background-size: 1.5rem; padding-left: 35px;}
+
+/**********手指动画点击***********/
+.detail .pic .click{ position: absolute; width: 9.339%;}
+.detail .pic .click img{ position: relative; z-index: 2;}
+.detail .pic .click i{ position: absolute; left:-29%; top: -37%; background-color: rgba(0,0,0,0.12); width: 140%; height: 0; padding: 70% 0; z-index: 1; border-radius: 50%; -webkit-animation:handclick 0.8s infinite linear;}
+.detail .pic .click .white{background-color: rgba(255,255,255,0.3);}
+
+/*手指动画*/
+@keyframes handclick {
+  from { -webkit-transform: scale(1); }
+  50%{-webkit-transform: scale(0.8);}
+  to {-webkit-transform: scale(1);}
+}
+@-webkit-keyframes handclick {
+  from { -webkit-transform: scale(1); }
+  50%{-webkit-transform: scale(0.8);}
+  to {-webkit-transform: scale(1);}
+}
+
+/*手指动画manager*/
+.zhidingyuyue-pic02{ left: 64%; bottom: 19%;}
+.zhidingyuyue-pic03{ left: 78%; top: 32.5%;}
+
+.about-jimaoxin-pic01{left:82%; top: 47%;}
+.about-jimaoxin-pic03{left:81%; top: 24%;}
+
+.query-order-pic01{ left: 78%; top: 54.5%; }
+.query-order-pic02{ left: 81%; top: 32%; }
+
+.dig-client-pic01{ left: 54%; bottom: 52.8%;}
+.dig-client-pic02{ left: 80%; bottom: 40.8%;}
+
+.give-ticket-pic01{left: 25%; bottom: 6%;}
+.give-ticket-pic02{left: 82%; bottom: 51.8%;}
+
+
+/*手指动画client*/
+.ruhegoumai-pic01{ left: 61.95%; bottom: 6%;}
+.ruhegoumai-pic02{ right: 12%; bottom: 3%;}
+
+.jimaoxin-pic01{ right: 6.5%; bottom: 67%;}
+.jimaoxin-pic05{ right: 34.5%; bottom: 16.5%;}
+
+.yaoqinghaoyou-pic01{ right: 18%; bottom: 5%;}
+.yaoqinghaoyou-pic02{ right: 28%; bottom: 5%;}
+
+.xssl-chengshixuanze-pic01{left:52%;top:60%;}
+.xssl-view-product-pic01{left:56%; bottom: 2%;}
+
+.client-query-order-pic01{ left: 75%; top: 54%; }
+.client-query-order-pic02{ left: 79%; top: 54%; }
+
+.cf-custom-solution-pic01{ left: 75%; top: 88%; }
+.cf-custom-solution-pic02{ left: 72%; top: 89%; }
+
+.cf-look-around-pic01{left: 36%; top: 38%; }
+
+.cf-manager-recommend-pic01{left: 78%; top: 77%; }
+
+.cf-guess-you-like-pic01{left: 22%; top: 44%;}
+.cf-guess-you-like-pic02{left: 60%; top: 38%;}
+
+.client-about-jimaoxin-pic01{ left: 85%; top: 20%; }
+
+.purchase-product-pic01{ left: 64%; top: 78%; }
+.purchase-product-pic02{ left: 73%; top: 90%; }
+
+.purchase-manager-pic02{ left: 55%; top: 74%; }
+
+.about-information-pic01{left: 76%; bottom: 13%;}
+.about-information-pic02{left: 79%; bottom: 2%;}
+
+.get-interest-ticket-pic01{left: 86%; bottom: 69%;}
+.get-interest-ticket-pic03{left: 81%; bottom: 22%;}
+
+

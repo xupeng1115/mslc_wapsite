@@ -1,0 +1,79 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<title>马上理财-邀请码</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta content="telephone=no" name="format-detection" />
+    <meta content="email=no" name="format-detection" />
+    <link href="css/common.css?v=20151230" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <div class="page-landscape content logged">
+        <p class="bg"><img src="img/bg2.jpg"></p>
+        <p class="logo"><img src="img/logo.png"></p>
+        <p class="head-portrait" id="userHeadPortrait"></p>
+        <p class="tip">通过<span id="userNickname"></span>的邀请码注册马上理财<br />即享￥65红包返现，可兑换补贴收益</p>
+        <div class="invitation-cont">
+            <p class="t1">
+                <span class="t1-border"></span>
+                <span class="t1-txt">邀请码</span>
+            </p>
+            <p class="t2 code" style="display: block;"><span class="t2-txt" id="userCode"></span></p>
+            <p class="t3" id="copy" style="display: block;">&lt;长按复制&gt;</p>
+        </div>
+        <div class="footer-cont2">
+            <button class="btn btn2" id="download">去注册，领取红包</button>
+            <p class="f-tip">使用邀请码注册成功后<br />你和你的朋友都将获得<span class="money">65元</span>返现券</p>
+        </div>
+    </div>
+    <div class="page-portrait">
+        <div class="vertical-module flex">
+            <div class="vertical-cont">
+                <p class="vertical-img rotate90"><img src="img/index.png" alt=""></p>
+                <p class="vertical-txt">为了获得更好的体验，请使用竖屏浏览</p>
+            </div>
+        </div>
+    </div>
+    <script src="js/zepto.min.js" type="text/javascript"></script>
+    <script src="js/common.js?v=20151230" type="text/javascript"></script>
+    <script type="text/javascript">
+    Zepto(function($){
+        var download = document.getElementById("download");
+        var userCode = document.getElementById("userCode");
+        var userNickname = document.getElementById("userNickname");
+        var userHeadPortrait = document.getElementById("userHeadPortrait");
+        var content = document.querySelector(".content");
+
+        $.getJSON(publicObj.url+publicObj.userId,function(response){
+            var data = response.data;
+            var image = document.createElement("img");
+            image.src = data.profileURL || "img/default.png";
+            userHeadPortrait.appendChild(image);
+            userNickname.innerText = data.name;
+            userCode.innerText = data.invitationCode;
+
+        })
+
+        download.addEventListener("click",function(){
+            location.href = publicObj.downloadUrl + publicObj.userId;
+        },false)
+        content.style.opacity = 1;
+    })
+    </script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script>
+        var _jsHost = "http://api.mashanglc.com";
+        var _title = "我抢到一个65元新年红包，分你一个！";
+        var _link = publicObj.domainname + "/html/invitation/index_wx.html"+"?userId="+publicObj.userId;
+        var _imgUrl = publicObj.domainname + "/html/invitation/img/share.png";
+        var _desc = "你拍一，我拍一，拿上现金买新衣。你拍二，我拍二，拿着红包吃撸串儿";
+        var _weixinJsUrl = _jsHost+'/api/weixinJs';
+        var _url = location.href.split('#')[0];
+    </script>
+    <script src="js/wx.js"></script>
+</body>
+</html>

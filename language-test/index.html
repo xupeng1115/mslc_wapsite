@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<title>大连话十级测试</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta content="telephone=no" name="format-detection" />
+    <meta content="email=no" name="format-detection" />
+    <link rel="stylesheet" type="text/css" href="css/common.css?v=20160615" />
+
+    <style>
+        body {background: #ffffff;}
+
+        .guide { position: fixed; top:0px;left:0px;width: 100%; height:100%; background: rgba(0,0,0,0.8);z-index:99;}
+        .guide img {float: right; height: 200px; }
+
+        .wall {width: 100%; height: 400px; background: url("img/wall.png") repeat;}
+        .clock {margin-top: 15px; height: 86px;}
+        .board {height: 170px; background: url("img/board.png") center center no-repeat;background-size: auto 170px;}
+
+        .chair {margin-top: -150px; width: 100%; height: 357px; background: url("img/chair.png") center center no-repeat;background-size: 100% 100%;}
+
+        .layer {position: absolute; width: 100%; left: 0px; top:115px; text-align: center; z-index: 9;}
+
+        .layer-start {}
+        .layer-start .bg-start-title {height: 170px;}
+        .layer-start .attendee {margin: 40px 0px;color:#ffffff;display: inline-block;}
+        .layer-start .attendee img {height: 18px;}
+        .layer-start .attendee .number {position: relative;top:3px; color: #ed4e30;font-size:24px;font-weight: 300;}
+        .layer-start .btn-start {height:46px;margin-top: 80px;}
+
+        .layer-question {color:#ffffff; font-size: 15px;}
+        .layer-question .bg-question-title {height: 70px;}
+        .layer-question .question {padding: 20px 10px;line-height: 18px;}
+        .layer-question .bg-answer {padding-top: 15px; margin-top:90px;height: 240px; background: url("img/bg_question_answer.png")center center no-repeat;background-size: 250px 240px;}
+        .layer-question .bg-answer .item {height:53px;line-height:53px;font-size:15px;background: url("img/bg_answer_item.png") center center no-repeat;background-size: auto 53px;}
+
+        .layer-score {}
+        .layer-score .bg-score-title {height: 70px;}
+        .layer-score .result {margin:0 auto; border: 1px dashed #ffffff; border-radius: 5px;width:250px;height: 50px;}
+        .layer-score .result .score {font-size: 18px;color:#ed4e30;}
+        .layer-score .result .point {font-size: 13px;color:#f6c221;}
+        .layer-score .score-desc {margin:15px auto; margin-bottom:0px;width:325px; height: 135px; background: url("img/bg_score_description.png") center center no-repeat;background-size: auto 135px;}
+        .layer-score .score-desc .text {padding:35px 40px 0px 40px;font-size: 13px;color:#666666;width: 100%;line-height:14px; text-align: left;}
+
+        .layer-score .btn-share {height:40px;margin-top: 50px;}
+        .layer-score .btn-submit {height:40px;margin-top: 10px;}
+
+        .layer-answer {position: fixed; top:0px; left: 0px; width: 100%;height: 100%; background:rgba(0,0,0,.5);z-index: 20;}
+        .layer-answer .bg-answer-title {margin: 0 auto; margin-top: 30px; width: 150px; height: 34px; background: url("img/bg_answer_title.png") center center no-repeat;background-size: auto 34px;}
+        .layer-answer .container {position: fixed; left: 50%; margin-left: -124px; top:90px; width: 248px; height: 401px; background: url("img/bg_answer_scroll.png") center center no-repeat;background-size: 248px 401px;}
+        .layer-answer .content {position: relative;margin-left: 19px; padding: 0px 10px; top:90px; width: 210px; height: 230px;text-align: left;font-size: 12px;color:#4d4d4d;overflow:scroll;line-height: 15px;}
+        .layer-answer .content .item {margin: 10px 0px;}
+        .layer-answer .content .item .a {margin-left: 20px;}
+        .layer-answer .btn-submit {height:40px; margin-top: 185px;}
+
+        .layer-submit .bg-submit-title {height: 68px;}
+        .layer-submit .verify-zone {height: 54px;width: 100%;font-size: 14px;color:#ffffff;font-weight: 300;}
+        .layer-submit .verify-zone p {margin-bottom: 3px;}
+        .layer-submit .verify-zone .bg-phone {height: 19px;}
+        .layer-submit .verify-zone .btn-code {height: 22px;}
+        .layer-submit .verify-zone .bg-code {height: 3px;margin-top: 15px;margin-left:60px;padding-right: 10px;}
+        .layer-submit .verify-zone .btn-verify {height: 22px;}
+        .layer-submit .verify-zone .input-phone {background: transparent; border: 0px;margin-left: -100px; height: 25px;width: 100px;}
+        .layer-submit .verify-zone .input-code {background: transparent; margin-left: -70px;height: 25px;width: 70px; border: 0px;}
+
+        .layer-submit .info { margin:20px auto; width:227px; height: 140px; background: url("img/bg_submit_red1.png") center center no-repeat;background-size: auto 140px;text-align: left;font-size: 14px;color:#ffffff;font-weight: 300;}
+        .layer-submit .info .phone {position: relative; top: 65px;left:118px;}
+        .layer-submit .info .password {position: relative; top: 80px; left:118px;}
+        .layer-submit .btn-download {height:40px;margin-top: 10px;}
+        .layer-submit .qr-code {height:120px;}
+
+        .warning {font-size: 9px;color: #e0e0e0;}
+        .invitation-code { font-size: 10px; font-weight: 300; color:#ffffff;;width: 100%;margin-bottom: 5px;}
+        .app-logo {width:100%;text-align: center;margin: 0 auto;z-index: 1;margin-top: 10px;}
+        .app-logo img {height: 35px;}
+
+        @media screen and (max-width: 376px) {
+            .layer-start .btn-start {height:46px;margin-top: 60px;}
+            .layer-start .attendee {margin: 15px 0px;font-size: 18px;}
+            .layer-start .attendee .number {font-size:22px;}
+
+            .layer-score .score-desc {width:300px; height: 125px; background-size: auto 125px;}
+            .layer-score .score-desc .text {padding:35px 40px 0px 40px; font-size: 12px;line-height:14px;}
+
+            .layer-question .bg-answer {margin-top:80px;}
+
+            .layer-answer .container{top:70px;}
+            .layer-answer .bg-answer-title {margin-top: 20px;}
+
+            .layer-score .btn-share {margin-top: 40px;}
+
+            .layer-submit .qr-code {height:100px;}
+        }
+
+        @media screen and (max-width:321px) {
+            .board {background-size: auto 150px;}
+            .layer {top:122px;}
+
+            .layer-start .bg-start-title {height: 150px;}
+            .layer-start .btn-start {height:46px;margin-top: 40px;}
+            .layer-start .attendee {margin: 3px 0px;font-size: 16px;}
+            .layer-start .attendee .number {font-size:20px;}
+
+            .layer-question .bg-answer { margin-top:100px;height: 200px;background-size: 209px 200px;}
+            .layer-question .bg-answer .item {height:40px;line-height:40px;background-size: auto 40px;}
+
+
+            .layer-score .score-desc {width:264px; height: 110px; background-size: auto 110px;}
+            .layer-score .score-desc .text {padding:35px 40px 0px 40px; font-size: 9px;line-height:10px;}
+
+            .layer-question .bg-answer {margin-top:40px;}
+
+            .layer-score .btn-share {margin-top: 0px;}
+
+            .layer-answer .container{top:50px;}
+            .layer-answer .bg-answer-title {margin-top: 10px;background-size: auto 25px;width: 110px;height: 25px;}
+
+            .layer-submit .info {margin:0 auto;}
+
+            .layer-submit .qr-code {height:100px;}
+
+            .app-logo {bottom: 18px;}
+            .app-logo img {height: 30px;}
+            .invitation-code {font-size: 9px;bottom: 4px;}
+
+        }
+
+
+        @media screen and (max-height: 480px) {
+            .layer-answer .container{top:10px;}
+            .layer-answer .bg-answer-title {display: none;}
+        }
+
+    </style>
+</head>
+
+<body>
+<div class="wall">
+    <image class="clock" src="img/clock.png"></image>
+    <div class="board"></div>
+</div>
+<div class="chair">
+</div>
+
+<!--开始页面-->
+<div class="layer layer-start" style="display: none">
+    <p><img class="bg-start-title" src="img/bg_start_title.png"/></p>
+    <div class="attendee"><img src="img/text1.png"/>&nbsp;<span class="number">0</span>&nbsp;<img src="img/text2.png"/> </div>
+    <p><img class="btn-start" src="img/btn_start.png"/></p>
+    <div class="app-logo" style="margin-top: 50px;">
+        <img src="img/logo.png"/>
+    </div>
+    <div class="invitation-code"></div>
+    <p class="warning" style="margin-top: 100px;">理财有风险 投资需谨慎</p>
+</div>
+
+<!--答题页面-->
+<div class="layer layer-question" style="display: none;">
+    <p><img class="bg-question-title" src="img/bg_question_title.png"/></p>
+    <div class="question"></div>
+    <div class="bg-answer">
+    </div>
+</div>
+
+<!--得分页面-->
+<div class="layer layer-score" style="display: none;">
+    <p><img class="bg-score-title" src="img/bg_score_title.png"/></p>
+    <div class="result">
+        <div class="score"></div>
+        <div class="point"></div>
+    </div>
+    <div class="score-desc">
+        <div class="text"></div>
+    </div>
+    <p><img class="btn-share" src="img/btn_share.png"/></p>
+    <p><img class="btn-submit" src="img/btn_submit.png"/></p>
+
+    <div class="app-logo">
+        <img src="img/logo.png"/>
+    </div>
+    <div class="invitation-code"></div>
+</div>
+
+<!--答案页面-->
+<div class="layer-answer" style="display: none;">
+    <div class="bg-answer-title"></div>
+    <div class="container">
+        <div class="content">
+        </div>
+        <img class="btn-submit" src="img/btn_submit.png"/>
+
+        <div class="app-logo">
+            <img src="img/logo.png"/>
+        </div>
+        <div class="invitation-code"></div>
+    </div>
+</div>
+
+<!--提交成绩页面-->
+<div class="layer layer-submit" style="display: none;">
+    <p><img class="bg-submit-title" src="img/bg_submit_title.png"/></p>
+
+    <div class="verify-zone">
+        <p>
+            <img class="bg-phone" src="img/bg_phone.png"/>
+            <input type="tel" class="input-phone" placeholder=""/>
+            <img class="btn-code" src="img/btn_code.png"/>
+        </p>
+        <p>
+            <img class="bg-code" src="img/bg_code.png"/>
+            <input type="tel" class="input-code" placeholder=""/>
+            <img class="btn-verify" src="img/btn_verify.png"/>
+        </p>
+    </div>
+
+    <div class="info">
+        <p class="phone"></p>
+        <p class="password"></p>
+    </div>
+    <p><img class="btn-download" src="img/btn_download.png"/></p>
+    <p><img class="qr-code" src="img/qr_code_wxgzh.png"/></p>
+
+    <div class="app-logo">
+        <img src="img/logo.png"/>
+    </div>
+    <div class="invitation-code"></div>
+    <p class="warning">理财有风险 投资需谨慎</p>
+</div>
+
+
+<script src="js/zepto.min.js" type="text/javascript"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="js/wx.js"></script>
+<script src="js/common.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/md5.js"></script>
+
+<script type="text/javascript">
+
+    //题目
+    var tests = [
+        {
+            "subject": "1）“女儿”在大连话中怎么说？",
+            "answers": [
+                {"text": "小小", "score": 0},
+                {"text": "归宁", "score": 5},
+                {"text": "棍娘儿", "score": 0},
+                {"text": "大大", "score": 0}
+            ]
+        },
+        {
+            "subject": "2）“很黑”在大连话中怎么说？",
+            "answers": [
+                {"text": "拔搔", "score": 0},
+                {"text": "臭油额", "score": 0},
+                {"text": "墨赫（hě）", "score": 5},
+                {"text": "摸瞎赫（hě）", "score": 0}
+            ]
+        },
+        {
+            "subject": "3）“傻子”在大连话中怎么说？",
+            "answers": [
+                {"text": "潮乎蛋", "score": 5},
+                {"text": "混额", "score": 0},
+                {"text": "赫（hě）傻子", "score": 0},
+                {"text": "大马猴额", "score": 0}
+            ]
+        },
+        {
+            "subject": "4）“吵闹”在大连话中怎么说？",
+            "answers": [
+                {"text": "哔了叭啦", "score": 0},
+                {"text": "嗷嗷巴三", "score": 5},
+                {"text": "打咧咧", "score": 0},
+                {"text": "反翻", "score": 0}
+            ]
+        },
+        {
+            "subject": "5）“舍得”在大连话中怎么说？",
+            "answers": [
+                {"text": "基到", "score": 0},
+                {"text": "嘎实", "score": 10},
+                {"text": "打咧咧", "score": 0},
+                {"text": "挨帮", "score": 0}
+            ]
+        },
+        {
+            "subject": "6）大连话中，“很傻” 怎么说？",
+            "answers": [
+                {"text": "卡乎乎", "score": 0},
+                {"text": "激溜", "score": 0},
+                {"text": "更儿更儿", "score": 0},
+                {"text": "彪来来", "score": 10}
+            ]
+        },
+        {
+            "subject": "7）大连话中，“同桌” 怎么说？",
+            "answers": [
+                {"text": "二伊额", "score": 0},
+                {"text": "老雕", "score": 0},
+                {"text": "老旮", "score": 0},
+                {"text": "老对", "score": 5}
+            ]
+        },
+        {
+            "subject": "8）大连话中，“不要忽悠啦” 怎么说？",
+            "answers": [
+                {"text": "伐要弄松吾", "score": 0},
+                {"text": "表弄塞了", "score": 0},
+                {"text": "败泡了", "score": 10},
+                {"text": "不知道", "score": 0}
+            ]
+        },
+        {
+            "subject": "9）大连话中，“不要摔跤” 怎么说",
+            "answers": [
+                {"text": "拜卡着", "score": 5},
+                {"text": "表克撒", "score": 0},
+                {"text": "拜卡角", "score": 0},
+                {"text": "伐要克了", "score": 0}
+            ]
+        },
+        {
+            "subject": "10）大连话中，“有缺口” 怎么说？",
+            "answers": [
+                {"text": "活廊子", "score": 5},
+                {"text": "活辣子", "score": 0},
+                {"text": "洞眼儿", "score": 0},
+                {"text": "不知道", "score": 0}
+            ]
+        },
+        {
+            "subject": "11）大连话中，“知了”怎么说？",
+            "answers": [
+                {"text": "蛈蛚龟儿", "score": 0},
+                {"text": "果果", "score": 0},
+                {"text": "咪咪嘎", "score": 10},
+                {"text": "捎千", "score": 0}
+            ]
+        },
+        {
+            "subject": "12）大连话翻译：我叫他们磕了。",
+            "answers": [
+                {"text": "我真拿他们没办法。", "score": 10},
+                {"text": "我上了他们的当。", "score": 0},
+                {"text": "我说服了他们。", "score": 0},
+                {"text": "我被他们打了一顿。", "score": 0}
+            ]
+        },
+        {
+            "subject": "13）大连话中，“梨糕”是指哪一种食品？",
+            "answers": [
+                {"text": "梨为原料的糕", "score": 0},
+                {"text": "糖葫芦", "score": 5},
+                {"text": "冰糕", "score": 0},
+                {"text": "年糕", "score": 0}
+            ]
+        },
+        {
+            "subject": "14）大连话中，“喃（nǎn）”是指？",
+            "answers": [
+                {"text": "你，你们", "score": 5},
+                {"text": "我，我们", "score": 0},
+                {"text": "他，他们", "score": 0},
+                {"text": "大家", "score": 0}
+            ]
+        },
+        {
+            "subject": "15）“特(tě)味儿”在大连话中是指？",
+            "answers": [
+                {"text": "特意", "score": 5},
+                {"text": "气味", "score": 0},
+                {"text": "干果", "score": 0},
+                {"text": "难过", "score": 0}
+            ]
+        },
+    ];
+
+    //评分标准
+    var scoreInfo = [
+        {
+            "score":5,
+            "title":"我去？还没到10分？",
+            "point":30,
+            "description":"哇哦！能考出如此惊天地、泣鬼神的分数，可见你是多么的不一般。“24K的大连话白痴”这个称号非你莫属了。"
+        },
+        {
+            "score":45,
+            "title":"一般般，连50分都没拿到！",
+            "point":30,
+            "description":"你已获得大连话金种子称号！不要憋着，什么时候展现一下你的全部实力那？"
+        },
+        {
+            "score":55,
+            "title":"差一点点就60分鸟~",
+            "point":50,
+            "description":"你的大连话已经相当不错了，虽然没有及格，不过没关系，抽个空泡个大连妞/大连帅哥，相信你会拿走你该得的满分！"
+        },
+        {
+            "score":70,
+            "title":"不错不错，及格了",
+            "point":60,
+            "description":"你已获得大连澡堂面形象代言人特权！抽空去马栏河河边边逛逛，相信你的大连口语会更上一层楼的哟~"
+        },
+        {
+            "score":75,
+            "title":"75分，离成功已经很近！",
+            "point":75,
+            "description":"哈哈哈，是不是被难倒了，没有拿到满分也正常，谁让我们的十级测试那么难呢~努力练习你的大连话，成为大连人民的骄傲吧！"
+        },
+        {
+            "score":80,
+            "title":"80分，离成功已经很近！",
+            "point":80,
+            "description":"哈哈哈，是不是被难倒了，没有拿到满分也正常，谁让我们的十级测试那么难呢~努力练习你的大连话，成为大连人民的骄傲吧！"
+        },
+        {
+            "score":85,
+            "title":"85分，离成功已经很近！",
+            "point":85,
+            "description":"哈哈哈，是不是被难倒了，没有拿到满分也正常，谁让我们的十级测试那么难呢~努力练习你的大连话，成为大连人民的骄傲吧！"
+        },
+        {
+            "score":90,
+            "title":"90分，正宗大连人！",
+            "point":90,
+            "description":"噗~~竟然拿到了这么高的分数，看来你是有备而来！如此流利的大连话，令人钦佩！！"
+        },
+        {
+            "score":95,
+            "title":"95分，正宗大连人！",
+            "point":95,
+            "description":"噗~~竟然拿到了这么高的分数，看来你是有备而来！如此流利的大连话，令人钦佩！！"
+        },
+        {
+            "score":100,
+            "title":"哇塞，满分！",
+            "point":100,
+            "description":"大连话是你居家旅行、升官发财、发家致富、打情骂俏之必备利器！本次十级测试，你成功过关！速度分享到朋友圈晒下你的得分吧"
+        }
+    ];
+
+    var count = tests.length;
+    var index = 0;
+    var totalScore = 0;
+
+    function start() {
+        next();
+    }
+
+    function itemClicked(t) {
+        var score = $(t).attr("score");
+        totalScore += parseInt(score);
+
+        index += 1;
+
+        if (index < count) {
+            setTimeout(function(){next();},300);
+        } else {
+            result();
+        }
+    }
+
+    function next() {
+
+        if (index >= tests.length) return;
+
+        var test = tests[index];
+        var subject = test.subject;
+        var answers = test.answers;
+
+        $(".layer-question .question").text(subject);
+        $(".layer-question .bg-answer").empty();
+
+        for (var i=0;i<answers.length;i++) {
+            var answer = answers[i];
+            var str = '<div class="item" onclick="return itemClicked(this);"';
+            str += ' score=' + answer.score + '>';
+            str += answer.text +'</div>';
+            $(".bg-answer").append(str);
+        }
+    }
+
+    function result() {
+        $(".layer-question").hide();
+
+        $(".layer-score").show();
+
+        for (var i=0;i<scoreInfo.length;i++) {
+            var info = scoreInfo[i];
+            if (totalScore <= info.score) {
+
+                $(".layer-score .score").text(info.title);
+                $(".layer-score .point").text('您可以兑换'+info.point+'个马豆');
+
+                $(".layer-score .score-desc .text").text(info.description);
+
+                break;
+            }
+        }
+
+        //更新分享信息
+        wxShare.title = "我在2016年大连话专业十级考试中得了"+totalScore+"分";
+        wxShare.circleTitle = "我在2016年大连话专业十级考试中得了"+totalScore+"分";
+        wxCallback(wxShare);
+    }
+
+    var publicObj = {
+        //isWeixin:isWeixin(),
+        //phoneType:getOS(),
+        domainname:"http://" + location.hostname,
+        joinUrl:publicApiHost + "/v2/api/web/language/join",
+        codeUrl:publicApiHost + "/v2/api/web/language/code",
+        answerUrl:publicApiHost + "/v2/api/web/language/answer",
+        userType:1,
+        appVer:"1.0",
+        deviceType:"mobile_web",
+        timestamp:new Date().getTime(),
+        invitationCode:getUrlParameter("invitationCode")
+    };
+
+    var _r = publicObj.timestamp+"msfy_mslc_20160526_w"+publicObj.appVer+publicObj.deviceType+"web"+publicObj.appVer;
+    publicObj.signature=hex_md5(_r);
+
+
+
+    var wxShare = {
+        title : "大连方言大挑战，能得70分算你牛~!",
+        description : "2016年大连话专业十级考试",
+        shareUrl  : publicObj.domainname + "/html/language-test/index.html?invitationCode="+publicObj.invitationCode,
+        icon : publicObj.domainname + "/image/lang_icon.jpg",
+        circleTitle:"大连方言大挑战，能的70分算你牛~!"
+    }
+    wxCallback(wxShare);
+
+    Zepto(function($) {
+
+        var _params = {
+            userType:publicObj.userType,
+            appVer:publicObj.appVer,
+            deviceType:publicObj.deviceType,
+            timestamp:publicObj.timestamp,
+            signature:publicObj.signature,
+            deviceId:"wap",
+            osVer:getOS(),
+            invitationCode:publicObj.invitationCode
+        }
+
+        var h = $(window).height();
+
+        if (h>520) {
+            var top = $(".chair").offset().top;
+            $(".chair").css("height",h-top);
+        }
+
+        if (publicObj.invitationCode) {
+            $(".invitation-code").text('邀请码：'+publicObj.invitationCode);
+        }
+
+        $(".layer-start").show();
+        var top = $(".chair").offset().top;
+        var offset = $(".layer-start").offset();
+        if (offset.top+offset.height > h) {
+            $(".chair").css("height", offset.top+offset.height-top);
+        }
+
+        //获取参数人数
+        g_loading();
+        $.ajax({
+            type:"GET",
+            url:publicObj.joinUrl,
+            data:_params,
+            dataType:'json',
+            timeout:30000,
+            success:function(data){
+                remove_loading();
+
+                if (data.error == 0) {
+                    var count = data.data.count;
+                    count && $(".layer-start .number").text(count);
+                }
+            },
+            error:function(){
+                remove_loading();
+            }});
+
+        //开始答题
+        $(".layer-start").on("click",".btn-start",function(){
+            $(".layer-start").hide();
+            $(".layer-question").show();
+
+            start();
+
+            $.ajax({
+                type: "POST",
+                url: publicApiHost + "/v2/api/web/language/start",
+                data:_params,
+                dataType: 'json',
+                timeout: 30000
+            });
+        });
+
+
+        //显示答案
+        function showAnswer() {
+
+            for (var i=0; i<tests.length; i++) {
+                var test = tests[i];
+
+                var str = '<div class="item"> <div class="q">';
+                str += test.subject+'</div><div class="a">';
+                var answers = test.answers;
+                for (var j=0; j<answers.length; j++) {
+                    var answer = answers[j];
+                    if (answer.score > 0) {
+                        str += answer.text+'</div></div>';
+                        break;
+                    }
+                }
+
+                $(".layer-answer .content").append(str);
+            }
+
+            $(".layer-answer").show();
+        }
+
+        //分享朋友圈查看答案
+        var canShowAnswer = false;
+        $(".layer-score").on("click",".btn-share",function() {
+
+            canShowAnswer = true;
+            $("body").append('<div class="guide"><img src="img/guide.png"/></div>');
+
+            $(".guide").click(function(){
+                $(".guide").remove();
+            });
+
+            wxShare.cb = function (success) {
+                if (!canShowAnswer) return;
+
+                if (success) {
+                    $(".layer-score").hide();
+                    showAnswer();
+
+                    $.ajax({
+                        type: "POST",
+                        url: publicApiHost + "/v2/api/web/language/checkAnswer",
+                        data:_params,
+                        dataType: 'json',
+                        timeout: 30000
+                    });
+                }
+
+                $(".guide").remove();
+
+                canShowAnswer = false;
+            }
+
+            wxCallback(wxShare);
+        });
+
+        //提交答案获取马豆
+        $(".layer-score").on("click",".btn-submit",function() {
+
+            submit();
+        });
+        $(".layer-answer").on("click",".btn-submit",function() {
+
+            submit();
+        });
+        $(".layer-answer").on("touchmove",function(event){
+            event.preventDefault();
+        });
+
+        function submit() {
+            canShowAnswer = false;
+
+            $(".layer-answer").hide();
+            $(".layer-score").hide();
+
+            $(".layer-submit").show();
+
+            var h = $(window).height();
+
+            var top = $(".chair").offset().top;
+            var offset = $(".layer-submit").offset();
+
+            if (offset.top+offset.height > h) {
+                $(".chair").css("height", offset.top+offset.height-top);
+            }
+        }
+
+        //获取验证码
+        $(".layer-submit").on("click",".btn-code",function() {
+
+            if ($(".layer-submit .info").hasClass("done")) return;
+
+            var phone = $(".input-phone").val();
+            if (phone && phone.length > 0) {
+                if(checkPhone(phone)) {
+
+                    //获取验证码
+                    g_loading();
+                    $.ajax({
+                        type:"POST",
+                        url:publicObj.codeUrl+"/?phone="+phone,
+                        data:_params,
+                        dataType:'json',
+                        timeout:30000,
+                        success:function(data){
+                            remove_loading();
+
+                            if (data.error == 0) {
+                                var status = data.data.status;
+                                if (status == 0) {
+                                    g_alert("验证码已发送至您的手机！");
+                                } else if (status == 1) {
+                                    g_alert("已经领取过马豆了！")
+                                }
+                            } else {
+                                g_alert("请求失败！");
+                            }
+
+                        },
+                        error:function(){
+                            remove_loading();
+                            g_alert("网络异常，请稍后再试！");
+                        }});
+
+                } else {
+                    g_alert("手机号码格式不正确！");
+                }
+            } else {
+                g_alert("请输入手机号码！");
+            }
+
+        });
+
+        //提交答案
+        $(".layer-submit").on("click",".btn-verify",function() {
+
+            if ($(".layer-submit .info").hasClass("done")) return;
+
+            var phone = $(".input-phone").val();
+            var code = $(".input-code").val();
+
+            if (phone && phone.length > 0 && checkPhone(phone)) {
+
+                if (code && code.length == 6) {
+
+                    //获取验证码
+                    g_loading();
+                    $.ajax({
+                        type:"POST",
+                        url:publicObj.answerUrl+"?phone="+phone+"&code="+code+"&score="+totalScore,
+                        data:_params,
+                        dataType:'json',
+                        timeout:30000,
+                        success:function(data){
+                            remove_loading();
+                            if (data.error == 0) {
+                                if (data.data.status == 0) {
+                                    submitSuccess(phone,data.data.password);
+                                } else if (data.data.status == 1) {
+                                    g_alert("已经领取过马豆了！");
+                                } else if (data.data.status == 2) {
+                                    g_alert("验证码错误！");
+                                }
+
+                            } else {
+                                g_alert("请求失败！");
+                            }
+
+                        },
+                        error:function(){
+                            remove_loading();
+                            g_alert("网络异常，请稍后再试！");
+                        }});
+
+
+
+                } else {
+                    g_alert("验证码不正确！");
+                }
+
+            } else {
+                g_alert("手机号码不正确！");
+            }
+
+        });
+
+
+        function submitSuccess(phone, password) {
+            $(".layer-submit .info").addClass("done");
+
+            if (password) {
+                $(".layer-submit .info").css("background","url('img/bg_submit_red2.png') center center no-repeat");
+                $(".layer-submit .info .phone").text(phone);
+                $(".layer-submit .info .password").text(password);
+            } else {
+                $(".layer-submit .info").css("background","url('img/bg_submit_red3.png') center center no-repeat");
+            }
+            $(".layer-submit .info").css("background-size","auto 140px;");
+        }
+
+        $(".layer-submit").on("click",".btn-download",function() {
+            location.href = "http://a.app.qq.com/o/simple.jsp?pkgname=com.mashanglc.android.licaiclient";
+        });
+    });
+
+
+</script>
+</body>
+</html>

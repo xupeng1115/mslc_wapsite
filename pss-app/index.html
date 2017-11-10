@@ -1,0 +1,70 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<title>马上理财-直连银行</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta content="telephone=no" name="format-detection" />
+    <meta content="email=no" name="format-detection" />
+    <link href="css/common.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="index">
+
+<!-- Add default -->
+<div class="default">
+    <div class="child logo"></div>
+    <div class="child sun"></div>
+    <div class="child cloud"></div>
+    <div class="child text"></div>
+    <div class="child people"></div>
+    <div class="child tip"></div>
+    <div class="child arrow twinkle"></div>
+    <a href="javascript:;" class="child link" id="link" onclick="showDetails()"></a>
+</div>
+
+<!-- Add details -->
+<div class="details" id="details">
+    <p data="img/1.jpg"></p>
+    <p data="img/2.jpg"></p>
+    <p data="img/3.jpg"></p>
+</div>
+
+<!-- Add download -->
+<div class="download clearfix" id="download">
+    <span class="d-logo"><img src="img/d-logo.png"></span>
+    <div class="txt">
+        <p class="p1">马上理财</p>
+        <p class="p2">直连银行，安全可靠</p>
+    </div>
+    <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.mashanglc.android.licaiclient" class="link" >立即下载</a>
+</div>
+
+<script type="text/javascript">
+//showDetails
+function showDetails(){
+    document.getElementsByTagName("body")[0].className="";
+    var imgObj = document.getElementById("details").getElementsByTagName("p");
+
+    for(var i=0;i<imgObj.length;i++){
+        var src = imgObj[i].attributes.data.value;
+        var node = document.createElement("img");
+        node.setAttribute('src',src);
+        imgObj[i].appendChild(node);
+        
+    }
+}
+
+//download
+var url = location.href;
+var download = document.getElementById("download");
+if(url.indexOf("weixin")>0){
+    download.style.display="block";
+    console.log(link.href)
+}
+</script>
+</body>
+</html>

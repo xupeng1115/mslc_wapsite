@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang=en>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1.0"/>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+		<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+		<meta name="format-detection" content="telephone=no"/>
+		<meta name="format-detection" content="email=no"/>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" href="css/ticket_usage.css" type="text/css"/>
+	</head>
+	<body>
+		<div class="content">
+			<header>
+				<p class="title">你目前共有<span class="number">0</span>张可用加息券</p>
+				<p class="title-text">最多可为<span class="title-money">50</span>万本金加息，如要获得更多加息券，猛戳</p>
+				<img class="poke" src="img/poke_icon.png"/>
+				<p class="earn">赚加息券</p>
+			</header>
+			<section>
+				<div class="top">
+					<div class="rule-box">
+						<div class="rule-title">加息券说明</div>
+					</div>
+					
+				</div>
+				<p class="item"><span class="left">1、</span>使用1张加息券仅可购买1次加息产品</p>
+				<p class="item"><span class="left">2、</span><span class="price-one">5</span>万/每张加息券：购买该理财产品时，每使用1张加息券，如购买金额小于<sapn class="price-one">5</sapn>万元，则加息部分按所购金额计算；如购买金额大于或等于<span class="price-one">5</span>万元，则加息部分按照<span class="price-one">5</span>万元本金计算。使用2张加息券，如购买金额小于<span class="price-two">10</span>万元，则加息部分按所购金额计算；如购买金额大于或等于<span class="price-two">10</span>万元，则加息部分按照<span class="price-two">10</span>万元本金计算，以此类推。加息由马上理财平台以现金提供。</p>
+			</section>
+			<footer>
+				<!--<div class="cancel-btn">-->
+				<!--</div>-->
+			</footer>
+			
+		</div>
+		
+		<iframe src="" frameborder="0" id="iframe"></iframe>
+		
+		<script type="text/javascript" src="js/zepto.min.js"></script>
+		<script type="text/javascript" src="js/common.js"></script>
+		<script type="text/javascript" src="js/md5.js"></script>
+		
+		
+		<script type="text/javascript">
+			var publicObj = {
+				phoneType:getOS(),
+				domainname:"http://" + location.hostname,
+				apiUrl:publicApiHost + "/v2/api/web/coupon/myInfo",
+				appVer:"1.0",
+				userId:getUrlParameter("userId"),
+				productId:getUrlParameter("productId"),
+				timestamp:new Date().getTime(),
+				deviceType:"mobile_web",
+				sessionKey:getUrlParameter("sessionKey"),
+				redeemBase:getUrlParameter("redeemBase")
+			};
+
+			var _r = publicObj.timestamp+"msfy_mslc_20160526_w"+publicObj.appVer+publicObj.deviceType+"web"+publicObj.appVer;
+			publicObj.signature=hex_md5(_r);
+
+
+		Zepto(function($){
+			var _params = {
+				sessionKey:publicObj.sessionKey,
+				appVer: publicObj.appVer,
+				deviceType: publicObj.deviceType,
+				timestamp: publicObj.timestamp,
+				signature: publicObj.signature,
+				deviceId: "wap",
+				osVer: getOS(),
+				productId:publicObj.productId
+			};
+
+//			if (!publicObj.sessionKey) {
+//	            g_alert("请先登录");
+//	            return;
+//	        }
+
+			if (!publicObj.redeemBase) publicObj.redeemBase = 5;
+
+			g_loading();
+			$.ajax({
+				type:"GET",
+				url:publicObj.apiUrl,
+				dataType: 'json',
+            	timeout: 30000,
+            	data:_params,
+				success:function(data){
+					remove_loading();
+
+               		if (data.error == 0) {
+						var couponCount = data.data.couponCount;
+						var money = parseInt(couponCount)*parseInt(publicObj.redeemBase);
+						var priceOne = publicObj.redeemBase;
+						var priceTwo = publicObj.redeemBase*2;
+						
+						if(couponCount&&couponCount>0){
+							$(".number").html(couponCount);
+							$(".title-text").html("最多可为"+"<span class='money'>"+money+"</span>万本金加息，如要获得更多加息券，猛戳");
+						}else{
+							$(".title-text").html("暂时不能获得平台加息，如要获得加息券，猛戳");
+						}
+						
+						$(".price-one").html(priceOne);
+						$(".price-two").html(priceTwo);
+					}
+				},
+				error:function(){
+					remove_loading();
+				}
+			});
+
+			$(".content").on("touchmove",function(event){
+				event.preventDefault();
+			});
+
+			$(".content").on("click",".earn",function(){
+				location.href = './index.html?'+location.search.substr(1);
+			});
+
+			$(".content").on("click",".cancel-btn",function(){
+				var iFrame = document.getElementById("iframe");
+				iFrame.src = "mslcaction://closeWeb"
+			})
+		})
+			
+			
+		</script>
+		
+		
+	</body>
+</html>

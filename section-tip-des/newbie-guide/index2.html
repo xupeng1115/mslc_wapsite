@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<title>新手指南</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta content="telephone=no" name="format-detection" />
+    <meta content="email=no" name="format-detection" />
+    <link rel="stylesheet" type="text/css" href="css/common.css" />
+</head>
+
+<body>
+<div class="loader">
+    <div class="loader-inner line-spin-fade-loader">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+</div>
+<div class="content">
+    <div class="swipe">
+        <div class="swipe-bg"><img src="img/bg.png" />
+            <span class="btn prev"><i></i></span>
+            <span class="btn next"><i></i></span>
+            <div class="swipe-list">
+                <ul>
+                    <li><img src="img/1.png" /><i></i></li>
+                    <li><img src="img/2.png" /><i></i></li>
+                    <li><img src="img/3.png" /><i></i></li>
+                    <li><img src="img/4.png" /><i></i></li>
+                    <li><img src="img/5.png" /><i></i></li>
+                </ul>
+            </div>
+        </div>
+        <ol class="swipe-indicator">
+            <li class="active"></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ol>
+        <p class="swipe-des">第1步：选择理财产品</p>
+    </div>
+
+    <div class="new-user">
+        <div class="title"></div>
+        <p class="exp red">新用户完成认证注册，即可获得平台赠予的加息券1张</p>
+       	<b>活动时间：2016年6月13日起</b>
+        <b>使用说明：</b>
+        <div>
+            <div class="left">1、</div>
+            <div class="right">
+				加息券仅限用户在马上理财平台链接合作银行交易系统购买理财产品时使用，加息部分由马上理财平台以现金形式提供；
+            </div>
+        </div>
+        <div>
+            <div class="left">2、</div> 
+            <div class="right">
+				每张加息券代表1次购买加息理财产品的机会；
+            </div>
+        </div>
+        <div>
+            <div class="left">3、</div> 
+            <div class="right">
+                使用加息券购买加息产品时，加息规则以每款产品加息显示为准。以10万元/加息券为例；如购买金额小于10万元，则加息部分按所购金额计算；如购买金额大于或等于10万元，则加息部分按照10万元本金计算；
+            </div>
+        </div>
+        <div>
+            <div class="left">4、</div> 
+            <div class="right">
+                加息券有效期90天，自获取之日起计算；
+            </div>
+        </div>
+        <div>
+            <div class="left">5、</div> 
+            <div class="right">
+                加息券不可转让，仅限获取用户本人使用；
+            </div>
+        </div>
+        <div>
+            <div class="left">6、</div>
+            <div class="right">
+                严禁刷单，每个马上理财账户、身份证号码、银行账户（同一银行）三者必须一一对应，否则补贴奖励将不予发放。
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="js/zepto.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+    //获取translate3d的值
+    function translate3dValue(str,index){
+        var reg=/\-?[0-9]+/g, result;
+        var index = index || 1;
+
+        if(!str){
+            return 0;
+        }
+        result = str.match(reg);
+        return parseInt(result[index]);
+    }
+
+    //滑动
+    function swipe(){
+        var $wrap = $(".swipe-bg");
+        var $element = $(".swipe-list ul");
+        var $item = $element.find("li");
+        var $indicatorItem = $(".swipe-indicator li");
+        var $prev = $(".swipe .prev");
+        var $next = $(".swipe .next");
+        
+        var itemWidth = $item.eq(0).width();
+        var itemLength = $item.length;
+        var touchData = {},minLeft=0,maxLeft=-itemWidth*(itemLength-1),active=0;
+
+        var changeDes = function(index){
+            var $des = $(".swipe-des");
+            switch (index){
+                case 0:
+                    $des.text("第1步：选择理财产品");
+                    break;
+                case 1:
+                    $des.text("第2步：发送订单给理财经理");
+                    break;
+                case 2:
+                    $des.text("第3步：查看订单状态");
+                    break;
+                case 3:
+                    $des.text("第4步：跟理财经理咨询购买");
+                    break;
+                case 4:
+                    $des.text("第5步：查看交易记录");
+                    break;
+            }
+        }
+
+        var swipeOne = function($ele,bool,isBack){
+            var endLeft,time = 500;
+            var currentLeft = translate3dValue($ele[0].style.webkitTransform);
+
+            if(isBack){
+                endLeft = -itemWidth*active;
+            }else{
+                bool?(active--):(active++);
+                endLeft = -itemWidth*active;
+            }
+
+            if($ele.hasClass('animateState') || currentLeft==Math.ceil(endLeft) || currentLeft==Math.floor(endLeft)){
+                $indicatorItem.eq(active).addClass('active').siblings().removeClass('active');
+                changeDes(active);
+                return false;
+            }
+
+            $ele.addClass('animateState').css("opacity",0.9);
+
+            time = Math.ceil(Math.abs(currentLeft-endLeft))*10;
+            if(time>500){
+                time=500;
+            }else if(time<100){
+                time=100;
+            }
+
+            $ele.animate({
+                '-webkit-transform':'translate3d('+endLeft+'px,0,0)',
+                'opacity':1
+            },time,"ease",function(){
+                if(!isBack){
+                    $indicatorItem.eq(active).addClass('active').siblings().removeClass('active');
+                }
+                changeDes(active);
+                $ele.removeClass('animateState');
+            })
+        }
+
+        $prev.on("touchend",function(e){
+            if(active!=0){
+                swipeOne($element,true)
+            }
+            e.stopPropagation();
+        })
+
+        $next.on("touchend",function(e){
+            if(active!=$item.length-1){
+                swipeOne($element,false)
+            }
+            e.stopPropagation();
+        })
+
+        $wrap.on("touchstart",function(){
+            touchData.oldLeft = translate3dValue($element[0].style.webkitTransform);
+            touchData.oldPageX = touchData.newPageX = event.targetTouches[0].pageX;
+            touchData.oldPageY = touchData.newPageY = event.targetTouches[0].pageY;
+            touchData.distanceX = 0;
+        })
+
+        $wrap.on("touchmove",function(e){
+            var endLeft;
+            if($element.hasClass('animateState')){
+                return false;
+            }
+            touchData.newPageX = event.targetTouches[0].pageX;
+            touchData.newPageY = event.targetTouches[0].pageY;
+            touchData.distanceX = touchData.newPageX - touchData.oldPageX;
+            touchData.distanceY = touchData.newPageY - touchData.oldPageY;
+            
+            if(Math.abs(touchData.distanceY)<Math.abs(touchData.distanceX)){
+                e.preventDefault();
+                if(touchData.oldLeft+touchData.distanceX>=minLeft){
+                    $element[0].style.webkitTransform='translate3d(0,0,0)';
+                }else if(touchData.oldLeft+touchData.distanceX<=maxLeft){
+                    $element[0].style.webkitTransform='translate3d('+maxLeft+'px,0,0)';
+                }else{
+                    endLeft = touchData.oldLeft+touchData.distanceX;
+                    $element[0].style.webkitTransform='translate3d('+endLeft+'px,0,0)';
+                }
+            }
+        })
+
+        $wrap.on("touchend",function(e){
+            var distance = touchData.distanceX;
+
+            if(Math.abs(distance)<=30){
+                swipeOne($element,true,true);
+                return false;
+            }
+
+            if(distance<-30 && active!=$item.length-1){
+                swipeOne($element,false);
+            }else if(distance>30 && active!=0){
+                swipeOne($element,true);
+            }
+        })
+    }
+
+    //全部加载成功后执行
+    $(window).on("load",function(){
+        $(".loader").hide();
+        $(".content").css("opacity",1);
+        swipe();
+    })
+</script>
+</body>
+</html>

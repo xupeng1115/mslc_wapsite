@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>理财推荐</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta content="telephone=no" name="format-detection" />
+    <meta content="email=no" name="format-detection" />
+    <link rel="stylesheet" type="text/css?v=20160324" href="css/common.css" />
+    <link rel="stylesheet" type="text/css?v=20160324" href="css/solution-detail.css" />
+</head>
+
+<body>
+<div class="loader" id="loader">
+    <div class="loader-inner line-spin-fade-loader">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+</div>
+<div class="profit-area">
+    <p class="wave wave1 wave-pink"><img src="img/wave-pink.png" /></p>
+    <p class="wave wave2 wave-pink"><img src="img/wave-pink.png" /></p>
+    <p class="wave wave1 wave-third"><img src="img/wave-gray.png" /></p>
+    <p class="wave wave2 wave-third"><img src="img/wave-gray.png" /></p>
+    <p class="link-reset">重置</p>
+    <div class="profit-all flex" id="profitVll">
+        <dl>
+            <dd id="profitValue"></dd>
+            <dt>预计收益(元)</dt>
+        </dl>
+        <p class="wave wave1 wave-red"><img src="img/wave-red.png" /></p>
+        <p class="wave wave2 wave-red"><img src="img/wave-red.png" /></p>
+    </div>
+</div>
+<div class="main">
+    <div class="product-list">
+        <ul id="productList"></ul>
+    </div>
+    <div class="change-plan clearfix">
+        <span class="btn prev disable">上一个方案</span>
+        <span class="btn next disable">下一个方案</span>
+    </div>
+    <div class="links">
+        <ul class="clearfix">
+            <li class="link-guess-you-like"><img src="img/guess-you-like.png" /><span class="txt">猜你喜欢</span></li>
+            <li class="link-look-around"><span class="txt">随便逛逛</span></li>
+            <li class="link-manager-recommend"><img src="img/manager-recommend.png" /><span class="txt">理财经理推荐</span></li>
+        </ul>
+    </div>
+</div>
+<div class="selectRollerMask">
+    <div class="selectRoller">
+        <div class="selectTitle">
+            <p class="tip">购买金额递增为10000元</p>
+            <span class="btn">完成</span>
+        </div>
+        <div class="selectList">
+            <div class="wrap">
+                <ul></ul>
+            </div>
+            
+        </div>
+    </div>
+</div>
+<iframe id="iframe" width="0" height="0" src=""></iframe>
+<script src="js/zepto.min.js" type="text/javascript"></script>
+<script src="js/common.js?v=20160321" type="text/javascript"></script>
+<script type="text/javascript">
+
+stopDefault();
+
+Zepto(function($){
+    
+    var $main = $(".main");
+    var $productList = $("#productList");
+    var $links = $(".links");
+    var $selectRollerMask = $(".selectRollerMask");
+    var $profitArea = $(".profit-area");
+    var $profitValue = $("#profitValue");
+    var timerProfit=null;
+
+    var solutionDetail = {
+
+        planAll:null,
+        planIndex:parseInt(publicObj.parameter.plan)||0,
+        isSelectEvent:false,
+
+        currentProduct:{},
+
+        //创建产品列表
+        createList:function(isWave){
+            
+            var data,itemData,listHtml = '',itemHtml = "",s1="",s2="",recommendHtml;
+
+            if(!this.planAll){
+                return false;
+            }
+
+            $productList.html("");
+            data = this.planAll[this.planIndex].products;
+
+            for(var i=0;i<data.length;i++){
+                itemData = {
+                    type : data[i].type,
+                    bankLogo : data[i].bank.icon,
+                    productTitle : data[i].name,
+                    productId : data[i].id,
+                    estimatedYearRate : (parseInt(data[i].estimatedYearRate)/100).toFixed(2),
+                    recommendMoney: data[i].purchaseAmount || data[i].minimumPurchase,
+                    minimumPurchase : data[i].minimumPurchase,
+                    duration : data[i].duration,
+                    durationTXT:"理财期限"
+                }
+
+                if(itemData.type==4||itemData.type==5||itemData.type==8||itemData.type==9){
+                    itemData.duration = "<i>不固定</i>";
+                }
+                if(itemData.type==2||itemData.type==3||itemData.type==6||itemData.type==7){
+                    itemData.durationTXT = "投资周期";
+                }
+
+                s1 = '<div class="s1"><span class="bank-logo flex"><img src="'+itemData.bankLogo+'" /></span><p class="product-title"><span>'+itemData.productTitle+'</span></p></div>';
+
+                s2 = '<div class="s2"><dl><dd>'+itemData.estimatedYearRate+'</dd><dt>预期年化收益(%)</dt></dl><dl><dd>'+itemData.minimumPurchase+'</dd><dt>起购金额(万)</dt></dl><dl><dd>'+itemData.duration+'</dd><dt>'+itemData.durationTXT+'(天)</dt></dl></div>';
+
+                recommendHtml = '<div class="recommend-money"><div class="number"><ul data-recommend-money="'+itemData.recommendMoney+'" data-minimum-purchase="'+itemData.minimumPurchase+'"><li></li><li></li><li></li><li></li></ul></div><p class="txt">建议购买(万)</p></div>';
+
+                itemHtml = '<li onclick="iframeAction.appShowProductDetail('+itemData.productId+')"><div class="info" class="item">' + s1 + s2 + '</div>'+recommendHtml+'</li>';
+
+                listHtml += itemHtml;
+            }
+
+            $productList.html(listHtml);
+            this.createRecommendMoney();
+            this.countProfit(false);
+            if(isWave){
+                this.setLinks();
+                this.setWave();
+            }
+        },
+        //创建建议购买html
+        createRecommendMoney:function(){
+            var recommendMoney = $(".recommend-money")
+            var $numberUl = recommendMoney.find(".number ul");
+            var recommendMoney;
+            var self = this;
+
+            $numberUl.each(function(){
+                self.updateSingleNumberUL($(this));
+            })
+
+            recommendMoney.on("touchstart",function(e){
+                self.selectMoney($(this));
+                e.stopPropagation();
+                e.preventDefault();
+            })
+            recommendMoney.on("click",function(e){
+                e.stopPropagation();
+                e.preventDefault();
+            })
+
+            if(!this.isSelectEvent){
+                this.selectMoneyEvent();
+                this.isSelectEvent = true;
+            }
+        },
+        //更新单个$numberUl
+        updateSingleNumberUL:function($element,number){
+            var recommendMoney;
+            var $item = $element.find("li");
+            if(number){
+                $element.data("recommendMoney",number);
+            }
+
+            recommendMoney = parseInt($element.data("recommendMoney"));
+
+            if(recommendMoney<3){
+                $item.eq(0).text(" ");
+            }else{
+                $item.eq(0).text(recommendMoney-2);
+            }
+
+            if(recommendMoney<2){
+                $item.eq(1).text(" ");
+            }else{
+                $item.eq(1).text(recommendMoney-1);
+            }
+
+            $item.eq(2).text(recommendMoney);
+            $item.eq(3).text(recommendMoney+1);
+        },
+        //选择购买金额
+        selectMoney:function($element,$elementParent){ 
+            var $ul = $selectRollerMask.find("ul");
+            var recommendMoney = parseInt($element.find("ul").data("recommendMoney"));
+            var minimumPurchase = parseInt($element.find("ul").data("minimumPurchase"));
+            var currentTranaslate;
+
+            currentTranaslate = -(recommendMoney-4)*28;//28为每个li的高度
+
+            $ul[0].style.webkitTransform='translate3d(0,'+currentTranaslate+'px,0)';
+
+            this.currentProduct.element = $element.parent();
+            this.currentProduct.min = -(minimumPurchase-4)*28 || 0;
+            this.currentProduct.minimumPurchase = minimumPurchase;
+            this.currentProduct.recommendMoney = recommendMoney;
+
+            $selectRollerMask.show();
+
+        },
+        //selectMoneyEvent
+        selectMoneyEvent:function(){
+            var $ul = $selectRollerMask.find("ul");
+            var $btn = $selectRollerMask.find(".btn");
+            var $tip = $selectRollerMask.find(".tip");
+            var touchData ={},ulHtml="";
+            var self = this;
+            var changeTip = function(value){
+                var tip;
+                if(value==0){
+                    tip = "购买金额递增为10000元";
+                }else if(value==1){
+                    tip = "起购金额为"+self.currentProduct.minimumPurchase*10000+"元";
+                }
+
+                $tip.text(tip);
+            }
+
+            for(var i=1;i<1001;i++){
+                ulHtml += '<li>'+i+'</li>';
+            }
+
+            $ul.html(ulHtml);
+            $ul.height(1000*28);
+            self.currentProduct.max = -(1000-4)*28;
+
+            $btn.on("click",function(){
+                var element = self.currentProduct.element.find(".recommend-money ul");
+                self.updateSingleNumberUL(element,self.currentProduct.recommendMoney);
+                self.countProfit(true);
+                $selectRollerMask.hide();
+            })
+
+            $ul.on("touchstart",function(){
+                touchData.oldValue = translate3dValue($(this)[0].style.webkitTransform,2);
+                touchData.oldPageY = touchData.newPageY = event.targetTouches[0].pageY;
+                touchData.distanceY = 0;
+                touchData.startTime = new Date();
+            })
+
+            $ul.on("touchmove",function(e){
+                var endValue;
+                
+                touchData.newPageY = event.targetTouches[0].pageY;
+                touchData.distanceY = touchData.newPageY - touchData.oldPageY;
+                e.preventDefault();
+
+                if(touchData.oldValue+touchData.distanceY>=self.currentProduct.min){
+                    $(this)[0].style.webkitTransform='translate3d(0,'+self.currentProduct.min+',0)';
+                }else if(touchData.oldValue+touchData.distanceY<=self.currentProduct.max){
+                    $(this)[0].style.webkitTransform='translate3d(0,'+self.currentProduct.max+'px,0)';
+                }else{
+                    endValue = touchData.oldValue+touchData.distanceY;
+                    $(this)[0].style.webkitTransform='translate3d(0,'+endValue+'px,0)';
+                }
+            })
+
+            $ul.on("touchend",function(e){
+                e.stopPropagation();
+                touchData.endTime = new Date();
+                var duration = touchData.endTime-touchData.startTime;
+                var distance = Math.abs(touchData.distanceY);
+                var rate =10,endValue;
+                var _self = this;
+
+                var fixedPosition = function(){
+                    var endTop = translate3dValue(_self.style.webkitTransform,2);
+                    var value = Math.round(endTop/28);
+                    var end = value*28;
+                    self.currentProduct.recommendMoney = Math.abs(value)+4;
+                    
+
+                    if(endTop!=self.currentProduct.min && endTop!=self.currentProduct.max){
+                        _self.style.webkitTransform='translate3d(0,'+end+'px,0)';
+                    }
+
+                    if(endTop>=self.currentProduct.min){
+                        changeTip(1);
+                    }else{
+                        changeTip(0);
+                    }
+                }
+
+                var animateFn = function($element,value){
+                    if($element.hasClass('animateState')){
+                        return false;
+                    }
+                    $element.addClass('animateState'); 
+                    $element.animate({"-webkit-transform":'translate3d(0,'+value+'px,0)'}, 400,"ease",function(){
+                        fixedPosition();
+                        $(this).removeClass('animateState');
+                    })
+                }
+
+                if(duration<200 && distance>5){
+                    if(touchData.oldValue+touchData.distanceY*rate>=self.currentProduct.min){
+                        animateFn($(this),self.currentProduct.min);
+                    }else if(touchData.oldValue+touchData.distanceY*rate<=self.currentProduct.max){
+                        animateFn($(this),self.currentProduct.max);
+                    }else{
+                        endValue = touchData.oldValue+touchData.distanceY*rate; 
+                        animateFn($(this),endValue);
+                    }
+                }else{
+                    fixedPosition();
+                }
+            })
+
+        },
+        //设置Links的位置
+        setLinks:function(){
+            commonMethod.setLinks($links,function(){
+                var mainHeight = $(".main").height();
+                var productListHeight = $productList.height();
+                var linksHeight = $links.height();
+                if(productListHeight+linksHeight+30<mainHeight){
+                    $links.addClass('fixed');
+                }
+            });
+        },
+
+        //设置波浪
+        setWave:function(){
+            commonMethod.setWave();
+        },
+
+        //切换方案
+        changePlan:function(){
+            var self = this;
+            $prev = $(".change-plan").find(".prev");
+            $next = $(".change-plan").find(".next");
+
+            if(this.planIndex!=0){
+                $prev.removeClass('disable');
+            }
+
+            if(this.planIndex!=self.planAll.length-1){
+                $next.removeClass('disable');
+            }
+
+            $prev.on("touchend",function(){
+                if(self.planAll && self.planIndex!=0){
+                    self.planIndex = self.planIndex-1;
+                    self.createList();
+                    $next.removeClass('disable');
+                    if(self.planIndex==0){
+                        $prev.addClass('disable');
+                    }
+                }
+            })
+
+            $next.on("touchend",function(){
+                if(self.planAll && self.planIndex!=self.planAll.length-1){
+                    self.planIndex = self.planIndex+1;
+                    self.createList();
+                    $prev.removeClass('disable');
+                    if(self.planIndex==self.planAll.length-1){
+                        $next.addClass('disable');
+                    }
+                }
+            })
+        },
+
+        //计算收益总额
+        countProfit:function(isPlan){
+            
+            var $numberUl = $(".recommend-money .number ul");
+            var products = this.planAll[this.planIndex].products;
+            var singleResult,allResult=0,recommendMoney;
+            var userDuration = this.planAll[this.planIndex].result.duration;
+            var oldProfitValue = parseFloat($profitValue.text());
+            var dValue,number,endValue,bool,time=50;
+
+            for(var i=0;i<products.length;i++){
+                recommendMoney = parseFloat($numberUl.eq(i).attr("data-recommend-money"));
+                singleResult = commonMethod.countSingleProfit(products[i],userDuration,recommendMoney);
+                allResult +=singleResult;
+            }
+
+            if(allResult>Math.pow(10,10)-1){
+                allResult = parseInt(allResult,10).toExponential(6);
+            }else{
+                allResult = parseFloat(allResult.toFixed(2));
+            }
+
+            if(isPlan && allResult!=oldProfitValue){
+                commonMethod.customizeTrack(9);
+            }
+
+            if(!isPlan){
+                commonMethod.profitAnimate($profitValue,allResult.toFixed(2));
+                return;
+            }
+
+            dValue = (allResult-oldProfitValue)/5;
+
+            if(Math.abs(dValue)<1){
+                $profitValue.text(allResult.toFixed(2));
+            }else{
+                clearTimeout(timerProfit);
+                var d=0;
+                timerProfit = setTimeout(function(){
+                    endValue = oldProfitValue = parseFloat((oldProfitValue+dValue).toFixed(2));
+                    bool = (dValue>0)?(endValue>=allResult):(endValue<=allResult);
+                    if(bool){
+                        clearTimeout(timerProfit);
+                        $profitValue.text(allResult.toFixed(2));
+                    }else{
+                        $profitValue.text(endValue.toFixed(2));
+                        timerProfit = setTimeout(arguments.callee, time);
+                    }
+                },time)
+            }
+        },
+
+        //初始化
+        initial:function(){
+            var self = this;
+
+            $main.on("touchmove",function(e){
+                e.stopPropagation();
+            })
+
+            $.ajax({
+                url: publicObj.plan,
+                data :publicObj.parameter,
+                dataType: 'json',
+                success: function (response) {
+                    if(response.error!=0){
+                        alert(response.msg);
+                    }else{ 
+                        self.planAll = response.data;
+                        self.createList(true);
+                        $("#loader").hide();
+                        $(".main").css("opacity",1);
+                        $profitArea.show();
+                        self.changePlan();
+                    }
+                }
+            });
+        }
+    }
+    solutionDetail.initial();
+
+})
+</script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="format-detection" content="email=no"/>
+    <link rel="stylesheet" href="css/common.css" type="text/css"/>
+    <title>已邀请</title>
+    <style>
+        .nodata {background: url("./img/icon_no_friend@2x.png") no-repeat center center #f8f8f8;background-size: 220px 120px;}
+        html,body{background:#ffffff}
+    </style>
+</head>
+<body>
+
+<div class="question">
+    <image src="img/question.png"></image><span>规则说明</span>
+</div>
+<div class="wrapper">
+    <div class="lists">
+        <!--<div class="item">-->
+            <!--<span class="left"><p class="title">2015-05-31 10:30</p><p class="des">来源：</p></span>-->
+            <!--<span class="right"><span class="txt">+5</span><span class="small-txt"> 分</span></span>-->
+        <!--</div>-->
+    </div>
+    <div class="load-more">
+        <span class="load-more-label">点击加载更多</span>
+    </div>
+</div>
+
+<script type="text/javascript" src="js/zepto.min.js"></script>
+<script type="text/javascript" src="js/md5.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript">
+    var publicObj = {
+        //isWeixin:isWeixin(),
+        //phoneType:getOS(),
+        domainname:"http://" + location.hostname,
+        apiUrl:publicApiHost + "/v2/api/web/point/invitedFriends",
+        userType:1,
+        appVer:"1.0",
+        deviceType:"mobile_web",
+        timestamp:new Date().getTime(),
+        sessionKey:getUrlParameter("sessionKey")
+    };
+
+
+    var _r = publicObj.timestamp+"msfy_mslc_20160526_w"+publicObj.appVer+publicObj.deviceType+"web"+publicObj.appVer;
+    publicObj.signature=hex_md5(_r);
+
+    Zepto(function($){
+
+        $(".wrapper").css("top","20px");
+        $(".wrapper").css("border-top","0px");
+
+        if(!publicObj.sessionKey) {
+            g_alert("缺少参数");
+            return;
+        }
+
+        var gPageSize = 50;
+        var page = 1;
+        var canLoadMore = false;
+
+        var _params = {
+            sessionKey:publicObj.sessionKey,
+            userType:publicObj.userType,
+            appVer:publicObj.appVer,
+            deviceType:publicObj.deviceType,
+            timestamp:publicObj.timestamp,
+            signature:publicObj.signature,
+            deviceId:"wap",
+            osVer:getOS()
+        };
+
+        $("body").on("click",".question",function() {
+            location.href = "./spec.html";
+            return false;
+        })
+
+        //点击加载更多
+        $(".wrapper").on("click",".load-more",function() {
+            loadData();
+        })
+
+        function loadData(){
+            g_loading();
+
+            _params.page = page;
+
+            $(".load-more-label").text("加载中...");
+//            setTimeout(function(){
+            $.ajax({type:"GET",url:publicObj.apiUrl,data:_params,dataType:'json',timeout:30000,
+                        success:function(data){
+                            remove_loading();
+                            $(".load-more-label").text("点击加载更多");
+                            var errorCode = data.error;
+                            if(errorCode != 0){
+                                g_alert("请求失败");
+                            } else {
+                                if(data.data.friends.length>0) {
+                                    $(".wrapper").css("border-top","1px solid #e6e6e6");
+
+                                    page++;
+                                    appendData(data.data.friends);
+                                } else {
+                                    if (page == 1) {
+                                        g_alert("暂无数据");
+                                    }
+                                }
+                                if(data.data.friends.length>=gPageSize) {
+                                    setCanLoadMore(true);
+                                } else {
+                                    setCanLoadMore(false);
+                                }
+                            }
+
+                        },
+                        error:function(){
+                            remove_loading();
+                            $(".load-more-label").text("点击加载更多");
+                            g_alert("网络错误，请稍后再试");
+                        }}
+
+            );
+//            },2000);
+        }
+
+        function appendData(data){
+            if (data && data.length >0){
+                for (var i=0;i<data.length;i++){
+                    var item = data[i];
+
+                    var reg = /1[3|4|5|7|8]\d{9}/;
+                    var rs = reg.exec(item.comment);
+
+                    var comment = item.comment;
+                    if (rs) {
+                        var tel = rs[0];
+                        var index = rs.index;
+
+                        var s1 = '';
+                        if (index>0) {
+                            s1 = item.comment.substr(0, index);
+                        }
+                        var s2 = '';
+                        if (item.comment.length > index+tel.length) {
+                            s2 = item.comment.substr(index+tel.length, item.comment.length-index-tel.length);
+                        }
+
+                        comment = s1 + '<a href="tel:'+ tel +'">' + tel + '</a>' + s2;
+                    }
+                    var str = '<div class="item"><span class="left"><p class="title">'+item.time+'</p><p class="des">';
+                    str += comment;
+                    str += '</p></span></div>';
+                    $(".lists").append(str);
+                }
+            }
+        }
+
+        //控制上拉加载状态
+        function setCanLoadMore(loadMore){
+            canLoadMore = loadMore;
+
+            if (canLoadMore) {
+                $(".load-more").show();
+            } else {
+                $(".load-more").hide();
+            }
+        }
+
+        //初始化数据
+        setCanLoadMore(false);
+        loadData();
+
+    })
+</script>
+</body>
+</html>

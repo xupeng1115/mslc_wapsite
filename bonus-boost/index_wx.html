@@ -1,0 +1,297 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>马上理财-聚人气，加收益</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta content="telephone=no" name="format-detection" />
+    <meta content="email=no" name="format-detection" />
+    <link href="css/common.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<div class="loader" id="loader">
+    <div class="loader-inner line-spin-fade-loader">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+</div>
+<div class="content" id="content">
+    <div class="share-underway">
+        <div class="profit-detail" id="profitDetail">
+            <div class="profit-cont">
+                <p class="profit-number" id="profitNumber"><span class="profit-value" id="baseProfit"></span><span class="plus-sign">+</span><span class="question-mark" id="boostProfit">?</span></p>
+
+                <p class="profit-text flex">预期年化收益(%)</p>
+                <p class="view-times flex">
+                    <span class="times-number" id="viewTimes"></span>
+                </p>
+            </div>
+            <div class="profit-occupying"></div>
+        </div>
+        <div class="btn-bar">
+            <span class="arrow arrow1"></span>
+            <span class="arrow arrow2"></span>
+            <span class="arrow arrow3"></span>
+            <span class="arrow arrow4"></span>
+            <span class="arrow arrow5"></span>
+            <span class="arrow arrow6"></span>
+            <span class="btn had" id="btnBoost">已帮抢</span>
+        </div>
+        <div class="countdown-bar flex"><span>帮抢倒计时：</span><span class="time" id="countdown"></span></div>
+        <div class="download-bar">
+            <span class="arrow arrow1"></span>
+            <span class="arrow arrow2"></span>
+            <span class="arrow arrow3"></span>
+            <span class="arrow arrow4"></span>
+            <span class="btn" id="btnDownload">我也要聚人气</span>
+        </div>
+    </div>
+    <div class="share-end">
+        <div class="profit-detail">
+            <div class="profit-cont">
+                <div class="profit-boost">
+                    <div class="boost-cont flex">
+                        <div class="child">
+                            <p class="title">人气帮抢</p>
+                            <p class="number" id="boostProfit2"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="profit-base">
+                    <div class="base-cont flex">
+                        <div class="child">
+                            <p class="title">原标收益</p>
+                            <p class="number" id="baseProfit2"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="profit-occupying"></div>
+            </div>
+        </div>
+        <div class="profit-all">恭喜<span id="profitUserNickname"></span>获得<span id="profitAll"></span>%加息</div>
+        <div class="btn-end">已结束</div>
+    </div>
+    <div class="share-help" id="shareHelp">
+        <p class="share-help-title"><span class="arrow arrow1"></span><span class="arrow arrow2"></span>帮抢风云榜</p>
+        <ul class="share-help-list" id="shareHelpList"> 
+        </ul>
+    </div>
+    <div class="activity-statement">活动声明：该人气收益补贴返现活动仅限温州地区参与</div>
+</div>
+<script src="js/zepto.min.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript">
+
+publicObj.id = getUrlParameter("id");
+publicObj.sid = getUrlParameter("sid");
+
+Zepto(function($){
+    
+    //创建帮抢列表
+    function createList(list){
+        var listWrap = document.getElementById("shareHelp");
+        var itemAll = document.getElementById("shareHelpList");
+        var item;
+
+        itemAll.innerHTML = "";
+        
+        for(var i=0;i<list.length;i++){
+            item = createItem(list[i]);
+            itemAll.appendChild(item);
+        }
+        listWrap.style.display = "block";
+    }
+
+    //创建列表项
+    function createItem(itemData){
+        var item,itemHtml,user;
+        user = {
+            faceUrl : itemData.faceUrl || "img/default.png",
+            nickname : itemData.nickname || "微信用户",
+            boostTime : itemData.boostTime,
+            boostValue : itemData.boostValue || 0,
+            word : itemData.word
+        }
+        item = document.createElement("li");
+        itemHtml = '<div class="pic"><img src="'
+             + user.faceUrl
+             + '"></div><div class="cont"><p class="p1"><span class="name">'
+             + user.nickname
+             + '</span><span class="time">'
+             + user.boostTime
+             + '</span></p><p class="p2">'
+             + user.word
+             + '</p></div><div class="boost">\+'
+             + user.boostValue
+             + '%</div>';
+        item.innerHTML = itemHtml;
+        return item;
+    }
+
+    //帮抢操作
+    function userBoost(){
+        $.ajax({
+            url: publicObj.wxBoostUrl,
+            data:{sid:publicObj.sid},
+            dataType: 'json',
+            success:function(response){
+                // var data = response.data;
+                // if(data.status!=0){
+                //     alert(data.msg);
+                // }
+                getShareHelpData();
+            },
+            erroe:function(){
+                alert("网络异常");
+            }
+        });
+    }
+
+    //处理数据
+    function handleData(data){
+
+        var shareUnderway = $(".share-underway");
+        var shareEnd = $(".share-end");
+        var btnBoost = $("#btnBoost");
+        var btnDownload = $("#btnDownload");
+        var profitNumber = $("#profitNumber");
+        var baseProfit = $("#baseProfit");
+        var boostProfit = $("#boostProfit");
+        var viewTimes = $("#viewTimes");
+        var countdown = $("#countdown");
+        var content = $("#content");
+        var timeMs = data.countDown;
+        var timer,allProfit;
+
+        var info = {
+            isEnded : data.isEnded,
+            estimatedYearRate : data.estimatedYearRate,
+            boostProfit : data.boostProfit,
+            viewCount : data.viewCount,
+            countdown : countdownFn(timeMs),
+            isBoosted : data.isBoosted,
+            ownname : data.ownerName
+        }
+
+        //根据活动状态(进行中或结束)展现不同数据
+        if(!info.isEnded){
+            content.addClass('banner2');
+            baseProfit.text(info.estimatedYearRate);
+            viewTimes.text(info.viewCount);
+
+            if(info.boostProfit>0){
+                profitNumber.addClass('boost');
+                boostProfit.text(info.boostProfit);
+            }
+
+            countdown.html(info.countdown);
+
+            timer = setInterval(function(){
+                timeMs = timeMs-60;
+                countdown.html(countdownFn(timeMs))
+                if(timeMs<=0){
+                    clearInterval(timer);
+                }
+            },60000)
+
+            if(!info.isBoosted){
+                btnBoost.removeClass('had').addClass('not').text("我来帮抢");
+                btnBoost.one("touchstart",function(){
+                    $(this).parent().addClass('arrowAnimate');
+                });
+                btnBoost.one(publicObj.handleEvent,function(){
+                    setTimeout(function(){
+                        userBoost();
+                    },500);
+                });
+            }else{
+                btnBoost.removeClass('not').addClass('had').text("已帮抢");
+            }
+            btnDownload.on("click",function(){
+                location.href = "http://a.app.qq.com/o/simple.jsp?pkgname=com.mashanglc.android.licaiclient";
+            })
+            shareUnderway.css("display","block");
+        }else{
+            allProfit = (parseFloat(info.estimatedYearRate)*1000+parseFloat(info.boostProfit)*1000)/1000;
+
+            $("#baseProfit2").text(info.estimatedYearRate+"%");
+            $("#boostProfit2").text(info.boostProfit+"%");
+            $("#profitAll").text(info.boostProfit);
+            $("#profitUserNickname").text(info.ownname);
+            content.addClass('banner3').removeClass('banner2');
+            shareUnderway.css("display","none");
+            shareEnd.css("display","block");
+        }
+
+        if(data.list && data.list.length>0){
+            createList(data.list);
+        }
+    }
+
+    //获取数据
+    function getShareHelpData(){
+        if(!publicObj.id || !publicObj.sid){
+            alert("出错了,请返回重新进入");
+            return false;
+        }
+        $.ajax({
+            url: publicObj.wxMatterUrl + publicObj.id,
+            data : {sid:publicObj.sid},
+            dataType: 'json',
+            success:function(response){
+                var data = response.data;
+                
+                if(data.status==1001){
+                    setTimeout(function(){
+                        window.location.replace(data.authUrl);
+                    },10)
+                }else if(data.status==0){
+                    $("#loader").hide();
+                    handleData(data);
+                }else{
+                    alert(data.msg);
+                }
+            },
+            erroe:function(){
+                alert("网络异常");
+            }
+        });
+    }
+
+    getShareHelpData();
+
+})
+</script>
+<!--微信分享-->
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="js/wx.js"></script>
+<script>
+Zepto(function($){
+    $.ajax({
+        type:"GET",
+        url:publicObj.wxShareUrl + "?id=" + publicObj.id,
+        dataType: 'json',
+        success:function(response){
+            var wxShare = {
+                title : response.data.title,
+                description : response.data.description,
+                shareUrl  : response.data.shareUrl,
+                icon : response.data.icon,
+                topic : response.data.circleTitle
+            }
+            wxCallback(wxShare);
+        }
+    })
+})  
+</script>
+</body>
+</html>

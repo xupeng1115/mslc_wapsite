@@ -1,0 +1,57 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<title>马上理财-开启财富之门</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta content="telephone=no" name="format-detection" />
+    <meta content="email=no" name="format-detection" />
+    <link href="css/common.css?date=1203" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<div class="page page-wx">
+    <p class="wx1"></p>
+    <p class="wx2"></p>
+    <p class="wx3" id="download">立即下载</p>
+    <p class="wx4">投资有风险 | 理财需谨慎</p>
+    <p class="tip">
+        <span class="ico"></span>
+    </p>
+</div>
+<script src="js/jquery-2.1.4.min.js" type="text/javascript"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript">
+
+if(publicObj.isWX){
+    sedRequest(publicObj.nameArr[5]);
+}else{
+    sedRequest(publicObj.nameArr[6]);
+}
+
+$("#download").on("click",function(){
+    if(publicObj.isWX){
+        $(".tip").show();
+    }else{
+        if(publicObj.os=="iphone" || publicObj.os=="android"){
+            sedRequest(publicObj.nameArr[7]);
+            location.href=publicObj.url2+"/v2/open/api/channel/dl/"+publicObj.os+"/"+publicObj.id;
+        }
+    }
+})
+</script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+    var _jsHost = "http://api.mashanglc.com";
+    var _title = "指尖的银行柜台，放心的马上理财";
+    var _link = "http://static.mashanglc.com/html/brand/index.html"+"?id="+publicObj.id;
+    var _imgUrl = "http://static.mashanglc.com/html/brand/img/share.png";
+    var _desc = "不只是理财，不全是产品。安全靠谱的银行理财等你赚收益。";
+    var _weixinJsUrl = _jsHost+'/api/weixinJs';
+    var _url = location.href.split('#')[0];
+</script>
+<script src="js/wx.js"></script>
+</body>
+</html>

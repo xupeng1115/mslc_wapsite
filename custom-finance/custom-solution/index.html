@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<title>理财推荐</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta content="telephone=no" name="format-detection" />
+    <meta content="email=no" name="format-detection" />
+    <link rel="stylesheet" type="text/css?v=20160324" href="css/common.css" />
+    <link rel="stylesheet" type="text/css?v=20160324" href="css/index.css" />
+</head>
+
+<body>
+<div class="loader" id="loader">
+    <div class="loader-inner line-spin-fade-loader">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+</div>
+<div class="main">
+    <div class="profit-area">
+        <p class="wave wave1 wave-pink"><img src="img/wave-pink.png" /></p>
+        <p class="wave wave2 wave-pink"><img src="img/wave-pink.png" /></p>
+        <p class="wave wave1 wave-third"><img src="img/wave-white.png" /></p>
+        <p class="wave wave2 wave-third"><img src="img/wave-white.png" /></p>
+        <p class="link-reset">重置</p>
+        <div class="profit-all flex" id="profitVll">
+            <dl>
+                <dd id="profitValue"></dd>
+                <dt>预计收益(元)</dt>
+            </dl>
+            <p class="wave wave1 wave-red"><img src="img/wave-red.png" /></p>
+            <p class="wave wave2 wave-red"><img src="img/wave-red.png" /></p>
+        </div>
+    </div>
+	<div class="plan-list">
+		<ul id="planList" class="clearfix"></ul>
+		<ol id="planListIndex" class="flex"></ol>
+	</div>
+	<div class="links">
+	    <ul class="clearfix">
+	        <li class="link-guess-you-like"><img src="img/guess-you-like.png" /><span class="txt">猜你喜欢</span></li>
+            <li class="link-look-around"><span class="txt">随便逛逛</span></li>
+	        <li class="link-manager-recommend"><img src="img/manager-recommend.png" /><span class="txt">理财经理推荐</span></li>
+	    </ul>
+	</div>
+</div>
+
+<iframe id="iframe" width="0" height="0" src=""></iframe>
+<script src="js/zepto.min.js" type="text/javascript"></script>
+<script src="js/common.js?v=20160324" type="text/javascript"></script>
+<script type="text/javascript">
+
+Zepto(function($){
+	var $links = $(".links");
+	var $planList = $("#planList");
+	var $planListIndex = $("#planListIndex");
+    var $profitValue = $("#profitValue");
+	var windowWidth = $(window).width() || document.body.scrollWidth;
+	var active = 0,baseValue = 0.9;
+
+	var indexObject = {
+        //创建列表
+        createList:function(data,isWave){
+
+        	var listHtml='',itemHtml,profitAllHtml,bankHtml,lengthHtml,durationHtml,moneyHtml,btnHtml,bankIcon,bankIconAll,duration,durationAll,sign,linefeedClass="",linefeed="",itemHeight,$item,profit,listIndexHtml="",$itemIndex;
+        	
+        	for(var i=0;i<data.length;i++){
+                
+        		bankIconAll = "";
+        		durationAll = "";
+
+        		profit = this.countProfit(data[i].products,data[i].result);
+
+        		for(var j=0;j<data[i].banks.length;j++){
+        			bankIcon = '<img src="'+data[i].banks[j].icon+'" />';
+        			bankIconAll +=bankIcon;
+        		}
+
+        		bankHtml = '<dl><dt>发行银行：</dt><dd class="flex">'+bankIconAll+'</dd></dl>';
+
+        		lengthHtml = '<dl><dt>理财产品数(款)：</dt><dd class="flex"><span class="value">'+data[i].num+'</span></dl>';
+
+                data[i].durations.sort(function(value1,value2){
+                    if (value1 < value2) {
+                        return 1;
+                    } else if (value1 > value2) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                })
+
+                data[i].durations.forEach(function(item,index,array){
+                    var itemValue;
+                    sign = (index==data[i].durations.length-1)?"":"<i>、</i>";
+                    if(item==0){
+                        itemValue = "<i>不固定</i>";
+                    }else{
+                        itemValue = item;
+                    }
+                    duration = '<span class="value">'+itemValue+sign+'</span>';
+                    durationAll += duration;
+                })
+
+        		durationHtml = '<dl class="durationAll"><dt>期限种类(天)：</dt><dd>'+durationAll+'</dd></dl>';
+
+        		moneyHtml = '<dl><dt>建议购买金额(万)：</dt><dd class="flex"><span class="value">'+data[i].buyAmount+'</span></dd></dl>';
+
+        		btnHtml = '<a href="solution-detail.html'+location.search+"&plan="+i+'" class="btn-to-detail">查看详情</a>';
+
+        		itemHtml = '<li data-profit='+profit+'><div class="plan-detail">'+bankHtml+lengthHtml+durationHtml+moneyHtml+'</div>'+btnHtml+'</li>';
+
+        		listHtml +=itemHtml;
+
+        		listIndexHtml = listIndexHtml+'<li></li>';
+
+        	}
+
+        	$planList.html(listHtml);
+        	$planListIndex.html(listIndexHtml);
+        	$item = $planList.find("li");
+        	$itemIndex = $planListIndex.find("li");
+
+        	$itemIndex.eq(0).addClass('active');
+
+            $profitValue.text($item.eq(0).attr("data-profit"));
+
+        	$item.css({
+        		width : windowWidth*(baseValue-0.1),
+        		marginLeft : windowWidth*0.1
+        	})
+
+        	$planList.width(Math.ceil(windowWidth*baseValue*$item.length));
+
+        	$planList.css("opacity","1");
+
+            if(isWave){
+                this.setWave();
+            }
+
+            this.setLinks();
+            this.changePlan($item,$itemIndex);
+
+            $(".btn-to-detail").on("click",function(){
+                commonMethod.customizeTrack(8);
+            })
+        },
+
+        //计算收益总额
+        countProfit:function(products,result){
+            var singleResult,allResult=0;
+            var userDuration = result.duration;
+
+            for(var i=0;i<products.length;i++){
+                singleResult = commonMethod.countSingleProfit(products[i],userDuration);
+                allResult +=singleResult;
+            }
+
+            if(allResult>Math.pow(10,10)-1){
+                allResult = parseInt(allResult,10).toExponential(6);
+            }else{
+                allResult = allResult.toFixed(2);
+            }
+
+            return allResult;
+        },
+
+        //设置Links的位置
+        setLinks:function(){
+            commonMethod.setLinks($links,function(){
+                var windowHeight = $(window).height();
+                var mainHeight = $(".main").height();
+                if(mainHeight<windowHeight){
+                    $links.addClass('fixed');
+                }
+            });
+        },
+
+        //设置波浪
+        setWave:function(){
+            commonMethod.setWave();
+        },
+
+        //切换方案
+        changePlan:function($item,$itemIndex){
+        	var maxLeft = -Math.ceil(windowWidth*baseValue*($item.length-1));
+
+            commonMethod.touchDefault({
+                $element : $planList,
+                maxLeft : maxLeft,
+                touchendFn : function(touchData,e){
+                    var distance = touchData.distanceX;
+                    var currentEndLeft = translate3dValue($planList[0].style.webkitTransform);
+
+                    var animateForward = function($element,bool){
+                        var endLeft;
+                        $element.addClass('animateState');
+                        if(bool){
+                            active--;
+                            endLeft = -windowWidth*baseValue*active;
+                        }else{
+                            active++;
+                            endLeft = -windowWidth*baseValue*active;
+                        }
+
+                        $element.animate({
+                            '-webkit-transform':'translate3d('+endLeft+'px,0,0)'
+                        },300,"ease",function(){
+                            var value = $item.eq(active).attr("data-profit");
+                            $itemIndex.eq(active).addClass('active').siblings().removeClass('active');
+                            $element.removeClass('animateState');
+                            commonMethod.profitAnimate($profitValue,value);
+                        })
+                    }
+
+                    var animateBack = function($element){
+                        var endLeft = -windowWidth*baseValue*active;
+                        $element.addClass('animateState');
+                        $element.animate({
+                            '-webkit-transform':'translate3d('+endLeft+'px,0,0)'
+                        },100,"ease",function(){
+                            $element.removeClass('animateState');
+                        })
+                        setTimeout(function(){
+                            $element.removeClass('animateState');
+                        },100)
+                    }
+
+                    if($planList.hasClass('animateState')){
+                        return false;
+                    }
+
+                    if(Math.abs(distance)<=30){
+                        animateBack($planList);
+                        return;
+                    }
+
+                    if(distance<-30 && active!=$item.length-1){
+                        animateForward($planList,false);
+                    }else if(distance>30 && active!=0){
+                        animateForward($planList,true);
+                    }
+                }
+            })
+        },
+
+        //初始化
+        initial:function(){
+            var self = this;
+            
+            $.ajax({
+                url: publicObj.plan,
+                data :publicObj.parameter,
+                dataType: 'json',
+                success: function (response) {
+                    if(response.error!=0){
+                        alert(response.msg);
+                    }else{
+                    	if(response.data && response.data.length>0){
+                    		self.createList(response.data,true);
+                            $("#loader").hide();
+                            $(".main").css("opacity",1);
+                    	}else{
+                    		location.replace("questionnaire.html"+location.search);
+                    	}  
+                    }
+                }
+            });
+            
+        }
+    }
+
+    indexObject.initial();
+})
+</script>
+</body>
+</html>

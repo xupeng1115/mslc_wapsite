@@ -1,0 +1,33 @@
+{
+	"error":0,
+	"msg":"message",
+	"data":{
+		"id":12345,
+		"title":"7月理财攻略，在这里全都有了！",
+		"timestamp":"1469066014",
+		"authors":[
+		         {"userType":1, "userId":100001,"name":"张华","profileURL":"img/author_icon.png"},
+				 {"userType":2, "userId":100004,"name":"测试1","bank":"平安银行xx支行平安银行XX支行平安XXXXX理财经理XXXXX理财经理","profileURL":"img/author_icon01.png"},
+		         {"name":"乔苏尧","profileURL":"img/author_icon.png"},
+				 {"name":"刘曜","bank":"平安银行xx支行","profileURL":"img/author_icon01.png"}
+		         
+		],
+		"content":[
+		           "马上理财是中国唯一直连银行的移动互联网理财平台，对比传统的理财方式。",
+		           "只需要简单4步，轻松马上理财。第一步，首页选择您所在的城市。第二步，选择您中意的理财产品。第三步，选择购买理财产品的银行支行。第四步，一键预约理财经理，预约理财服务，无忧理财。",
+		           "http://img2.imgtn.bdimg.com/it/u=4277586499,2983628927&fm=21&gp=0.jpg",
+		           "只需要简单4步，轻松马上理财。第一步，首页选择您所在的城市。第二步，选择您中意的理财产品。第三步，选择购买理财产品的银行支行。第四步，一键预约理财经理，预约理财服务，无忧理财。",
+		           "马上理财是中国唯一直连银行的移动互联网理财平台，对比传统的理财方式。",
+		           "http://img0.imgtn.bdimg.com/it/u=3592064077,3415214001&fm=21&gp=0.jpg",
+		           "只需要简单4步，轻松马上理财。第一步，首页选择您所在的城市。第二步，选择您中意的理财产品。第三步，选择购买理财产品的银行支行。第四步，一键预约理财经理，预约理财服务，无忧理财。",
+				   "http://img5.imgtn.bdimg.com/it/u=3460836039,1675457946&fm=21&gp=0.jpg"
+		],
+		"liked":false,
+		"likeCount":341,
+		"cover":"http://img2.imgtn.bdimg.com/it/u=4277586499,2983628927&fm=21&gp=0.jpg"
+	}
+}
+
+
+
+

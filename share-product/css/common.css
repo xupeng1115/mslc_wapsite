@@ -1,0 +1,427 @@
+@charset "utf-8";
+html { font-family:"Helvetica Neue",Helvetica,"San Francisco",  Arial, sans-serif; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; font-size: 16px; }
+body { margin: 0; font-size: 1rem; line-height: 1.5; color: #333; background-color: #fff;  overflow-x: hidden; -webkit-overflow-scrolling: touch; }
+article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, section, summary { display: block; }
+audio, canvas, progress, video { display: inline-block; vertical-align: baseline; }
+audio:not([controls]) { display: none; height: 0; }
+[hidden], template { display: none; }
+svg:not(:root) { overflow: hidden; }
+a { background: transparent; text-decoration: none; -webkit-tap-highlight-color: transparent; color: #0088cc; }
+a:active { outline: 0; }
+a:active { color: #006699; }
+abbr[title] { border-bottom: 1px dotted; }
+b, strong { font-weight: bold; }
+dfn { font-style: italic; }
+mark { background: #ff0; color: #000; }
+small { font-size: 80%; }
+sub, sup { font-size: 75%; line-height: 0; position: relative; vertical-align: baseline; }
+sup { top: -0.5em; }
+sub { bottom: -0.25em; }
+img { border: 0; vertical-align: middle;}
+hr { -moz-box-sizing: content-box; box-sizing: content-box; height: 0; }
+pre { overflow: auto; white-space: pre; white-space: pre-wrap; word-wrap: break-word; }
+code, kbd, pre, samp { font-family: monospace, monospace; font-size: 1em; }
+button, input, optgroup, select, textarea { color: inherit; font: inherit; margin: 0; }
+button { overflow: visible; }
+button, select { text-transform: none; }
+button, html input[type="button"], input[type="reset"], input[type="submit"] { -webkit-appearance: button; cursor: pointer; }
+button[disabled], html input[disabled] { cursor: default; }
+button::-moz-focus-inner, input::-moz-focus-inner { border: 0; padding: 0; }
+input { line-height: normal; }
+input[type="checkbox"], input[type="radio"] { box-sizing: border-box; padding: 0; }
+input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { height: auto; }
+input[type="search"] { -webkit-appearance: textfield; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+input[type="search"]::-webkit-search-cancel-button, input[type="search"]::-webkit-search-decoration { -webkit-appearance: none; }
+fieldset { border: 1px solid #c0c0c0; margin: 0 2px; padding: 0.35em 0.625em 0.75em; }
+legend { border: 0; padding: 0; }
+textarea { overflow: auto; resize: vertical;}
+optgroup { font-weight: bold; }
+table { border-collapse: collapse; border-spacing: 0; }
+td, th { padding: 0; }
+html, button, input, select, textarea { font-family:"San Francisco", "Helvetica Neue", Helvetica, STHeiTi, Arial, sans-serif; }
+h1, h2, h3, h4, h5, h6, p, figure, form, blockquote { margin: 0; padding:0;}
+ul, ol, li, dl, dd { margin: 0; padding: 0; }
+ul, ol { list-style: none outside none; }
+h1, h2, h3 { line-height: 2; font-weight: normal; }
+input::-moz-placeholder, textarea::-moz-placeholder { color: #cccccc; }
+input:-ms-input-placeholder, textarea:-ms-input-placeholder { color: #cccccc; }
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { color: #cccccc; }
+
+* { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; -webkit-tap-highlight-color: transparent;}
+.clearfix:after{visibility: hidden;display: block;font-size: 0;content: " ";clear: both;height: 0;}
+.clearfix{*zoom:1;}
+.flex{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;-webkit-justify-content:center;justify-content:center;-webkit-box-pack: center;}
+.red{color:#ff6060;}
+.black{color:#333333;}
+.gray{color:#bebebe;}
+
+html,body{text-align: center;}
+img{max-width: 100%;}
+iframe{display:none;}
+
+.g_loading{position: fixed;top:0;left:0;width:100%;height: 100%;z-index: 999;background:url("../img/ajax-loader.gif") no-repeat center center rgba(255,255,255,.5);background-size: 25px 25px;}
+.g_alert{max-width:160px;text-align:center;padding:10px;color:#fff;border-radius:5px;background: rgba(0,0,0,0.8);display:block;position: fixed;z-index: 200;bottom:40px;left:50%;font-size:0.75rem;}
+
+/*******************************************Common-style  End***********************************************/
+
+/***********************************************Main Begin***********************************************/
+.content{
+	width:100%;
+	height:100%;
+	position:relative;
+}
+header{
+	width:100%;
+	height:200px;	background: -webkit-linear-gradient(#faa144 , #fccf7b);
+	background: linear-gradient(#faa144, #fccf7b);
+	position:relative;
+	color:#ffffff;
+}
+header .head{
+	width:100%;
+	padding:13px 20px 12px 20px;
+}
+header .head .top{
+	height:100%;
+	background:#fab860;
+	border-radius:10px;
+	position:relative;
+	box-shadow: 0px 0px 100px 2px #faa144;
+}
+
+header .head .top .manager-icon{
+	width:40px;
+	height:40px;
+	margin-top:5px;
+	margin-left:5px;
+	float:left;
+}
+header .head .top .manager-icon .user-image{
+	width:100%;
+	height:100%;
+	border-radius:50%;
+	display:block;
+}
+header .head .top .vip{
+	width:13px;
+	height:13px;
+	background:url(../img/vip.png)no-repeat center center;
+	background-size:100% 100%;
+	border-radius:5px;
+	position:absolute;
+	top:32px;
+	left:32px;
+	z-index:20;
+}
+header .head .top .manager-dec{
+	margin-left:45px;
+	border-radius:15px;
+}
+header .head .top .manager-dec .dec-text{
+	padding:7px 10px;
+	font-size:0.75rem;
+	color:#fff;
+	opacity:0.9;
+	text-align:left;
+	line-height:18px;
+}
+
+header .product{
+	height:100px;
+	margin:0 14px;
+	position:relative;
+}
+header .product .product-bg-top{
+	width:100%;
+	margin-top:9px;
+	border-radius:12px;
+	background: -webkit-linear-gradient(left top,#ff6060 , #faa144);
+	background: linear-gradient(to bottom right, #ff6060, #faa144);
+	position:absolute;
+	top:0;
+	left:0;
+	z-index:50;
+}
+header .product .product-bg-bottom{
+	height:80px;
+	margin:0 10px;
+	border-radius:12px;
+	background:#f88e4b;
+}
+
+header .product .product-bg-top .product-dec{
+	font-size:1.0rem;
+	padding-top:19px;
+	margin-left: 5px;
+    margin-right: 5px;
+    line-height: 20px;
+}
+header .product .product-bg-top .yield{
+	padding-top:25px;
+	line-height:20px;
+}
+header .product .product-bg-top .yield .yield-rate{
+	font-size:2.8125rem;
+}
+header .product .product-bg-top .yield .add{
+	font-size:1.8rem;
+}
+header .product .product-bg-top .yield .precent{
+	font-size:1.375rem;
+}
+header .product .product-bg-top .yield .interest-rate{
+	font-size:2.0rem;
+}
+header .product .product-bg-top .product-im{
+	width:100%;
+	position:relative;
+	margin-top:18px;
+	font-size:0.75rem;
+	opacity:0.7;
+	line-height:10px;
+}
+header .product .product-bg-top .product-im span{
+	display:inline-block;
+	width:33.3%;
+	float:left;
+	border-right:1px solid rgba(255,255,255,0.6);
+}
+header .product .product-bg-top .product-im .disk{
+	border-right:none;
+}
+header .product .product-bg-top .pay{
+	width:50%;
+	height:38px;
+	margin:0 auto;
+	margin-top:48px;
+	margin-bottom:18px;
+	font-size:1.125rem;
+	font-weight:bold;
+	line-height:39px;
+	color:#ff7000;
+	border-radius:25px;
+	text-align:center;
+	background:#ff6060;
+	box-shadow: 0px 4px 20px 1px #fb7f51;
+	vertical-align:middle;
+}
+header .product .product-bg-top .pay .pay-btn{
+	width:100%;
+	height:100%;
+	vertical-align:middle;
+	border-radius:25px;
+	background:#facd50;
+	box-shadow:0px 4px 0px 0px #ffb400;
+}
+
+header .foot{
+	width:100%;
+	height:40px;
+	background:url(../img/bottom_bg.png)no-repeat center center;
+	background-size:100% 100%;
+	position:absolute;
+	bottom:-40px;
+	left:0;
+	z-index:10;
+}
+
+
+section{
+	padding:10px 30px 6px 30px;
+}
+section .register{
+	margin-top:90px;
+	margin-bottom:32px;
+	font-size:0.875rem;
+	position:relative;
+}
+section .register .inp{
+	width:100%;
+	height:44px;
+	border-bottom:1px solid #dcdcdc;
+	position:relative;
+}
+section .register .form-group{
+	height:20px;
+	display:block;
+	border:none;
+	line-height:20px;
+	text-align:left;
+	color:#191919;
+	outline:none;
+	position:absolute;
+	top:12px;
+	left:0;
+}
+section .register .inp .get-yz{
+	width:100px;
+	height:20px;
+	color:#ff6060;
+	border-left:1px solid #dcdcdc;
+	padding-left:10px;
+	position:absolute;
+	top:11px;
+	right:0;
+}
+section .invite{
+	font-size:0.875rem;
+	color:#bebebe;
+}
+section .invite .invite-number{
+	padding-left:10px;
+}
+
+
+footer{
+	width:100%;
+	padding:0 20px;
+}
+footer .btn{
+	width:100%;
+	height:44px;
+	border-radius:7px;
+	font-size:1.125rem;
+	color:#ffffff;
+	text-align:center;
+	line-height:45px;
+}
+footer .register-btn{
+	background: -webkit-linear-gradient(left bottom,#fc8850 , #ff6060);
+	background: linear-gradient(to right top, #fc8850, #ff6060);
+}
+footer .info{
+	font-size:0.75rem;
+	color:#999999;
+	padding-top:15px;
+	padding-bottom:15px;
+	margin-bottom: 20px;
+}
+footer .info .agreement{
+	padding-left:5px;
+	color:#ff6060;
+}
+/***********************************************Success Begin**********************************************/
+.mask{
+	width:100%;
+	height:100%;
+	position:fixed;
+	top:0;
+	left:0;
+	background:rgba(0,0,0,0.5);
+	z-index:100;
+}
+.mask .success{
+	width:300px;
+	height:360px;
+	background:#ffffff;
+	border-radius:8px;
+	position:absolute;
+	left:50%;
+	top:16%;
+	margin-left:-150px;
+}
+.mask .success .suc-icon{
+	width:220px;
+	height:130px;
+	background:url(../img/success.png)no-repeat center center;
+	background-size:100% 100%;
+	position:absolute;
+	top:20%;
+	left:50%;
+	margin-left:-110px;
+}
+.mask .success .cancle{
+	width:40px;
+	height:40px;
+	background:url(../img/cancle.png)no-repeat center center;
+	background-size:100% 100%;
+	position:absolute;
+	top:-20px;
+	right:15px;;
+	z-index:200;
+}
+.mask .success .suc-text{
+	font-size:1.375rem;
+	color:#ff6060;
+	padding-top:230px;
+}
+.mask .success .download-btn{
+	width:100%;
+	height:44px;
+	background:#ff6060;
+	font-size:1.0rem;
+	color:#ffffff;
+	text-align:center;
+	border-radius:0 0 8px 8px;
+	line-height:45px;
+	position:absolute;
+	bottom:0;
+	left:0;
+}
+
+/**********************************************Success End******************************************/
+
+
+/***********************************************Main End***********************************************/
+
+/**********************************************Media query Begin******************************************/
+@media screen and (min-width:414px){
+		header .head{height:75px;}
+}
+
+@media screen and (max-width:384px){
+	.mask .success .cancle {width: 36px;height: 36px;top: -18px;}	
+}
+
+@media screen and (max-width:375px){
+	.mask .success {width: 280px;height: 330px;margin-left: -140px;}
+	.mask .success .suc-icon {width: 200px;height: 120px;margin-left: -100px;top:18%;}
+	.mask .success .suc-text {padding-top: 205px;}
+}
+@media screen and (max-width:360px){
+	
+}
+@media screen and (max-width:320px){
+	header{height:190px;}
+	header .head .top .manager-dec .dec-text {padding: 6px 8px;font-size: 0.6875rem;line-height: 16px;}
+	header .head .top .vip {width: 10px;height: 10px;top: 26px;left: 27px;}
+	header .head .top .manager-icon {width: 32px;height: 32px;}
+	header .product-bg-top .product-dec {font-size: 0.875rem;padding-top: 14px;}
+	header .product-bg-top .yield .yield-rate {font-size: 2.5rem;}
+	header .product-bg-top .yield .interest-rate {font-size: 1.7rem;}
+	header .product-bg-top .yield .add {font-size: 1.5rem;}
+	header .product-bg-top .yield .precent {font-size: 1.125rem;}
+	header .product-bg-top .product-im {margin-top: 16px;font-size: 0.6875rem;}
+	header .product-bg-top .pay-btn {height: 32px;margin-top: 45px;margin-bottom: 18px;font-size: 1.0rem;line-height: 36px;border-radius: 16px;}
+	header .head .top .manager-dec {margin-left: 37px;}
+	
+	section .register {font-size: 0.875rem;}
+	section .register .form-group {width: 170px;}
+	section .register .inp .get-yz {width: 85px;padding-left: 5px;}
+	section .top .manager-dec .dec-text {padding:8px;font-size:0.6875rem;}
+	section .invite {font-size: 0.875rem;margin-top: 30px;}
+	section .top .manager-icon {width: 40px;height: 40px;margin-top: 5px;}
+	section .top .manager-dec {margin-left: 60px;}
+	section .top .vip {width: 13px;height: 13px;top: 38px;left: 32px;}
+	
+	footer .btn {height: 40px;font-size: 0.875rem;line-height: 41px;}
+	footer .info {font-size: 0.6875rem;}
+	
+	.mask .success {width: 240px;height: 280px;margin-left: -120px;}
+	.mask .success .suc-icon {width: 180px;height: 105px;margin-left: -90px;top:16%;}
+	.mask .success .suc-text {padding-top: 170px;font-size: 1.2rem;}
+	.mask .success .cancle {width: 32px;height: 32px;top: -16px;}
+}
+/**********************************************Media query End******************************************/
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<title>马上飞扬</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta content="telephone=no" name="format-detection" />
+    <meta content="email=no" name="format-detection" />
+    <link href="static/css/common.css" rel="stylesheet" type="text/css">
+    
+</head>
+
+<body>
+<!--横屏-->
+<div class="page1" id="page1">
+	<div class="music rotate360" id="music"><img src="static/images/music.png"></div>
+	<div class="cover" id="cover">
+		<div class="cover-cont">
+			<div class="logo"><img src="static/images/logo.png" alt="logo">
+				<span class="logo-mask" id="logoMask"></span>
+			</div>
+			<p class="txt"><span id="progress">0</span>%</p>
+		</div>
+	</div>
+	<!--data-isall：是否集齐徽章-->
+	<div class="main-content" id="mainContent" data-isall="false">
+		<!--data-result原有的召唤结果索引，data-lack为还差几个徽章-->
+		<div class="scene scene1-other" id="scene1Other" data-result="1" data-lack="1">
+			<div class="scene1-other-1 scene-trans"><img src="static/images/scene1-other-1.png"></div>
+			<div class="scene1-other-2 scene-trans">
+				<p class="txt-left txt1"></p>
+				<p class="value"></p>
+				<p class="txt-right"><img src="static/images/scene1-other-2txt-right.png"></p>
+			</div>
+			<div class="scene1-other-3 scene-trans"></div>
+			<div class="scene1-other-4 clearfix scene-trans">
+				<span class="scene1-other-btn1"><img src="static/images/btn1.png"></span>
+				<a href="index.html" class="scene1-other-btn2"><img src="static/images/btn2.png"></a>
+			</div>
+		</div>
+		<!--/end 好友入口场景一-->
+		<div class="scene scene2-other" id="scene2Other">
+			<div class="scene2-other-1"><img src="static/images/scene2-other-1.png"></div>
+			<div class="scene2-other-2"><img src="static/images/scene2-other-2.png"></div>
+		</div>
+		<!--/end 好友入口场景二-->
+		<div class="scene scene2" id="scene2">
+			<div class="scene2-1">
+				<span class="scene2-2"><img src="static/images/scene2-2.png" alt=""></span>
+				<span class="area area1"></span>
+				<span class="area area2"></span>
+				<span class="area area3"></span>
+				<span class="area area4"></span>
+				<span class="area area5"></span>
+			</div>
+		</div>
+		<!--/end 场景二-->
+		<div class="scene scene3 scene3-other" id="scene3">
+			<div class="scene3-left scene-trans"></div>
+			<div class="scene3-right scene-trans"></div>
+			<div class="scene3-result-txt scene-trans"></div>
+			<div class="scene3-result-img scene-trans"></div>
+			<div class="scene3-1 scene-trans"><img src="static/images/scene3-1.png" alt=""></div>
+			<div class="scene3-2 scene-trans"><a href="index.html"><img src="static/images/btn2.png"></a></div>
+		</div>
+		<!--/end 场景三（未集齐徽章）-->
+		<div class="scene scene3 scene3-all" id="scene3All">
+			<div class="scene3-left scene-trans"></div>
+			<div class="scene3-right scene-trans"></div>
+			<div class="scene3-all-1 scene-trans"><img src="static/images/scene3-all-1-other.png"></div>
+			<div class="scene3-all-2 scene-trans"><img src="static/images/scene3-all-2.png"></div>
+			<div class="scene3-all-4 scene-trans"><a href="index.html"><img src="static/images/btn2.png"></a></div>
+		</div>
+		<!--/end 场景三（已集齐全部徽章）-->
+	</div>
+</div>
+<!--竖屏-->
+<div class="page2">
+	<div class="vertical-module flex flex-align-center flex-justify-center">
+		<div class="vertical-cont">
+			<p class="vertical-img rotate90"><img src="static/images/index.png" alt=""></p>
+			<p class="vertical-txt">为了获得更好的体验，请使用竖屏浏览</p>
+		</div>
+	</div>
+</div>
+<audio src="static/images/music.mp3" autoplay="autoplay" loop="loop" id="audio"></audio>
+<script src="static/js/jquery-1.11.3.min.js"></script>
+<script src="static/js/common.js"></script>
+<script>
+$(function(){
+	var $scene1Other = $("#scene1Other");
+	var $scene2Other = $("#scene2Other");
+	
+	var $scene2 = $("#scene2");
+	var $scene3 = $("#scene3");
+	var $scene3All = $("#scene3All");
+
+	function imgArrLoad(){
+		var imagesArr0 =["static/images/index.png","static/images/scene3-1.png","static/images/scene2-1.png","static/images/scene2-2.png","static/images/scene1-other-1.png","static/images/scene1-other-2txt-right.png","static/images/btn1.png","static/images/btn2.png","static/images/scene1-other-2txt-1.png","static/images/scene1-other-2txt-2.png","static/images/scene1-other-2txt-3.png","static/images/scene1-other-2txt-4.png","static/images/scene1-other-2txt-5.png","static/images/scene1-other-2txt-6.png","static/images/scene3-other-t-false-1.png","static/images/scene3-other-t-false-2.png","static/images/scene3-other-t-false-3.png","static/images/scene3-other-t-false-4.png","static/images/scene3-other-t-false-5.png","static/images/scene3-other-t-false-6.png","static/images/scene3-other-t-true-1.png","static/images/scene3-other-t-true-2.png","static/images/scene3-other-t-true-3.png","static/images/scene3-other-t-true-4.png","static/images/scene3-other-t-true-5.png","static/images/scene3-other-t-true-6.png"];
+
+		var imagesArr1 = ["static/images/index.png","static/images/scene3-all-1-other.png","static/images/scene3-all-2.png","static/images/btn2.png"];
+
+		var all = $("#mainContent").data("isall");
+		if(all){
+			$scene1Other && $scene1Other.hide();
+			$scene2Other && $scene2Other.hide();
+			$scene2 && $scene2.hide();
+			$scene3 && $scene3.hide();
+			loadProcess(100,imagesArr1,scene3AllAnimate);
+		}else{
+			$scene3All && $scene3All.hide();
+			loadProcess(30,imagesArr0,scene1OtherAnimate);
+		}
+		
+	}
+
+	//好友入口场景一动画
+	function scene1OtherAnimate(){
+		var $scene1Otherto1 = $scene1Other.find(".scene1-other-1");
+		var $scene1Otherto2 = $scene1Other.find(".scene1-other-2");
+		var $scene1Otherto3 = $scene1Other.find(".scene1-other-3");
+		var $scene1Otherto4 = $scene1Other.find(".scene1-other-4");
+		var $txtLeft = $scene1Other.find(".scene1-other-2 .txt-left");
+		var $value = $scene1Other.find(".scene1-other-2 .value");
+		var value = $scene1Other.data("result");
+		var lack = $scene1Other.data("lack");
+		var txtLeftImgSrc = locationStr+'static/images/scene1-other-2txt-'+value+'.png';
+		var scene1Otherto3ImgSrc =  locationStr+'static/images/other-result-'+value+'.png';
+
+		$txtLeft.append('<img src="'+txtLeftImgSrc+'" >');
+		$scene1Otherto3.append('<img src="'+scene1Otherto3ImgSrc+'" >');
+		$value.text(lack);
+		$scene1Other.addClass('scene1-other-result-'+value).css({"z-index":"9","opacity":"1"})
+		loadImage(scene1Otherto3ImgSrc,function(){
+			var btn1 = $scene1Otherto4.find(".scene1-other-btn1");
+			$scene1Otherto1.addClass('show');
+			$scene1Otherto2.addClass('show');
+			$scene1Otherto3.addClass('show');
+			$scene1Otherto4.addClass('show');
+
+			btn1.on("click",scene2OtherAnimate)
+		})
+
+	}
+	//好友入口场景二动画
+	function scene2OtherAnimate(){
+		var scene2Otherto2 = $scene2Other.find(".scene2-other-2");
+		$scene1Other.addClass('flip flip0');
+		setTimeout(function(){
+			$scene1Other.hide();
+			$scene2Other.css({"z-index":"9","opacity":"1"});
+			$scene2Other.addClass('flip flip1');
+		},800)
+		scene2Otherto2.on("click",scene2Animate)
+	}
+
+	//场景二入场动画
+	function scene2Animate(){
+		var $nose = $scene2.find(".scene2-2");
+
+		$scene2.css("opacity","1");
+		$scene2Other.addClass('hide');
+
+		setTimeout(function(){
+			$nose.addClass('noseAni');
+			throughArea($scene2,function(){
+
+				//此处ajax回调后传入两个值，result和repeat
+				//result为召唤结果，可为数字0-6
+				//0失败，1五仁，2蛋黄，3芝麻，4豆沙，5椰奶，6莲蓉
+				//repeat为召唤结果是否重复,当result为0，则始终为false不重复
+				var result = Math.floor((Math.random()*7));//临时测试用
+				var repeat = false;//临时测试用
+				scene3Animate(result,true);
+			})
+		},800)
+	}
+
+	//场景三（未集齐徽章）入场动画
+	function scene3Animate(result,repeat){
+		var $scene3Left = $scene3.find(".scene3-left");
+		var $scene3Right = $scene3.find(".scene3-right");
+		var $scene3to1 = $scene3.find(".scene3-1");
+		var $scene3to2 = $scene3.find(".scene3-2");
+		var $scene3ResultImg = $scene3.find(".scene3-result-img");
+		var $scene3ResultTxt = $scene3.find(".scene3-result-txt");
+		var value = result;
+		var resultImgSrc,resultTxtSrc;
+
+		if(value==0){
+			resultImgSrc=locationStr+"static/images/self-result-"+value+".png";
+		}else{
+			resultImgSrc=locationStr+"static/images/other-result-"+value+".png";
+			if(repeat){
+				resultTxtSrc=locationStr+"static/images/scene3-other-t-true-"+value+".png";
+			}else{
+				resultTxtSrc=locationStr+"static/images/scene3-other-t-false-"+value+".png";
+			}
+			$scene3ResultTxt.append('<img src="'+resultTxtSrc+'" >')
+		}
+		
+		$scene3ResultImg.append('<img src="'+resultImgSrc+'" >')
+		$scene3.addClass('scene3-result-'+value).css({"z-index":"8","opacity":"1"})
+		if(repeat){
+			$scene3.addClass('scene3-result-repeat');
+		}
+		$scene3Left.removeClass("hide").addClass('show');
+		$scene3Right.removeClass("hide").addClass('show');
+		$scene3Right.one("webkitAnimationEnd",function(){
+			//召唤结果图片加载成功后执行动画
+			loadImage(resultImgSrc,function(){
+				if(value==0){
+					$scene3to1.removeClass("hide").addClass('show');
+				}else{
+					$scene3to2.addClass('show');
+					$scene3ResultTxt.addClass('show');
+				}
+				$scene3ResultImg.removeClass("hide").addClass('show');
+			})		
+		})
+		$scene3to1.on("click",function(){
+			$scene3to1.removeClass('show').addClass('hide');
+			$scene3ResultImg.removeClass('show').addClass('hide');
+			$scene3ResultImg.one("webkitAnimationEnd",function(){
+				$scene3ResultImg.empty();
+				$scene3Left.removeClass('show').addClass('hide');
+				$scene3Right.removeClass('show').addClass('hide');
+				$scene3Right.one("webkitAnimationEnd",function(){
+					$scene3.removeClass('scene3-result-'+value+' scene3-result-repeat').css({"z-index":"7","opacity":"0"})
+				})
+				
+			})
+		})
+	}
+
+	//场景三（已集齐徽章）入场动画
+	function scene3AllAnimate(){
+		var $scene3LeftAll = $scene3All.find(".scene3-left");
+		var $scene3RightAll = $scene3All.find(".scene3-right");
+		var $scene3to1All = $scene3All.find(".scene3-all-1");
+		var $scene3to2All = $scene3All.find(".scene3-all-2");
+		var $scene3to4All = $scene3All.find(".scene3-all-4");
+
+		$scene3All.css({"z-index":"8","opacity":"1"});
+		$scene3LeftAll.addClass('show');
+		$scene3RightAll.addClass('show');
+		$scene3RightAll.one("webkitAnimationEnd",function(){
+			$scene3to1All.addClass('show');
+			$scene3to2All.addClass('show');
+			$scene3to4All.addClass('show');
+		})
+	}
+
+	//logo背景图加载成功后执行加载动画
+	loadImage(locationStr+"static/images/logo.png",imgArrLoad);
+
+})
+</script>
+</body>
+</html>

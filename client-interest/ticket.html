@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+<meta name="format-detection" content="telephone=no"/>
+<meta name="format-detection" content="email=no"/>
+<title>我的加息券</title>
+<link rel="stylesheet" href="css/common.css" type="text/css"/>
+<style>
+body {
+    background: #f8f8f8;
+}
+
+.wrapper {padding: 0px 10px;border-top:0px;border-bottom:0px;margin-top: 0px;background: #f8f8f8;}
+.nodata {background: url("./img/icon_no_coupon@2x.png") no-repeat center center #f8f8f8;background-size: 220px 120px}
+
+.ticket {background: #fff; border-radius: 3px; box-shadow: 0 0 5px #f2f2f2; position: relative; height: 130px; width: 100%; margin-top: 15px;}
+.available {border-top: 3px solid #ff6060;}
+.expired {border-top: 3px solid #4cbed4;}
+.used {border-top: 3px solid #bebebe;}
+.frozen {border-top: 3px solid #bebebe;}
+
+.ticket-frozen {
+    height: 50px;
+    width: 64.5px;
+    background: url(img/icon_ticket_frozen@2x.png) no-repeat center center;
+    background-size: 100% 100%;
+    position: absolute;
+    top: -3px;
+    right: 45px;
+}
+
+.ticket-expired {
+    height: 50px;
+    width: 64.5px;
+    background: url(img/icon_ticket_expired@2x.png) no-repeat center center;
+    background-size: 100% 100%;
+    position: absolute;
+    top: -3px;
+    right: 45px;
+}
+
+.ticket-used {
+    height: 50px;
+    width: 64.5px;
+    background: url(img/icon_ticket_used@2x.png) no-repeat center center;
+    background-size: 100% 100%;
+    position: absolute;
+    top: -3px;
+    right: 45px;
+}
+
+.ticket .ticket-top {height: 85px;width: 100%; border-bottom: 1px dashed #e6e6e6;}
+
+.ticket .ticket-circle-left {
+    height: 20px;
+    width: 20px;
+    background: #f8f8f8;
+    border-radius: 50%;
+    position: absolute;
+    top: 75px;
+    left: -10px;
+}
+
+.ticket .ticket-circle-right {
+    height: 20px;
+    width: 20px;
+    background: #f8f8f8;
+    border-radius: 50%;
+    position: absolute;
+    top: 75px;
+    right: -10px;
+}
+
+.ticket .ticket-top .ticket-name {
+    font-size: 14px;
+    color: #646464;
+    position: absolute;
+    top: 20px;
+    left: 30px;
+}
+
+.ticket .ticket-top .ticket-time {
+    font-size: 13px;
+    color: #969696;
+    position: absolute;
+    top: 50px;
+    left: 30px;
+}
+
+.ticket .ticket-top .available-color {color: #ff6060;}
+.ticket .ticket-top .expired-color {color: #4cbed4;}
+.ticket .ticket-top .frozen-color {color: #bebebe;}
+.ticket .ticket-top .used-color {color: #bebebe;}
+
+.ticket .ticket-top .use-count {
+    font-size: 13px;
+    position: absolute;
+    top: 8px;
+    right: 35px;
+}
+
+.ticket .ticket-top .number {
+    font-size: 35px;
+}
+
+.ticket .ticket-top .chance{
+    font-size: 13px;
+    position: absolute;
+    top: 50px;
+    right: 30px;
+}
+
+.ticket .ticket-bottom {width: 100%;font-size: 13px; color: #bebebe; height: 45px;line-height: 45px;}
+.ticket .ticket-bottom .left {position: absolute;left: 30px;}
+.ticket .ticket-bottom .right {position: absolute;right: 30px;}
+
+.ticket .ticket-bottom .btn {margin:10px 0px;width: 70px;height:25px;line-height:25px;border-radius:3px;position: absolute;right: 15px;background: #ff6060;font-size:12px;color:#ffffff;}
+
+</style>
+</head>
+<body>
+<div class="question">
+    <a href="./interest_rule.html"><image src="img/question.png"></image><span>加息券规则</span></a>
+</div>
+<div style="clear:both;"></div>
+<div class="wrapper">
+    <div class="lists">
+        <!--<div class="ticket available">-->
+            <!--<div class="ticket-top">-->
+                <!--<p class="ticket-name">加息券</p>-->
+
+                <!--<p class="ticket-time">有效期至：<span class="time-old">2016-05-31</span></p>-->
+
+            <!--<span class="available-color">-->
+                <!--<p class="use-count"><span class="number">1</span>次</p>-->
+                <!--<p class="chance">加息机会</p>-->
+            <!--</span>-->
+            <!--</div>-->
+            <!--<div class="ticket-circle-left"></div>-->
+            <!--<div class="ticket-circle-right"></div>-->
+            <!--<div class="ticket-bottom">-->
+                <!--<span class="left">来源：邀请5个财友兑换</span>-->
+                <!--<span class="right">可用</span>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="ticket expired">-->
+            <!--<div class="ticket-top">-->
+                <!--<p class="ticket-name">加息券</p>-->
+
+                <!--<p class="ticket-time">有效期至：<span class="time-old">2016-05-31</span></p>-->
+
+            <!--<span class="expired-color">-->
+                <!--<p class="use-count"><span class="number">1</span>次</p>-->
+                <!--<p class="chance">加息机会</p>-->
+            <!--</span>-->
+            <!--</div>-->
+            <!--<div class="ticket-expired"></div>-->
+            <!--<div class="ticket-circle-left"></div>-->
+            <!--<div class="ticket-circle-right"></div>-->
+            <!--<div class="ticket-bottom">-->
+                <!--<span class="left">来源：邀请5个财友兑换</span>-->
+                <!--<span class="right">已过期</span>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="ticket used">-->
+            <!--<div class="ticket-top">-->
+                <!--<p class="ticket-name">加息券</p>-->
+
+                <!--<p class="ticket-time">有效期至：<span class="time-old">2016-05-31</span></p>-->
+
+            <!--<span class="used-color">-->
+                <!--<p class="use-count"><span class="number">1</span>次</p>-->
+                <!--<p class="chance">加息机会</p>-->
+            <!--</span>-->
+            <!--</div>-->
+            <!--<div class="ticket-used"></div>-->
+            <!--<div class="ticket-circle-left"></div>-->
+            <!--<div class="ticket-circle-right"></div>-->
+            <!--<div class="ticket-bottom">-->
+                <!--<span class="left">来源：邀请5个财友兑换</span>-->
+                <!--<span class="right">已使用</span>-->
+            <!--</div>-->
+        <!--</div>-->
+    </div>
+    <div class="load-more">
+        <span class="load-more-label">点击加载更多</span>
+    </div>
+</div>
+<iframe id="iframe" width="0" height="0" src=""></iframe>
+
+<script type="text/javascript" src="js/zepto.min.js"></script>
+<script type="text/javascript" src="js/md5.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript">
+    var publicObj = {
+        //isWeixin:isWeixin(),
+        //phoneType:getOS(),
+        domainname:"http://" + location.hostname,
+        apiUrl:publicApiHost + "/v2/api/web/coupon/all",
+        userType:1,
+        appVer:getUrlParameter("appVer")?getUrlParameter("appVer"):"1.0.0",
+        deviceType:"mobile_web",
+        timestamp:new Date().getTime(),
+        sessionKey:getUrlParameter("sessionKey")
+    };
+
+
+    var _r = publicObj.timestamp+"msfy_mslc_20160526_w"+publicObj.appVer+publicObj.deviceType+"web"+publicObj.appVer;
+    publicObj.signature=hex_md5(_r);
+
+    function compareVersion(ver1,ver2){
+        var len = 3;
+        var result = false;
+        var nums1 = ver1.split('.',len);
+        var nums2 = ver2.split('.',len);
+
+
+        for(var i= 0; i<len; i++) {
+            var n1,n2;
+            if(nums1.length < i+1) {
+                n1 = 0;
+            } else {
+                n1 = nums1[i];
+            }
+            if(nums2.length < i+1) {
+                n2 = 0;
+            } else {
+                n2 = nums2[i];
+            }
+            if(n1>n2) {
+                result = true;
+                break;
+            } else if (n1<n2){
+                result = false;
+                break;
+            }
+        }
+
+
+        return result;
+    }
+
+    Zepto(function($) {
+
+        if (!publicObj.sessionKey) {
+            g_alert("请先登录");
+            return;
+        }
+
+        var gPageSize = 50;
+        var page = 1;
+        var canLoadMore = false;
+
+        var _params = {
+            sessionKey: publicObj.sessionKey,
+            userType: publicObj.userType,
+            appVer: publicObj.appVer,
+            deviceType: publicObj.deviceType,
+            timestamp: publicObj.timestamp,
+            signature: publicObj.signature,
+            deviceId: "wap",
+            osVer: getOS()
+        };
+
+        //点击加载更多
+        $(".wrapper").on("click", ".load-more", function () {
+            loadData();
+        })
+
+        $(".wrapper").on("click", ".btn", function () {
+            var iFrame = document.getElementById("iframe");
+            iFrame.src = "mslcaction://interestProductList";
+        })
+
+        var newVersion = compareVersion(publicObj.appVer, '2.3.0');
+
+        function loadData() {
+            g_loading();
+
+            _params.page = page;
+            _params.pageSize = gPageSize;
+
+            $(".load-more-label").text("加载中...");
+            $(".wrapper").removeClass("nodata");
+//            setTimeout(function(){
+                $.ajax({type: "GET", url:publicObj.apiUrl, data: _params, dataType: 'json', timeout: 30000,
+                        success: function (data) {
+                            remove_loading();
+                            $(".load-more-label").text("点击加载更多");
+                            var errorCode = data.error;
+                            if (errorCode != 0) {
+                                g_alert("请求失败");
+                                if (page == 1) {
+                                    $(".wrapper").addClass("nodata");
+                                }
+                            } else {
+                                if (data.data.coupons.length > 0) {
+                                    page++;
+                                    appendData(data.data.coupons);
+                                } else {
+                                    if (page == 1) {
+                                        g_alert("暂无数据");
+                                        $(".wrapper").addClass("nodata");
+                                    }
+                                }
+                                if (data.data.coupons.length >= gPageSize) {
+                                    setCanLoadMore(true);
+                                } else {
+                                    setCanLoadMore(false);
+                                }
+                            }
+
+                        },
+                        error: function () {
+                            remove_loading();
+                            $(".load-more-label").text("点击加载更多");
+                            g_alert("网络错误，请稍后再试");
+                            if (page == 1) {
+                                $(".wrapper").addClass("nodata");
+                            }
+                        }
+                    }
+                );
+//            },2000);
+        }
+
+        function appendData(data) {
+            if (data && data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    var item = data[i];
+
+                    var string;
+                    switch (item.status) {
+                        case 0:
+                            string = '<div class="ticket available">';
+                            break;
+                        case 1:
+                                string = '<div class="ticket used">';
+                            break;
+                        case 2:
+                                string = '<div class="ticket expired">';
+                            break;
+                        case 4:
+                            string = '<div class="ticket frozen">';
+                            break;
+                        default:
+                            break;
+                    }
+                    string += '<div class="ticket-top">' +
+                    '<p class="ticket-name">加息券</p>' +
+                    '<p class="ticket-time">有效期至：' + item.valid + '</p>';
+                    switch (item.status) {
+                        case 0:
+                            string += '<span class="available-color">';
+                            break;
+                        case 1:
+                            string += '<span class="expired-color">';
+                            break;
+                        case 2:
+                            string += '<span class="used-color">';
+                            break;
+                        case 4:
+                            string += '<span class="frozen-color">';
+                            break;
+                        default:
+                            break;
+                    }
+                    string +='<p class="use-count"><span class="number">1</span>次</p><p class="chance">加息机会</p></span></div>';
+
+                    switch (item.status) {
+                        case 1:
+                            string += '<div class="ticket-used"></div>';
+                            break;
+                        case 2:
+                            string += '<div class="ticket-expired"></div>';
+                            break;
+                        case 4:
+                            string += '<div class="ticket-frozen"></div>';
+                            break;
+                        default:
+                            break;
+                    }
+
+                    string +='<div class="ticket-circle-left"></div>' +
+                    '<div class="ticket-circle-right"></div>' +
+                    '<div class="ticket-bottom">' +
+                    '<span class="left">' + item.comment + '</span>';
+
+                    switch (item.status) {
+                        case 0:
+                            if(newVersion) {
+                                string += '<span class="btn">立即使用</span>';
+                            } else {
+                                string += '<span class="right">可用</span>';
+                            }
+                            break;
+                        case 1:
+                            string += '<span class="right">已使用</span>';
+                            break;
+                        case 2:
+                            string += '<span class="right">已过期</span>';
+                            break;
+                        case 4:
+                            string += '<span class="right">已冻结</span>';
+                            break;
+                        default:
+                            break;
+                    }
+                    string += '</div></div>';
+
+                    $(".lists").append(string);
+                }
+            }
+        }
+
+        //控制上拉加载状态
+        function setCanLoadMore(loadMore) {
+            canLoadMore = loadMore;
+
+            if (canLoadMore) {
+                $(".load-more").show();
+            } else {
+                $(".load-more").hide();
+            }
+        }
+
+        //初始化数据
+        setCanLoadMore(false);
+        loadData();
+    })
+
+</script>
+
+</body>
+</html>

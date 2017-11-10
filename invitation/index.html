@@ -1,0 +1,126 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>马上理财-邀请码</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta content="telephone=no" name="format-detection" />
+    <meta content="email=no" name="format-detection" />
+    <link href="css/common.css?v=20151230" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <div class="content logged">
+        <p class="bg" id="bg"></p>
+        <p class="logo"><img src="img/logo.png"></p>
+        <div class="txtin">
+            <p class="txtImg"><img src="img/txt-new.png"></p>
+            <p class="txtObtain">获取成功<br />快去邀请朋友吧</p>
+            <p class="txtTip1">点击获取邀请码，分享至微信<br />好友使用你的邀请码注册后<br />各得65元，可用于兑换补贴收益</p>
+            <p class="txtTip2">好友使用你的邀请码注册后，各得65元<br />邀请越多好友，获得越多奖励</p>
+        </div>
+        <div class="login-cont" id="domLogin">
+            <div class="login-btn">点击获取<br />邀请码</div>
+        </div>
+        <div class="invitation-cont">
+            <div id="clickArea">
+                <p class="t1">
+                    <span class="t1-border"></span>
+                    <span class="t1-txt">您的邀请码</span>
+                </p>
+                <p class="t2 code"><span class="t2-txt" id="code"></span></p>
+                <p class="t3" id="copy">&lt;点击复制&gt;</p>
+            </div>
+        </div>
+        <div class="footer-cont1">
+            <p class="register">已有邀请码，去注册&gt;</p>
+            <p class="count" id="count">已有<span class="value" id="countValue"></span>用户参与活动</p>
+        </div>
+        <div class="footer-cont2">
+            <button class="btn" id="btnShare">去邀请</button>
+        </div>
+
+        <iframe id="iframe" width="0" height="0" src=""></iframe>
+    </div>
+    <script src="js/zepto.min.js"></script>
+    <script src="js/common.js?v=20151230"></script>
+    <script type="text/javascript">
+    Zepto(function($){
+        var code = document.getElementById("code");
+        var copy = document.getElementById("copy");
+        var iframe = document.getElementById("iframe");
+        var domLogin = document.getElementById("domLogin");
+        var btnShare = document.getElementById("btnShare");
+        var clickArea = document.getElementById("clickArea");
+        var bg = document.getElementById("bg");
+        var count = document.getElementById("count");
+        var countValue = document.getElementById("countValue");
+        var content = document.querySelector(".content");
+        var txtImg = document.querySelector(".txtImg");
+        var txtObtain = document.querySelector(".txtObtain");
+        var domRegister = document.querySelector(".register");
+        
+        var imageBg = document.createElement("img");
+
+        if(publicObj.userId>0){
+            imageBg.src = "img/bg2.jpg";
+            if(publicObj.loginType!=0){
+                txtImg.style.display = "none";
+                txtObtain.style.display = "block";
+            }
+
+            //获取邀请码
+            $.getJSON(publicObj.url+publicObj.userId,function(response){
+                var data = response.data;
+                code.innerText = data.invitationCode;
+                //复制邀请码
+                clickArea.addEventListener("click",function(){
+                    iframe.src = "mslcaction://copyToClipBoard?text="+data.invitationCode;
+                },false)
+
+                //分享至微信
+                btnShare.addEventListener("click",function(){
+                    iframe.src = "mslcaction://shareAppToWechat";
+                },false)
+            });
+        }else{
+            imageBg.src = "img/bg1.jpg";
+            content.className = "content";
+
+            //获取参与人数
+            $.getJSON(publicObj.joinUrl,function(response){
+                var data = response.data.toString();
+                var bTxt = "";
+                if(!data){
+                    return false;
+                }
+                for(var i=0;i<data.length;i++){
+                    bTxt = bTxt + '<b>' + data.charAt(i) + '</b>';
+                }
+
+                countValue.innerHTML = bTxt;
+                count.style.display="block";
+            })
+
+            //登录
+            domLogin.addEventListener("click",function(){
+                iframe.src = "mslcaction://requestUserLogin";
+            },false);
+
+            //注册
+            if(publicObj.appVer!="1.9.6"){
+                domRegister.style.display = "block";
+                domRegister.addEventListener("click",function(){
+                    iframe.src = "mslcaction://requestUserRegister";
+                },false);
+            }
+        }
+        bg.appendChild(imageBg); 
+        content.style.opacity = 1;
+    })
+        
+    </script>
+</body>
+</html>

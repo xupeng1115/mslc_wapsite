@@ -1,0 +1,227 @@
+@charset "utf-8";
+html { font-family:"San Francisco","Helvetica Neue", Helvetica, Arial, sans-serif; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; font-size: 16px; width:100%;height:100%;}
+body { margin: 0; font-size: 1rem; color: #333; background-color: white;  overflow-x: hidden; -webkit-overflow-scrolling: touch; width:100%;height:100%;}
+
+* { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; -webkit-tap-highlight-color: transparent;margin:0;padding:0;}
+.clearfix:after{visibility: hidden;display: block;font-size: 0;content: " ";clear: both;height: 0;}
+.clearfix{*zoom:1;}
+.flex{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;-webkit-justify-content:center;justify-content:center;-webkit-box-pack: center;}
+
+html,body{text-align: center; overflow: hidden;position:relative;}
+img{max-width: 100%; max-height: 100%;display:block;}
+
+iframe{display:none;}
+.red{color:#ff6060;}
+.g_loading{position:fixed;top:0;left:0;width:100%;height:100%;z-index:999;background:url("../img/ajax-loader.gif")no-repeat center center rgba(255,255,255,.5);}
+.g_alert{max-width:260px;text-align:center;padding:10px;color:#fff;border-radius:5px;background:rgba(0,0,0,0.8);display:block;position:fixed;z-index:200;bottom:40px;left:50%;font-size:0.8rem;}
+/**********************************************Common-style  End**************************************************/
+
+/***********************************************Main Begin***********************************************/
+.content{
+	width:100%;
+	height:100%;
+	background:url(../img/bg.png)no-repeat center center;
+	background-size:100% 100%;
+	color:#fff;
+	text-align:center;
+}
+header{
+	padding-top:85px;
+	padding-bottom:140px;
+	position:relative;
+}
+header .title{
+	padding-bottom:10px;
+	font-size:1.2rem;
+}
+header .title .number{
+	font-size:2.2rem;
+	color:#ff9600;
+	padding:0 10px;
+}
+header .title-text{
+	font-size:0.9rem;
+	position:relative;
+}
+header .poke{
+	display:block;
+	width:80px;
+	height:60px;
+	position:absolute;
+	top:150px;
+	right:30px;
+}
+header .earn{
+	height:40px;
+	width:120px;
+	line-height:40px;
+	background:url(../img/earn.png)no-repeat center center;
+	background-size:100% 100%;
+	position:absolute;
+	top:180px;
+	left:50%;
+	margin-left:-60px;
+}
+section{
+	padding:0 30px;
+	font-size:0.9rem;
+	line-height:1.2rem;
+}
+section .top{
+	height:1px;
+	width:100%;
+	background:url(../img/line.png)no-repeat center center;
+	background-size:100% 100%;
+	position:relative;
+	margin-bottom:20px;
+}
+section .top .rule-box{
+	height:30px;
+	width:120px;
+	background:#4b4843;
+	position:absolute;
+	top:-15px;
+	left:50%;
+	margin-left:-60px;
+}
+section .top .rule-title{
+	height:30px;
+	width:100%;
+	font-size:1rem;
+	line-height:30px;
+	background:url(../img/border.png)no-repeat center center;
+	background-size:100% 100%;
+}
+section .item{
+	padding-top:20px;
+	text-align:left;
+}
+section .item .left{
+	width:20px;
+}
+footer{
+	position:fixed;
+	bottom:50px;
+	width: 100%;
+	height: 50px;
+	z-index: 10;
+}
+footer .cancel-btn {
+	margin: 0 auto;
+	background:url(../img/btn_cancel.png)no-repeat center center;
+	background-size: 45px 45px;
+	width: 45px;
+	height: 45px;
+}
+
+/********************************************Main End***************************************************/
+
+/**************************************Media_query Begin *********************************/
+@media screen and (max-width:384px){
+	header {
+    	padding-top: 60px;
+    	padding-bottom:120px;
+    }
+	header .earn {
+		height:35px;
+		width:100px;
+	    top: 145px;
+	    margin-left:-50px;
+	    line-height:35px;
+	}
+    header .poke {
+    	top: 110px;
+    	right:25px;
+	}
+
+	footer .cancel-btn {
+		background-size: 40px 40px;
+	}
+    
+}
+@media screen and (max-width:375px){
+	header {
+    	padding-top: 60px;
+    	padding-bottom:120px;
+    }
+    header .title-text {
+	    font-size: 0.8rem;
+	}
+	header .earn {
+		height:35px;
+		width:100px;
+	    top: 150px;
+	    margin-left:-50px;
+	    line-height:35px;
+	}
+    header .poke {
+    	top: 120px;
+    	right:20px;
+	}
+	section {
+	    padding: 0 25px;
+	    font-size: 0.8rem;
+	    line-height: 1.1rem;
+	}
+	section .top .rule-box {
+		font-size:0.9rem;
+	    width: 100px;
+	    margin-left: -50px;
+	}
+    
+}
+
+@media screen and (max-width:320px){
+	header {
+    	padding-top: 40px;
+    	padding-bottom:100px;
+    }
+    header .title {
+	    padding-bottom: 5px;
+	    font-size: 1.0rem;
+	}
+    header .title-text {
+	    font-size: 0.6rem;
+	}
+	header .title .number {
+	    font-size: 2.0rem;
+	    padding: 0 5px;
+	}
+	header .earn {
+		height:30px;
+		width:90px;
+		font-size:0.8rem;
+	    top: 120px;
+	    margin-left:-45px;
+	    line-height:30px;
+	}
+    header .poke {
+    	width: 70px;
+   		height: 50px;
+    	top: 90px;
+    	right:10px;
+	}
+	section {
+	    padding: 0 20px;
+	    font-size: 0.6rem;
+	    line-height: 1.0rem;
+	}
+	section .top .rule-box {
+		font-size:0.8rem;
+	    width: 90px;
+	    margin-left: -45px;
+	}
+	section .top .rule-title {
+	    font-size: 0.8rem;
+	}
+	section .item {
+	    padding-top: 15px;
+	}
+
+	footer .cancel-btn {
+		background-size: 30px 30px;
+	}
+    
+}
+/**************************************Media_query End *********************************/
+

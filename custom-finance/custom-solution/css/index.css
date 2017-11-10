@@ -1,0 +1,49 @@
+body{ background-color: #fff; }
+.main{opacity: 0;}
+
+.plan-list { width: 100%; overflow: hidden; background-color: #fff; padding-bottom: 10px;}
+.plan-list>ul{ opacity: 0; -webkit-transform:translate3d(0,0,0);}
+.plan-list>ul>li{ float: left;  padding: 0 20px 20px; }
+
+
+
+.plan-list>ol>li{ width: 4px; height: 4px; overflow: hidden; background-color: #eaeaea; border-radius: 100%; margin:0 2px;}
+.plan-list>ol>li.active{ background-color: #bdbdbd; }
+
+.product-list .s2{}
+
+
+.plan-detail { padding-top: 25px; }
+.plan-detail dl{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center; -webkit-justify-content:space-between;justify-content:space-between;-webkit-box-pack:justify; margin:10px 0px; height: 1.625rem;}
+.plan-detail .durationAll{-webkit-box-align:flex-start;-webkit-align-items:flex-start;align-items:flex-start; height: auto;}
+.plan-detail dl:first-child{ margin-top: 0;}
+.plan-detail dt{font-size: 0.75rem; color: #aaa;}
+.plan-detail dd{ color: #323232; line-height: 1.625rem;}
+.plan-detail dd img{max-height: 1rem; margin-left: 5px; vertical-align: top;}
+.plan-detail .durationAll{}
+.plan-detail .durationAll dt{ line-height: 1.625rem; }
+.plan-detail .durationAll dd{ max-width: 62%; text-align: right; line-height: 1.625rem;}
+.plan-detail .value{ font-size: 1rem;}
+.plan-detail .value i { font-size: 0.75rem; font-style: normal; }
+.btn-to-detail,.btn-to-detail:active{ padding: 7px 30px; display: inline-block; margin:25px auto 0; font-size: 0.875rem; color: #ff6060; border:1px solid #ff6060; border-radius:4px; vertical-align: top;}
+
+
+
+@media screen and (max-width:359px){
+	.plan-list>ul>li{ padding-left: 8px; padding-right: 8px; }
+	.plan-detail .value{ font-size: 0.875rem; }
+}
+
+
+@media screen and (max-height:590px){
+ 
+}
+
+@media screen and (max-height:520px){
+
+}
+
+@media screen and (max-height:480px){
+ 
+}
+

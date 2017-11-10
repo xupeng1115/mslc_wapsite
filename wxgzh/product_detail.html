@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang=en>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1.0"/>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+		<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+		<meta name="format-detection" content="telephone=no"/>
+		<meta name="format-detection" content="email=no"/>
+		<title></title>
+		<link rel="stylesheet" href="css/product_detail.css" />
+	<body>
+		<div class="content">
+			<div class="banner"></div>
+			<div class="title"></div>
+			<div class="bank">
+				<div class="bank-top">
+					<div class="logo"><img src="" alt="" class="bank-logo"/></div>
+					<div class="text"></div>
+				</div>
+				<div class="rate">
+					<span class="yield-rate-large">0</span>
+					<span class="yield-rate-small">.00</span>
+					<span class="percent">%</span>
+				</div>
+				<div class="rate-description">
+					<span class="rate-icon"></span>
+					<span class="rate-text">预期年化收益率</span>
+				</div>
+				<div class="block">
+					<div class="left">
+						<p class="left-title">起购金额</p>
+						<p class="left-value">0万</p>
+					</div>
+					<div class="right">
+						<p class="right-title">理财期限</p>
+						<p class="right-value">不固定</p>
+					</div>
+				</div>
+			</div>
+			<div class="font">查看更多理财产品详情或咨询银行理财经理购买请下载“马上理财App”</div>
+			<div class="download-btn"><div class="btn-pic"></div></div>
+		</div>
+		
+		<script type="text/javascript" src="js/zepto.min.js"></script>
+		<script type="text/javascript" src="js/common.js"></script>
+		<script type="text/javascript" src="js/md5.js"></script>
+		
+		<script type="text/javascript">
+			
+			var publicObj = {
+			        isWeixin:isWeixin(),
+			        phoneType:getOS(),
+			        domainname:"http://" + location.hostname,
+			        apiUrl:publicApiHost + "/v2/api/web/product/get",
+			        userType:1,
+			        appVer:"1.0",
+			        deviceType:"mobile_web",
+			        timestamp:new Date().getTime(),
+			        productId:getUrlParameter("productId")
+			    };
+			
+			var _r = publicObj.timestamp+"msfy_mslc_20160526_w"+publicObj.appVer+publicObj.deviceType+"web"+publicObj.appVer;
+			publicObj.signature=hex_md5(_r);
+			
+			
+			Zepto(function($){
+				
+				var _params = {
+		            userType:publicObj.userType,
+		            appVer:publicObj.appVer,
+		            deviceType:publicObj.deviceType,
+		            timestamp:publicObj.timestamp,
+		            signature:publicObj.signature,
+		            deviceId:"wap",
+		            osVer:getOS()
+		        };
+				
+				g_loading();
+				
+				$.ajax({
+					type:"GET",
+					url:publicObj.apiUrl+"?productId="+publicObj.productId,
+					dataType:"json",
+					timeout:30000,
+					data:_params,
+					success:function(data){
+						remove_loading();
+						var errorCode = data.error;
+                        if(errorCode != 0){
+                            g_alert("请求失败");
+                        } else {
+							//获取银行头部信息
+							var product = data.data.product;
+
+							$(".bank-logo").attr("src",product.bank.icon);
+							$(".text").text(product.name);
+							
+							//判断是否有加息奖励
+							if(product.redeemRate && product.redeemRate>0){
+								var yearRate = product.estimatedYearRate;
+								var redeemRate = product.redeemRate;
+								createForward(yearRate,redeemRate,"预期年化收益率+加息奖励");
+							}else{
+								var yearRate = product.estimatedYearRate;
+								createYield(yearRate);
+							}
+							
+							$(".left-value").text(product.minimumPurchase+" 万");
+							if (product.duration && product.duration>0) {
+								$(".right-value").text(product.duration+"天");
+							}
+
+						}
+					},
+					error:function(){
+						remove_loading();
+                        g_alert("网络错误，请稍后再试");
+					}	
+				})
+				
+				//有加息奖励时时
+				function createForward(data1,data2,data3){
+					var yieldLarge=(data1/100).toFixed(2).split(".")[0];
+					var yieldSmall="."+(data1/100).toFixed(2).split(".")[1];
+					
+					var forwardLarge=parseFloat(data2).toFixed(2).split(".")[0];
+					var forwardSmall="."+parseFloat(data2).toFixed(2).split(".")[1];
+					
+					var strRate="<span class='yield-rate-large'>"+yieldLarge+"</span>"+
+						"<span class='yield-rate-small'>"+yieldSmall+"</span>"+
+						"<span class='rate-plus'>+</span>"+
+						"<span class='forward-rate-large'>"+forwardLarge+"</span>"+
+						"<span class='forward-rate-small'>"+forwardSmall+"</span>"+
+						"<span class='percent'>%</span>";
+						
+					$(".rate").empty();
+					$(".rate").append(strRate);
+					$(".rate-text").text(data3);
+				}
+				
+				//没有加息奖励时
+				function createYield(data){
+					var yieldLarge=(data/100).toFixed(2).split(".")[0];
+					var yieldSmall="."+(data/100).toFixed(2).split(".")[1];
+					
+					var strRate="<span class='yield-rate-large'>"+yieldLarge+"</span>"+
+						"<span class='yield-rate-small'>"+yieldSmall+"</span>"+
+						"<span class='percent'>%</span>";
+					$(".rate").empty();
+					$(".rate").append(strRate);
+				}
+				
+				//点击下载App
+				$(".content").on("click",".download-btn",function(){
+					location.href = "http://a.app.qq.com/o/simple.jsp?pkgname=com.mashanglc.android.licaiclient";
+					return false;
+				});
+				
+			})
+			
+		</script>
+		
+	</body>
+</html>

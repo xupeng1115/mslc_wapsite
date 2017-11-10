@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="format-detection" content="email=no"/>
+    <title>邀请送积分</title>
+    <link rel="stylesheet" href="css/event.css?ver=20160920" type="text/css"/>
+</head>
+<body>
+<div class="container">
+    <p class="point-role">
+      	<a href="./point_rule.html">积分规则&nbsp;></a>
+    </p>
+    <div class="point">
+    	<div class="money-pic"></div>
+    	<div class="city-pic"></div>
+    	<div class="product">
+    		<p class="point-number">0</p>
+    		<p class="point-font">已获积分(个)</p>
+    	</div>
+    	<p class="query-point">查看明细 ></p>
+    </div>
+    <div class="point-pic"></div>
+	<div class="invite">
+		<p class="invite-font">您已邀请:<span class="client-number">0</span>位客户</p>
+		<div class="query-record">查看我的邀请记录 ></div>
+		<div class="invite-code">
+			<!--<p class="code-font">邀请码</p>
+			<p class="invite-number">VSUIUB</p>-->
+		</div>
+		<div class="invite-description">
+			<p class="dec-one">客户使用你的邀请码注册，你可以获得5个积分</p>
+			<p class="dec-two">邀请越多客户，获得越多积分奖励，上不封顶!</p>
+		</div>
+		<img src="img/btn_invite.png" class="invite-btn"/>
+	</div>
+
+</div>
+
+<iframe id="iframe" width="0" height="0" src=""></iframe>
+<script type="text/javascript" src="js/zepto.min.js"></script>
+<script type="text/javascript" src="js/md5.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+
+<script type="text/javascript">
+    var publicObj = {
+        //isWeixin:isWeixin(),
+        //phoneType:getOS(),
+        domainname:"http://" + location.hostname,
+        apiUrl:publicApiHost + "/v2/api/web/point/info",
+        userType:2,
+        appVer:"1.0",
+        deviceType:"mobile_web",
+        timestamp:new Date().getTime(),
+        sessionKey:getUrlParameter("sessionKey")
+    };
+
+
+    var _r = publicObj.timestamp+"msfy_mslc_20160526_w"+publicObj.appVer+publicObj.deviceType+"web"+publicObj.appVer;
+    publicObj.signature=hex_md5(_r);
+
+    Zepto(function($){
+
+        if(!publicObj.sessionKey) {
+            g_alert("请先登录");
+            return;
+        }
+
+        var shareAppParams;
+
+        var _params = {
+            sessionKey:publicObj.sessionKey,
+            userType:publicObj.userType,
+            appVer:publicObj.appVer,
+            deviceType:publicObj.deviceType,
+            timestamp:publicObj.timestamp,
+            signature:publicObj.signature,
+            deviceId:"wap",
+            osVer:getOS()
+        };
+
+        g_loading();
+        $.ajax({
+        	type:"GET",
+        	url:publicObj.apiUrl,
+        	data:_params,
+        	dataType:'json',
+        	timeout:30000,
+            success:function(data){
+                remove_loading();
+                var errorCode = data.error;
+                if(errorCode != 0){
+                    g_alert("请求失败");
+                } else {
+                	var totalPoint=window.Number(data.data.totalPoint);
+                	if(totalPoint&&totalPoint>=0){
+                		$(".point-number").css({
+                			"width":"200px",
+                			"margin-left":"-100px"
+                		})
+                		$(".point-number").text(data.data.totalPoint);
+                		if(totalPoint>=10000){
+                			$(".point-number").css("fontSize","35px");
+                		}
+                	}
+                   
+                    $(".client-number").text(data.data.invitedCount);
+                    
+                     //判断是否有邀请码
+                    if(data.data.invitationCode&&data.data.invitationCode.length>0){
+                    	var str="<p class='code-font'>邀请码</p>";
+							str+="<p class='invite-number'>"+data.data.invitationCode+"</p>";
+						
+						$(".invite-code").append(str);
+                    }
+                    shareAppParams = data.data.shareApp;
+                }
+
+            },
+            error:function(){
+                remove_loading();
+                g_alert("网络错误，请稍后再试");
+            }}
+        );
+
+        $(".container").on("click",".query-record",function() {
+            location.href = './event_invited_friends.html?total=1&sessionKey='+publicObj.sessionKey;
+            return false;
+        });
+        $(".container").on("click",".query-point",function() {
+            location.href = './point_detail.html?sessionKey='+publicObj.sessionKey;
+            return false;
+        });
+
+        $(".container").on("click",".invite-btn",function() {
+            if($('.overlayer').length<1){
+                $("body").append("<div class='overlayer'>"+
+                "<div class='hide'>" +
+                "<div class='share'>" +
+                "<div class='weixinquan'><img src='img/weixin01.png'/></div>" +
+                "<p class='weixinquan-font'>微信朋友圈</p>" +
+                "<div class='weixin'><img src='img/weixin02.png'/></div>" +
+                "<p class='weixin-font'>微信好友</p>" +
+                "<div class='qq-space'><img src='img/qq02.png'/></div>" +
+                "<p class='space-font'>QQ空间</p>" +
+                "<div class='qq'><img src='img/qq01.png'/></div>" +
+                "<p class='qq-font'>QQ</p></div>" +
+                "<div class='cancel'>取消</div>" +
+                "</div></div>");
+            }
+
+            $(".cancel").click(function(){
+                $(".overlayer").remove();
+            });
+            
+            var overlayer=document.getElementsByClassName("overlayer")[0];
+            overlayer.addEventListener("touchmove",function(e){
+                e.preventDefault();
+            });
+        });
+
+        $("body").on("click",".weixinquan",function() {
+            share(1);//微信朋友圈
+        });
+
+        $("body").on("click",".weixin",function() {
+            share(0); //微信好友
+        });
+
+        $("body").on("click",".qq-space",function() {
+            share(3); //qq空间
+        });
+
+        $("body").on("click",".qq",function() {
+            share(2); //qq好友
+        })
+
+        function share(type){
+            if (shareAppParams) {
+                var iFrame = document.getElementById("iframe");
+                iFrame.src = "mslcaction://shareToApp?" +
+                "type="+type+
+                "&url="+ encodeURIComponent(shareAppParams.url)+
+                "&icon="+encodeURIComponent(shareAppParams.icon)+
+                "&title="+shareAppParams.title+
+                "&description="+shareAppParams.description+
+                "&circleTitle="+shareAppParams.circleTitle;
+            }
+
+            $(".overlayer").remove();
+        }
+
+    })
+
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
